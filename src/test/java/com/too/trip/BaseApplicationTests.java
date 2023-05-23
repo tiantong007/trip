@@ -8,6 +8,11 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * @author: isixe
+ * @create: 2023-05-23 21:13
+ * @description: 数据库连接测试
+ **/
 @SpringBootTest
 class BaseApplicationTests {
     @Autowired

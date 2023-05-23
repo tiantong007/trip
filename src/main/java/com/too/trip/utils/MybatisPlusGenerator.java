@@ -10,12 +10,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * @author: isixe
+ * @create: 2023-05-23 21:13
+ * @description: MybatisPlusGenerator
+ **/
 public class MybatisPlusGenerator {
 
-    public void run(String url, String username, String password, List<String> tables) {
+    public void run(String url, String username, String password, List<String> tables, String author) {
         FastAutoGenerator.create(url, username, password)
                 .globalConfig(builder -> {
-                    builder.author("isixe") //作者
+                    builder.author(author) //作者
                             .outputDir(System.getProperty("user.dir") + "\\src\\main\\java")    //输出路径(写到java目录)
                             .enableSwagger() //开启swagger
                             .commentDate("yyyy-MM-dd");

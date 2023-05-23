@@ -7,6 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author: isixe
+ * @create: 2023-05-23 21:13
+ * @description: 启动 MybatisPlusGenerator
+ **/
 @SpringBootTest
 public class MybatisPlusGeneratorApplicationTests {
     @Value("${spring.datasource.url}")
@@ -20,10 +25,16 @@ public class MybatisPlusGeneratorApplicationTests {
 
     @Test
     void generatorLoads() {
+        // 作者
+        String author = "isixe";
+
+        // 准备要生产的数据表名列表
         List<String> tables = new ArrayList<>();
         tables.add("t_admin");
         tables.add("t_user");
+
+        // 启动
         MybatisPlusGenerator generator = new MybatisPlusGenerator();
-        generator.run(dbUrl, dbUsername, dbPassword, tables);
+        generator.run(dbUrl, dbUsername, dbPassword, tables, author);
     }
 }
