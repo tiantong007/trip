@@ -36,5 +36,6 @@ public class MybatisPlusGeneratorApplicationTests {
         // 启动
         MybatisPlusGenerator generator = new MybatisPlusGenerator();
         generator.run(dbUrl, dbUsername, dbPassword, tables, author);
+
     }
 }

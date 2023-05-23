@@ -34,3 +34,13 @@ mybatis-plus:
       logic-not-delete-value: 0
       logic-delete-value: 1
       logic-delete-field: valid
+
+logging:
+  config: log/locbak.xml
+  level:
+    root: info
+    com.springboot.springbootdemo.controller: trace
+    com.springboot.springbootdemo.service: debug
+    com.springboot.springbootdemo.dao: debug
+  file:
+    name: classpath:log/trip.log

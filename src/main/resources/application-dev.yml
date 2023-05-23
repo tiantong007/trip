@@ -24,3 +24,24 @@ spring:
         reset-enable: true
         login-username: admin
         login-password: 123
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  global-config:
+    db-config:
+      logic-not-delete-value: 0
+      logic-delete-value: 1
+      logic-delete-field: valid
+
+logging:
+  config: log/locbak.xml
+  level:
+    root: info
+    com.springboot.springbootdemo.controller: trace
+    com.springboot.springbootdemo.service: debug
+    com.springboot.springbootdemo.dao: debug
+  file:
+    name: classpath:log/trip.log
