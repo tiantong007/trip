@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.too.trip.mapper.RoomMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.too.trip.entity.Room">
+        <id column="room_id" property="roomId" />
+        <result column="h_id" property="hId" />
+        <result column="room_status" property="roomStatus" />
+        <result column="room_price" property="roomPrice" />
+        <result column="room_num" property="roomNum" />
+        <result column="room_type" property="roomType" />
+        <result column="room_img" property="roomImg" />
+    </resultMap>
+
+</mapper>

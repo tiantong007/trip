@@ -15,6 +15,7 @@ import java.sql.SQLException;
  * @description: 数据库连接测试
  **/
 @SpringBootTest
+@Slf4j
 class BaseApplicationTests {
     @Autowired
     private DataSource dataSource;
@@ -26,11 +27,11 @@ class BaseApplicationTests {
     @Test
     void datasourceLoads() {
         //查看数据源
-        System.out.println(dataSource.getClass());
+        log.info(String.valueOf(dataSource.getClass()));
         //获得数据库连接
         try {
             Connection connection = dataSource.getConnection();
-            System.out.println(connection);
+            log.info(String.valueOf(connection));
             //关闭连接
             connection.close();
 

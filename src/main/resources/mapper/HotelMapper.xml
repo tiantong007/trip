@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.too.trip.mapper.HotelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.too.trip.entity.Hotel">
+        <id column="h_id" property="hId" />
+        <result column="hotel_img" property="hotelImg" />
+        <result column="hotel_name" property="hotelName" />
+        <result column="hotel_description" property="hotelDescription" />
+        <result column="hotel_star" property="hotelStar" />
+        <result column="hotel_position" property="hotelPosition" />
+        <result column="city_id" property="cityId" />
+    </resultMap>
+
+</mapper>
