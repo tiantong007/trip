@@ -1,5 +1,6 @@
 package com.too.trip.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -39,11 +40,11 @@ public class HotelOrders implements Serializable {
     private Integer rId;
 
     @ApiModelProperty("入住时间")
-    @TableField("begin_date")
+    @TableField(value = "begin_date",fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime beginDate;
 
     @ApiModelProperty("离开时间")
-    @TableField("end_date")
+    @TableField(value = "end_date",fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime endDate;
 
     @ApiModelProperty("订单状态")
