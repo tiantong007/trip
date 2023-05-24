@@ -1,5 +1,6 @@
 package com.too.trip.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +14,8 @@ import java.util.List;
  * @description: 启动 MybatisPlusGenerator
  **/
 @SpringBootTest
-public class MybatisPlusGeneratorApplicationTests {
+@Slf4j
+public class MybatisPlusGeneratorTests {
     @Value("${spring.datasource.url}")
     private String dbUrl;
 
@@ -30,8 +32,15 @@ public class MybatisPlusGeneratorApplicationTests {
 
         // 准备要生产的数据表名列表
         List<String> tables = new ArrayList<>();
-        tables.add("t_admin");
-        tables.add("t_user");
+        tables.add("admin");
+        tables.add("city");
+        tables.add("comment");
+        tables.add("hotel");
+        tables.add("hotel_orders");
+        tables.add("room");
+        tables.add("scenic");
+        tables.add("scenic_orders");
+        tables.add("user");
 
         // 启动
         MybatisPlusGenerator generator = new MybatisPlusGenerator();

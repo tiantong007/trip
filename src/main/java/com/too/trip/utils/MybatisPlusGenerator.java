@@ -39,7 +39,7 @@ public class MybatisPlusGenerator {
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude(tables)
-                            .addTablePrefix("p_")
+                            .addTablePrefix("t_","p_")
                             .serviceBuilder()
                             .formatServiceFileName("%sService")
                             .formatServiceImplFileName("%sServiceImpl")
