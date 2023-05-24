@@ -36,7 +36,7 @@ mybatis-plus:
       logic-delete-field: valid
 
 logging:
-  config: log/locbak.xml
+  config: classpath:log/locbak.xml
   level:
     root: info
     com.springboot.springbootdemo.controller: trace
