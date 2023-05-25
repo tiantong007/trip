@@ -63,11 +63,11 @@ package ${package.Entity};
     <#if field.keyFlag>
     <#-- 主键 -->
         <#if field.keyIdentityFlag>
-    @TableId(value = "${field.annotationColumnName}", type = IdType.AUTO)
+            @TableId(value = "${field.annotationColumnName}", type = IdType.AUTO)
         <#elseif idType??>
-    @TableId(value = "${field.annotationColumnName}", type = IdType.${idType})
+            @TableId(value = "${field.annotationColumnName}", type = IdType.${idType})
         <#elseif field.convert>
-    @TableId("${field.annotationColumnName}")
+            @TableId("${field.annotationColumnName}")
         </#if>
     <#-- 普通字段 -->
     <#elseif field.fill??>
