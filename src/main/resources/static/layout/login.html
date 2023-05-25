@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>用户登录界面 | 旅心</title>
+    <link rel="stylesheet" href="../css/normalize.css" type="text/css">
+    <link rel="stylesheet" href="../css/login.css" type="text/css">
+    <link rel="stylesheet" href="../css/toastify.min.css" type="text/css">
+</head>
+<script type="text/javascript" src="../js/jquery-2.2.3.min.js"></script>
+<script src="../js/sweetalert2@11.js"></script>
+<script src="../js/moment.min.js"></script>
+<script src="../js/moment-timezone-with-data.min.js"></script>
+<script type="text/javascript" src="../js/toastify-js.js"></script>
+<script type="text/javascript" src="../js/tips.js"></script>
+<body>
+    <div class="login-page">
+
+        <div class="form">
+            <h3 class="title">
+                <a href="/" class="logo-container brand-logo">
+                    <img class="logo" src="../favicon.ico" width="50" height="50"/>
+                </a>
+                <span>旅心</span>
+            </h3>
+            <form class="register-form">
+                <input type="text" name="username" placeholder="用户名" required/>
+                <input type="password" name="password" placeholder="密码" required/>
+                <input type="password" name="secondary_password" placeholder="再次输入密码" required/>
+                <input type="email" name="email" placeholder="邮箱地址"/>
+                <input type="button" class="register waves-effect waves-light btn green" value="注册"/>
+                <p class="message">已经注册? <a href="#">去登录</a></p>
+            </form>
+            <form class="login-form">
+                <input type="text" name="username" placeholder="用户名 / 邮箱" required/>
+                <input type="password" name="password" placeholder="密码" required/>
+                <input type="button" class="login waves-effect waves-light btn green" value="登录"/>
+                <p class="message">还未注册? <a href="#">创建账户</a></p>
+            </form>
+        </div>
+    </div>
+    <script>
+        $('.message a').click(function () {
+            $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+        });
+
+        $('.login').click(function () {
+            let username = $('input[name="username"]').last().val();
+            let password = $('input[name="password"]').last().val();
+            const fields = [
+                {name: '用户名', value: username},
+                {name: '密码', value: password},
+            ];
+            for (let field of fields) {
+                if (!field.value) {
+                    showToast(`${field.name}不能为空`);
+                    return;
+                }
+            }
+            $.ajax({
+                url: '/user/login',
+                type: 'POST',
+                data: {username: username, password: password},
+                success: function (response) {
+                    if (response.result === "success") {
+                        window.location.href = window.location.origin
+                    }
+                },
+                error: function (response) {
+                    if (response.status === 200) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '网络错误，请稍后重试'
+                        })
+                    }
+
+                    response = response.responseJSON
+                    if (response.result === 'failed') {
+                        showToast(response.msg);
+                    }
+                }
+            });
+        });
+        $('.register').click(function () {
+            let username = $('input[name="username"]').first().val();
+            let password = $('input[name="password"]').first().val();
+            let secondary_password = $('input[name="secondary_password"]').first().val();
+            if (password !== secondary_password) {
+                showToast("两次密码输入不一致");
+                return;
+            }
+            let email = $('input[name="email"]').first().val();
+            const fields = [
+                {name: '用户名', value: username},
+                {name: '密码', value: password},
+                {name: '密码', value: secondary_password},
+                {name: '邮箱', value: email}
+            ];
+
+            for (let field of fields) {
+                if (!field.value) {
+                    showToast(`${field.name}不能为空`);
+                    return;
+                }
+            }
+            let now = moment();
+            let currentDate = now.format('YYYY-MM-DD HH:mm');
+            $.ajax({
+                url: '/user/register',
+                type: 'POST',
+                data: {username: username, password: password, email: email, create_date: currentDate},
+                success: function (response) {
+                    if (response.result === "success") {
+                        $('.message:last a').click();
+                        Toast.fire({
+                            icon: 'success',
+                            title: '注册成功'
+                        })
+                    }
+                },
+                error: function (response) {
+                    if (response.status === 200) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '网络错误，请稍后重试'
+                        })
+                    }
+
+                    response = response.responseJSON;
+                    if (response.result === 'failed') {
+                        showToast(response.msg);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
