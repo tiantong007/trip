@@ -3,6 +3,7 @@ package com.too.trip.mapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.too.trip.entity.Scenic;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.util.List;
@@ -16,18 +17,5 @@ import java.util.List;
  * @since 2023-05-24
  */
 public interface ScenicMapper extends BaseMapper<Scenic> {
-    @Override
-    int insert(Scenic entity);
 
-    @Override
-    int updateById(Scenic entity);
-
-    @Override
-    int deleteById(Scenic entity);
-
-    @Override
-    Scenic selectById(Serializable id);
-
-    @Override
-    List<Scenic> selectList(Wrapper<Scenic> queryWrapper);
 }
