@@ -23,6 +23,12 @@ spring:
         reset-enable: true
         login-username: admin
         login-password: 123
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+  freemarker:
+    cache: false
 
 mybatis-plus:
   configuration:
