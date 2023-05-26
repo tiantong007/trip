@@ -358,28 +358,7 @@
             }
         });
     });
-    $.ajax({
-        url: '/admin/login',
-        type: 'POST',
-        data: {aAccount: account, aPassword: password},
-        success: function (response) {
-            if (response.msg === "success") {
-                $('.message:last a').click();
-                Toast.fire({
-                    icon: 'success',
-                    title: '注册成功'
-                })
-            } else {
-                showToast(response.msg);
-            }
-        },
-        error: function (response) {
-            Toast.fire({
-                icon: 'error',
-                title: '网络错误，请稍后重试'
-            })
-        }
-    });
+
 </script>
 
 </body>
