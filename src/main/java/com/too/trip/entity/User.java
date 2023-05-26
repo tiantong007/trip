@@ -54,5 +54,4 @@ public class User implements Serializable {
     @TableField("id_card")
     private String idCard;
 
-
 }
