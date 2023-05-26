@@ -9,4 +9,5 @@
         <result column="a_password" property="aPassword" />
     </resultMap>
 
+
 </mapper>
