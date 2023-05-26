@@ -70,6 +70,10 @@
                         icon: 'success',
                         title: '登录成功'
                     })
+                    //存入session
+                    sessionStorage.setItem("userId",response.data.userId);
+                    sessionStorage.setItem("username",response.data.username);
+                    //跳转主页
                     window.location.href = window.location.origin
                 }else {
                     showToast(response.msg)

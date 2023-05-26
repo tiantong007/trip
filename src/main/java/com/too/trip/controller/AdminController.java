@@ -39,6 +39,6 @@ public class AdminController {
         session.setAttribute("a_account",admin.getAAccount());
         session.setAttribute("a_password",admin.getAPassword());
 
-        return new R<Admin>();
+        return new R<Admin>(admin);
     }
 }
