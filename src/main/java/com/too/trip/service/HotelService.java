@@ -2,6 +2,7 @@ package com.too.trip.service;
 
 import com.too.trip.entity.Hotel;
 import com.baomidou.mybatisplus.extension.service.IService;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 
@@ -25,4 +26,12 @@ public interface HotelService extends IService<Hotel> {
      * @return
      */
     Hotel searchById(Integer hId);
+
+    /**
+     * 分页查询
+     * @param pages 页码，从1开始
+     * @param pageSize 每页显示几条数据
+     * @return
+     */
+    List<Hotel> searchPage(Integer pages, Integer pageSize, Hotel hotel);
 }

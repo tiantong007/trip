@@ -1,5 +1,6 @@
 package com.too.trip.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.Hotel;
 import com.too.trip.mapper.HotelMapper;
 import com.too.trip.service.HotelService;
@@ -32,5 +33,21 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
     public Hotel searchById(Integer hId) {
         Hotel hotel = hotelMapper.searchById(hId);
         return hotel;
+    }
+
+    /**
+     * 分页查询
+     * @param pages 页码，从1开始
+     * @param pageSize 每页显示几条数据
+     * @param hotel
+     * @return
+     */
+    @Override
+    public List<Hotel> searchPage(Integer pages, Integer pageSize, Hotel hotel) {
+        System.out.println(hotel);
+        Page<Hotel> page = new Page<>(pages, pageSize);
+        hotelMapper.selectPage(page, hotel);
+        List<Hotel> records = page.getRecords();
+        return records;
     }
 }

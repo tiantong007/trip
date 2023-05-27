@@ -15,14 +15,33 @@
             <result column="city_name" property="cityName"/>
         </association>
     </resultMap>
+    <!--  查询全部  -->
     <select id="searchAllHotel" resultMap="BaseResultMap">
         select h_id, hotel_img, hotel_name, hotel_description, hotel_star, hotel_position, city_name from hotel left join city on hotel.city_id = city.city_id
     </select>
 
+    <!--  查询单个  -->
     <select id="searchById" resultMap="BaseResultMap">
         select h_id, hotel_img, hotel_name, hotel_description, hotel_star, hotel_position, city_name
         from hotel left join city on hotel.city_id = city.city_id
         where h_id = #{hId}
     </select>
 
+    <!--
+        判断有无查询条件，若无查询条件则查询全部记录
+        若有查询条件，则根据查询条件查询
+      -->
+    <select id="selectPage" resultMap="BaseResultMap">
+        select h_id, hotel_img, hotel_name, hotel_description, hotel_star, hotel_position, city_name
+        from hotel left join city on hotel.city_id = city.city_id
+        <where>
+            <if test="hotel.hotelName != null and hotel.hotelName != ''">
+                hotel_name like "%"#{hotel.hotelName}"%"
+            </if>
+            <if test="hotel.cityId != null and hotel.cityId != ''">
+                and hotel.city_id = #{hotel.cityId}
+            </if>
+        </where>
+
+    </select>
 </mapper>
