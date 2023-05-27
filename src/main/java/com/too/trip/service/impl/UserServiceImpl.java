@@ -42,4 +42,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         ));
         return count > 0;
     }
+
+    // 新增用户
+    @Override
+    public boolean insertUser(User user) {
+        int row = userMapper.insert(user);
+        return row > 0;
+    }
+
+    //删除用户
+    @Override
+    public boolean deleteUserById(Integer id) {
+        int row = userMapper.deleteById(id);
+        return row > 0;
+    }
 }

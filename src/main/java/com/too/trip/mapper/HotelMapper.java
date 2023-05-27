@@ -3,6 +3,7 @@ package com.too.trip.mapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.too.trip.entity.Hotel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -17,5 +18,17 @@ import java.util.List;
  * @since 2023-05-24
  */
 public interface HotelMapper extends BaseMapper<Hotel> {
+    /**
+     * 查询全部的宾馆信息
+     * @return
+     */
+    List<Hotel> searchAllHotel();
+
+    /**
+     * 更加hId查找宾馆
+     * @param hId
+     * @return
+     */
+    Hotel searchById(@Param("hId") Integer hId);
 
 }
