@@ -16,4 +16,17 @@ public interface UserService extends IService<User> {
     public User login(String username, String password);
 
     public boolean isExist(String username, String email);
+
+    /**
+     * 新增用户
+     * @param user
+     * @return
+     */
+    boolean insertUser(User user);
+
+    /**
+     * 根据id删除用户
+     * @return
+     */
+    boolean deleteUserById(Integer id);
 }

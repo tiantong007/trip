@@ -56,4 +56,30 @@ public class UserController {
 
         return new R<User>(user);
     }
+
+    @PostMapping("/delete")
+    public R deleteUser(HttpServletRequest request, @RequestParam("uid") Integer uid){
+        boolean result = userService.deleteUserById(uid);
+        if (! result){
+            return new R<User>("404 Not Found", "找不到对应的用户id");
+        }
+        return new R<User>();
+    }
+    @PostMapping("/insert")
+    public R insertUser(HttpServletRequest request, User user){
+        String username = user.getUsername();
+        String email = user.getEmail();
+
+        //用户名或邮箱是否已注册
+        boolean flag = userService.isExist(username, email);
+        if (flag) {
+            //返回注册失败信息
+            return new R<>("409 Conflict", "用户名或邮箱已被注册");
+        }
+        boolean result = userService.insertUser(user);
+        if (! result){
+            return new R<User>("400 Bad Request", "请求参数错误");
+        }
+        return new R<User>();
+    }
 }
