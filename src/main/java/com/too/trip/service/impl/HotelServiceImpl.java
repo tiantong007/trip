@@ -4,7 +4,10 @@ import com.too.trip.entity.Hotel;
 import com.too.trip.mapper.HotelMapper;
 import com.too.trip.service.HotelService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -16,5 +19,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements HotelService {
+    @Autowired
+    private HotelMapper hotelMapper;
+    @Override
+    public List<Hotel> searchAllHotel() {
+        // 获取宾馆信息
+        List<Hotel> hotels = hotelMapper.searchAllHotel();
+        return hotels;
+    }
 
+    @Override
+    public Hotel searchById(Integer hId) {
+        Hotel hotel = hotelMapper.searchById(hId);
+        return hotel;
+    }
 }

@@ -49,5 +49,8 @@ public class Hotel implements Serializable {
     @TableField("city_id")
     private Integer cityId;
 
+    @TableField(exist = false)
+    private City city;
+
 
 }

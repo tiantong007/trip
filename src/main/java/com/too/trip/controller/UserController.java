@@ -60,11 +60,21 @@ public class UserController {
         return new R<User>(user);
     }
 
+    @PostMapping(value = "/logout")
+    public R logoutUser(HttpServletRequest request) {
+        //清除用户的session信息
+        HttpSession session = request.getSession();
+        session.removeAttribute("id");
+        request.removeAttribute("username");
+        return new R<>();
+    }
+
+
     // 删除用户
     @PostMapping("/delete")
-    public R deleteUser(HttpServletRequest request, @RequestParam("uid") Integer uid){
+    public R deleteUser(HttpServletRequest request, @RequestParam("uid") Integer uid) {
         boolean result = userService.deleteUserById(uid);
-        if (! result){
+        if (!result) {
             return new R<User>("404 Not Found", "找不到对应的用户id");
         }
         return new R<User>();
@@ -72,7 +82,7 @@ public class UserController {
 
     // 新增用户
     @PostMapping("/insert")
-    public R insertUser(HttpServletRequest request, User user){
+    public R insertUser(HttpServletRequest request, User user) {
         String username = user.getUsername();
         String email = user.getEmail();
 
@@ -83,7 +93,7 @@ public class UserController {
             return new R<>("409 Conflict", "用户名或邮箱已被注册");
         }
         boolean result = userService.insertUser(user);
-        if (! result){
+        if (!result) {
             return new R<User>("400 Bad Request", "请求参数错误");
         }
         return new R<User>();
@@ -93,7 +103,7 @@ public class UserController {
     @PostMapping("/update")
     public R updateUser(HttpServletRequest request, User user) throws IllegalAccessException {
         // 用户id为空时返回错误信息
-        if(user.getUserId() == null){
+        if (user.getUserId() == null) {
             return new R<User>("400 Bad Request", "用户id为空");
         }
 
@@ -113,12 +123,12 @@ public class UserController {
             field.setAccessible(true);
             Object value = field.get(user);
             // 有一个不为空就说明用户有进行修改，则跳出循环
-            if (value != null){
+            if (value != null) {
                 allFieldsNotNull = true;
                 break;
             }
         }
-        if (!allFieldsNotNull){
+        if (!allFieldsNotNull) {
             return new R<User>("204 No Content", "没有提交修改信息");
         }
 
@@ -135,7 +145,7 @@ public class UserController {
         UpdateWrapper<User> wrapper = new UpdateWrapper<>();
         wrapper.eq("user_id", user.getUserId());
         boolean result = userService.update(user, wrapper);
-        if (! result){
+        if (!result) {
             return new R<User>("404 Not Found", "找不到对应的用户id");
         }
         return new R<User>();
