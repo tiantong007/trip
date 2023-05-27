@@ -12,6 +12,14 @@
         <result column="science_star" property="scienceStar" />
         <result column="city_id" property="cityId" />
         <result column="science_position" property="sciencePosition" />
+        <association property="city" javaType="com.too.trip.entity.City">
+            <id column="city_id" property="cityId"/>
+            <result column="city_name" property="cityName"/>
+        </association>
     </resultMap>
-
+<!--    查询所有景点-->
+    <select id="searchAllScenic" resultMap="BaseResultMap">
+        select scenic_id,science_name,science_img,science_price,description,science_star,science_position,city_name
+        from scenic left join city on scenic.city_id = city.city_id
+    </select>
 </mapper>

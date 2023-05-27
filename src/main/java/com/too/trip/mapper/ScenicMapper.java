@@ -17,5 +17,5 @@ import java.util.List;
  * @since 2023-05-24
  */
 public interface ScenicMapper extends BaseMapper<Scenic> {
-
+    List<Scenic> searchAllScenic();
 }
