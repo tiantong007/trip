@@ -10,7 +10,9 @@ import java.math.BigDecimal;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author isixe
@@ -19,6 +21,8 @@ import lombok.Data;
 @Data
 @TableName("scenic")
 @ApiModel(value = "Scenic对象", description = "")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Scenic implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -55,5 +59,17 @@ public class Scenic implements Serializable {
     @TableField("science_position")
     private String sciencePosition;
 
-
+    @TableField(exist = false)
+    private City city;
+    //本体有参构造
+    public Scenic(Integer scenicId, String scienceName, String scienceImg, BigDecimal sciencePrice, String description, Integer scienceStar, Integer cityId, String sciencePosition) {
+        this.scenicId = scenicId;
+        this.scienceName = scienceName;
+        this.scienceImg = scienceImg;
+        this.sciencePrice = sciencePrice;
+        this.description = description;
+        this.scienceStar = scienceStar;
+        this.cityId = cityId;
+        this.sciencePosition = sciencePosition;
+    }
 }
