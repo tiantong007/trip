@@ -5,6 +5,10 @@
     --dark: #191C24;
 }
 
+td{
+    font-size: 12px;
+}
+
 .back-to-top {
     position: fixed;
     display: none;
