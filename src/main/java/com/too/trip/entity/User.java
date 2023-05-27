@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -53,5 +54,9 @@ public class User implements Serializable {
     @ApiModelProperty("身份证")
     @TableField("id_card")
     private String idCard;
+
+    @ApiModelProperty("余额")
+    @TableField("balance")
+    private BigDecimal balance;
 
 }
