@@ -21,8 +21,6 @@ public class BaseController {
     //主页
     @RequestMapping(value = "/")
     public String index() {
-        String username = (String) request.getSession().getAttribute("username");
-        log.info(username);
         return "index.html";
     }
 

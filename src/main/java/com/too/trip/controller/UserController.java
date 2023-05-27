@@ -56,4 +56,13 @@ public class UserController {
 
         return new R<User>(user);
     }
+
+    @PostMapping(value = "/logout")
+    public R logoutUser(HttpServletRequest request){
+        //清除用户的session信息
+        HttpSession session = request.getSession();
+        session.removeAttribute("id");
+        request.removeAttribute("username");
+        return new R<>();
+    }
 }
