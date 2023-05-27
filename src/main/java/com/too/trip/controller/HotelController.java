@@ -1,7 +1,16 @@
 package com.too.trip.controller;
 
+import com.too.trip.entity.Hotel;
+import com.too.trip.entity.R;
+import com.too.trip.service.HotelService;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,5 +23,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/hotel")
 public class HotelController {
+    @Autowired
+    private HotelService hotelService;
+
+    //查询全部宾馆信息
+    @PostMapping("/all")
+    public R<List> getAllHotel(HttpServletRequest request){
+        List<Hotel> hotels = hotelService.searchAllHotel();
+        if (hotels == null || hotels.size() == 0){
+            return new R<>("204", "没有查到数据");
+        }
+        return new R<>(hotels);
+    }
+
+    //查询单个宾馆信息
+    @PostMapping("single")
+    public R<Hotel> searchHotel(HttpServletRequest request, @RequestParam("hId") Integer hId){
+        Hotel hotel = hotelService.searchById(hId);
+        if (hotel == null){
+            return new R<>("204", "没有查到数据");
+        }
+        return new R<>(hotel);
+    }
 
 }
