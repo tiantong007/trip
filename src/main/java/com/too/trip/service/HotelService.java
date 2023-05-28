@@ -33,5 +33,5 @@ public interface HotelService extends IService<Hotel> {
      * @param pageSize 每页显示几条数据
      * @return
      */
-    List<Hotel> searchPage(Integer pages, Integer pageSize, Hotel hotel);
+    List<Hotel> searchPages(Integer pages, Integer pageSize, Hotel hotel);
 }
