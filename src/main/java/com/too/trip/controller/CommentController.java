@@ -1,6 +1,7 @@
 package com.too.trip.controller;
 
 import com.too.trip.entity.Comment;
+import com.too.trip.entity.R;
 import com.too.trip.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,35 +26,38 @@ public class CommentController {
     private CommentService commentService;  // 实现了 CommentService 接口
 
     // 添加评论
-    @PostMapping("/insertComment")
-    public ResponseEntity<String> addComment( Comment comment) {
-        try {
-            commentService.addComment(comment);
-            return ResponseEntity.ok("新增评论成功");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("新增评论失败：" + e.getMessage());
+    @PostMapping("")
+    public R<Comment> saveComment(@RequestBody Comment comment) {
+        boolean success = commentService.save(comment);
+        if (success) {
+            return new R<>(comment);
+        } else {
+            return new R<>("204", "评论失败");
         }
     }
 
+
     // 根据用户 id 获取用户评论
-    @GetMapping("/user/comments")
-    public ResponseEntity<List<Comment>> getCommentsByUserId(@RequestParam("uId") Integer uId) {
-        List<Comment> comments = commentService.getCommentsByUserId(uId);
-        if (comments != null) {
-            return ResponseEntity.ok(comments);
+    @GetMapping("/byUser/{userId}")
+    public R<List<Comment>> getCommentsByUserId(@PathVariable Integer userId) {
+        List<Comment> comments = commentService.getCommentsByUserId(userId);
+        if (comments != null && !comments.isEmpty()) {
+            return new R<>( comments);
         } else {
-            return ResponseEntity.notFound().build();
+            return new R<>("204", "未找到该用户的评论");
         }
     }
 
 
     // 根据酒店 id 获取该酒店所有评论列表
-    @GetMapping("/hotel")
-    public ResponseEntity<List<Comment>> getCommentsByHotelId(@RequestParam("hd") Integer hId) {
-        List<Comment> comments = commentService.getCommentsByHotelId(hId);
-        return ResponseEntity.ok(comments);
+    @GetMapping("/byHotel/{hotelId}")
+    public R<List<Comment>>  getCommentsByHotelId(@PathVariable Integer hotelId) {
+       List<Comment> comments =  commentService.getCommentsByHotelId(hotelId);
+        if (comments != null && !comments.isEmpty()) {
+            return new R<>( comments);
+        } else {
+            return new R<>("204", "未找到该用户的评论");
+        }
     }
-
 }
 
