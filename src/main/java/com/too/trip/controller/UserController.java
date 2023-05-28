@@ -3,6 +3,7 @@ package com.too.trip.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.R;
 import com.too.trip.entity.User;
@@ -159,7 +160,8 @@ public class UserController {
 
     // 查询用户列表
     @PostMapping("/show")
-    public R<Map<String, Object>> getUsers(@RequestParam(defaultValue = "1") int pageNum,
+    public R<Map<String, Object>> getUsers(@RequestParam(defaultValue = "") String keyword,
+                                           @RequestParam(defaultValue = "1") int pageNum,
                                            @RequestParam(defaultValue = "10") int pageSize) {
         // 构造分页对象
         Page<User> page = new Page<>(pageNum, pageSize);
@@ -167,6 +169,11 @@ public class UserController {
         // 构造查询条件
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("*");
+
+        //模糊查询
+        if (StringUtils.isNotBlank(keyword)) {
+            queryWrapper.like("username", keyword).or().like("email", keyword);
+        }
 
         // 执行分页查询
         IPage<User> userPage = userService.page(page, queryWrapper);

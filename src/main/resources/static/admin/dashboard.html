@@ -143,12 +143,14 @@
 <script>
     let pagination = $(".pagination");
     let searchParams = new URLSearchParams(window.location.search);
+    let keyword = "随";
     let currentPage = searchParams.get("page") == null ? 1 : parseInt(searchParams.get("page"));
 
     $.ajax({
         url: '/user/show',
         type: 'POST',
         data: {
+            'keyword': keyword,
             'pageNum': currentPage,
             'pageSiz': 10,
         },
