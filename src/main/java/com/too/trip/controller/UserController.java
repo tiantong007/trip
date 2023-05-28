@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 前端控制器
@@ -157,8 +159,8 @@ public class UserController {
 
     // 查询用户列表
     @PostMapping("/show")
-    public R<List<User>> getUsers(@RequestParam(defaultValue = "1") int pageNum,
-                                  @RequestParam(defaultValue = "10") int pageSize) {
+    public R<Map<String, Object>> getUsers(@RequestParam(defaultValue = "1") int pageNum,
+                                           @RequestParam(defaultValue = "10") int pageSize) {
         // 构造分页对象
         Page<User> page = new Page<>(pageNum, pageSize);
 
@@ -169,10 +171,13 @@ public class UserController {
         // 执行分页查询
         IPage<User> userPage = userService.page(page, queryWrapper);
 
-        // 获取分页结果
-        List<User> userList = userPage.getRecords(); // 当前页的记录列表
-
+        long total = userPage.getTotal();
+        // 获取分页结果，当前页的记录列表
+        List<User> userList = userPage.getRecords();
+        Map<String, Object> maps = new HashMap<>();
+        maps.put("users", userList);
+        maps.put("maxSize", total / pageSize);
         // 返回结果
-        return new R<>(userList);
+        return new R<>(maps);
     }
 }

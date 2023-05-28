@@ -8,7 +8,7 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
     <!-- Favicon -->
-    <link href="../images/favicon.ico" rel="icon">
+    <link href="../favicon.ico" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +25,8 @@
     <!-- Template Stylesheet -->
     <link href="../css/dashboard.css" rel="stylesheet">
 </head>
-
+<script src="../js/sweetalert2@11.js"></script>
+<script type="text/javascript" src="../js/toastify-js.js"></script>
 <body>
 <div class="container-fluid position-relative bg-white d-flex p-0">
     <!-- Spinner Start -->
@@ -101,6 +102,9 @@
                         </tbody>
                     </table>
                 </div>
+                <nav class="pagination-container" aria-label="...">
+                    <ul class="pagination"></ul>
+                </nav>
             </div>
         </div>
         <!-- Recent Sales End -->
@@ -134,15 +138,43 @@
 
 <!-- Template Javascript -->
 <script src="../js/dashboard.js"></script>
+
+<!-- 数据查询和分页处理 -->
 <script>
+    let pagination = $(".pagination");
+    let searchParams = new URLSearchParams(window.location.search);
+    let currentPage = searchParams.get("page") == null ? 1 : parseInt(searchParams.get("page"));
+
     $.ajax({
         url: '/user/show',
         type: 'POST',
+        data: {
+            'pageNum': currentPage,
+            'pageSiz': 10,
+        },
         success: function (response) {
             if (response.msg === "success") {
                 let tableBody = $('.user-data');
+                //分页处理
+                let pageSize = parseInt(response.data.maxSize);
+                //输出页码
+                if (currentPage === 1) {
+                    pagination.append('<li class="pre-page page-item disabled"><span class="page-link">上一页</span></li>');
+
+                } else {
+                    pagination.append('<li class="pre-page page-item"><a class="page-link" href="?page=' + (currentPage - 1) + '">上一页</a></li>');
+                }
+                Array.from(Array(pageSize + 1).keys()).slice(1).forEach(function (i) {
+                    pagination.append('<li class="page-item"><a class="page-link" href="?page=' + i + '">' + i + '</a></li>')
+                });
+                if (currentPage === pageSize) {
+                    pagination.append('<li class="page-item disabled"><span class="page-link" >下一页</></li>');
+                } else {
+                    pagination.append('<li class="page-item"><a class="page-link" href="?page=' + (currentPage + 1) + '">下一页</a></li>');
+                }
+
                 // 创建新的行
-                for (let row of response.data) {
+                for (let row of response.data.users) {
                     let newRow = $('<tr>');
                     // 添加单元格内容
                     newRow.append('<td><input class="form-check-input" type="checkbox"></td>');
@@ -155,11 +187,28 @@
                     newRow.append('<td>' + row.age + '</td>');
                     newRow.append('<td>' + row.idCard + '</td>');
                     newRow.append('<td><a class="btn btn-sm btn-primary" href="/user/edit?id=' + row.userId + '">编辑</a></td>');
-                    newRow.append('<td><a class="btn btn-sm btn-danger" href="/user/delete?id=' + row.userId + '">删除</a></td>');
+                    newRow.append('<td class="action-delete"><a class="btn btn-sm btn-danger" href="/user/delete?id=' + row.userId + '">删除</a></td>');
                     // 将新行添加到表格中
                     tableBody.append(newRow);
                 }
             }
+            $('.action-delete').click(function (event) {
+                let element = $(this);
+                Swal.fire({
+                    title: '确定要删除吗?',
+                    text: "评论后将无法恢复！",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#1e88e5',
+                    cancelButtonColor: '#dd2c00',
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                    }
+                })
+            });
         },
         error: function (response) {
             Toast.fire({
