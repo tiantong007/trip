@@ -14,8 +14,9 @@ import java.util.List;
  * @since 2023-05-24
  */
 public interface CommentService extends IService<Comment> {
-    // 新增评论
-    void addComment(Comment comment);
+    // 执行保存操作
+    boolean save(Comment comment);
+    // 根据id查询评论信息
 
     // 根据用户 id 获取评论详情
     List<Comment> getCommentsByUserId(Integer uId);
