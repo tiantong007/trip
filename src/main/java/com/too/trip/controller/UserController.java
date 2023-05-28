@@ -88,7 +88,7 @@ public class UserController {
     }
 
     // 新增用户
-    @PostMapping("/insert")
+    @PostMapping("/add")
     public R insertUser(HttpServletRequest request, User user) {
         String username = user.getUsername();
         String email = user.getEmail();
@@ -99,7 +99,7 @@ public class UserController {
             //返回失败信息
             return new R<>("409 Conflict", "用户名或邮箱已被注册");
         }
-        boolean result = userService.insertUser(user);
+        boolean result = userService.save(user);
         if (!result) {
             return new R<User>("400 Bad Request", "请求参数错误");
         }
@@ -160,7 +160,7 @@ public class UserController {
 
     // 查询用户列表
     @PostMapping("/show")
-    public R<Map<String, Object>> getUsers(@RequestParam(defaultValue = "") String keyword,
+    public R<IPage<User>> getUsers(@RequestParam(defaultValue = "") String keyword,
                                            @RequestParam(defaultValue = "1") int pageNum,
                                            @RequestParam(defaultValue = "10") int pageSize) {
         // 构造分页对象
@@ -177,14 +177,7 @@ public class UserController {
 
         // 执行分页查询
         IPage<User> userPage = userService.page(page, queryWrapper);
-
-        long total = userPage.getTotal();
-        // 获取分页结果，当前页的记录列表
-        List<User> userList = userPage.getRecords();
-        Map<String, Object> maps = new HashMap<>();
-        maps.put("users", userList);
-        maps.put("maxSize", total / pageSize);
         // 返回结果
-        return new R<>(maps);
+        return new R<>(userPage);
     }
 }
