@@ -8,11 +8,16 @@ import com.too.trip.service.HotelService;
 import io.swagger.models.auth.In;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * <p>
@@ -27,6 +32,9 @@ import java.util.List;
 public class HotelController {
     @Autowired
     private HotelService hotelService;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     //查询全部宾馆信息
     @PostMapping("/all")
@@ -71,6 +79,34 @@ public class HotelController {
         return new R<>(hotels);
     }
 
+    @PostMapping("insert")
+    public R insertHotelUploadFile(@RequestBody @RequestParam("file") MultipartFile file, Hotel hotel) throws IOException {
+        if(file.isEmpty()){
+            return new R(400, "文件不能为空");
+        }
 
+        // 通用标识符 UUID
+        UUID uuid = UUID.randomUUID();
+
+        // 获取文件名
+        String fileName = uuid.toString() + file.getOriginalFilename();
+
+        // 构建文件保存路径 resources/static/images
+        String path = "classpath:/static/images";
+        Resource resource = resourceLoader.getResource(path);
+        File dir = resource.getFile();
+
+        File destFile  = new File(dir, fileName);
+        file.transferTo(destFile);
+
+        // 设置hotel的hotel_img属性
+        hotel.setHotelImg(fileName);
+        boolean isSaveSuccess = hotelService.save(hotel);
+        if(!isSaveSuccess){
+            return new R(400, "插入失败");
+        }
+        return new R();
+
+    }
 
 }
