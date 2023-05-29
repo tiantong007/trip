@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class R<T> implements Serializable {
 
     @ApiModelProperty("请求状态码")
-    private String code;
+    private int code;
 
     @ApiModelProperty("实体数据")
     private T data;
@@ -23,10 +23,10 @@ public class R<T> implements Serializable {
     private String msg;
 
     /**
-     * 若没有数据返回，默认状态码为 200 OK，提示信息为“操作成功！”
+     * 若没有数据返回，默认状态码为 200，提示信息为“操作成功！”
      */
     public R() {
-        this.code = "200 OK";
+        this.code = 200;
         this.msg = "success";
     }
 
@@ -36,7 +36,7 @@ public class R<T> implements Serializable {
      * @param code
      * @param msg
      */
-    public R(String code, String msg) {
+    public R(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
@@ -48,7 +48,7 @@ public class R<T> implements Serializable {
      */
     public R(T data) {
         this.data = data;
-        this.code = "200 OK";
+        this.code = 200;
         this.msg = "success";
     }
 
@@ -59,7 +59,7 @@ public class R<T> implements Serializable {
      * @param msg
      */
     public R(T data, String msg) {
-        this.code = "200 OK";
+        this.code = 200;
         this.data = data;
         this.msg = msg;
     }
@@ -71,7 +71,7 @@ public class R<T> implements Serializable {
      * @param msg
      * @param code
      */
-    public R(String code, T data, String msg) {
+    public R(int code, T data, String msg) {
         this.code = code;
         this.data = data;
         this.msg = msg;
