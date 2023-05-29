@@ -43,11 +43,12 @@ public class Room implements Serializable {
 
     @ApiModelProperty("房间类型（大床房，双人房等）")
     @TableField("room_type")
-    private Integer roomType;
+    private  String roomType;
 
     @ApiModelProperty("房间图片")
     @TableField("room_img")
     private String roomImg;
+
 
     private Hotel hotel;
 
