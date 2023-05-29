@@ -55,7 +55,7 @@ public class ScenicOrdersController {
         boolean result = scenicOrdersService.insertScenicOrder(scenicOrders);
         if (!result) {
             System.out.println(scenicOrders);
-            return new R<Scenic>("400 Bad Request", "请求参数错误");
+            return new R<Scenic>("400", "请求参数错误");
         }
         return new R<Scenic>();
     }
@@ -65,7 +65,7 @@ public class ScenicOrdersController {
     public R deleteScenic(HttpServletRequest request, @RequestParam("soId") Integer soId) {
         boolean result = scenicOrdersService.deleteScenicOrdersById(soId);
         if (!result) {
-            return new R<Scenic>("400 Bad Request", "请求参数错误");
+            return new R<Scenic>("400", "请求参数错误");
         }
         return new R<Scenic>();
     }
