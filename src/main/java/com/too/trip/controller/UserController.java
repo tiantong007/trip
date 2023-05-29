@@ -24,6 +24,7 @@ import java.lang.reflect.Field;
  */
 @RestController
 @Slf4j
+@CrossOrigin("*")
 @RequestMapping(value = "/user")
 public class UserController {
     @Autowired
@@ -95,8 +96,8 @@ public class UserController {
      * @param uid
      * @return 请求结果
      */
-    @DeleteMapping
-    public R deleteUser(HttpServletRequest request, @RequestParam("uid") Integer uid) {
+    @DeleteMapping("/{uid}")
+    public R deleteUser(HttpServletRequest request, @PathVariable("uid") Integer uid) {
         boolean result = userService.deleteUserById(uid);
         if (!result) {
             return new R<User>(404, "找不到对应的用户id");
