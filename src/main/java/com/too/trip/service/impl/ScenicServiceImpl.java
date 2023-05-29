@@ -107,9 +107,9 @@ public class ScenicServiceImpl extends ServiceImpl<ScenicMapper, Scenic> impleme
      */
 
     @Override
-    public Page<Scenic> searchPageScenic(Integer pages, Integer pageSize, Scenic scenic) {
+    public Page<Scenic> searchPageScenic(Integer pages, Integer pageSize, String filed, String keyword) {
         Page<Scenic> page = new Page<>(pages,pageSize);
-        scenicMapper.selectPage(page,scenic);
+        scenicMapper.selectPage(page,filed,keyword);
         return page;
     }
 }

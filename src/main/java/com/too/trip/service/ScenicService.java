@@ -22,7 +22,7 @@ public interface ScenicService extends IService<Scenic> {
     //按id查找景点
     Scenic selectScenicById(Integer sid);
     //分页搜索所有景点
-    Page<Scenic> searchPageScenic(Integer pages, Integer pageSize, Scenic scenic);
+    Page<Scenic> searchPageScenic(Integer pages, Integer pageSize, String filed, String keyword);
     //插入景点
     boolean insertScenic(Scenic scenic);
     //删除景点
