@@ -29,6 +29,8 @@ public class ScenicServiceImpl extends ServiceImpl<ScenicMapper, Scenic> impleme
     private ScenicMapper scenicMapper;
 
 
+
+
     /**
      * 查询全部景点
      * @return
@@ -71,6 +73,8 @@ public class ScenicServiceImpl extends ServiceImpl<ScenicMapper, Scenic> impleme
         return row > 0;
     }
 
+
+
     /**
      * 批量删除景点
      * @param list
@@ -79,6 +83,17 @@ public class ScenicServiceImpl extends ServiceImpl<ScenicMapper, Scenic> impleme
     @Override
     public boolean deleteBatchScenic(List<Integer> list) {
         int row = scenicMapper.deleteBatchIds(list);
+        return row > 0;
+    }
+
+    /**
+     * 修改景点数据
+     * @param scenic
+     * @return
+     */
+    @Override
+    public boolean updateScenic(Scenic scenic) {
+        int row = scenicMapper.updateById(scenic);
         return row > 0;
     }
 

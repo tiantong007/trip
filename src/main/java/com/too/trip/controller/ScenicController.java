@@ -13,10 +13,16 @@ import io.swagger.models.auth.In;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * <p>
@@ -32,6 +38,10 @@ public class ScenicController {
 
     @Autowired
     private ScenicService scenicService;
+
+    //处理资源文件
+    @Autowired
+    private ResourceLoader resourceLoader;
 
 
     /**
@@ -51,12 +61,14 @@ public class ScenicController {
     /**
      *根据景点id查询景点对象
      * @param request
-     * @param sId
+     * @param
      * @return
      */
-    @GetMapping("/selectById")
-    public R selectScenicById(HttpServletRequest request,@RequestParam("sId") Integer sId){
-        Scenic scenic = scenicService.selectScenicById(sId);
+    @GetMapping("/selectById/{id}")
+    public R selectScenicById(HttpServletRequest request,@PathVariable Integer id){
+
+
+        Scenic scenic = scenicService.selectScenicById(id);
         if(scenic == null){
             return new R<>(204, "没有查到数据");
         }
@@ -66,14 +78,14 @@ public class ScenicController {
     /**
      *
      * 分页查询，可以根据城市id和景点名称进行搜索,没有输入则查取全部
-     * @param request
+     * @param
      * @param pages
      * @param pageSize
      * @param scenic
      * @return
      */
-    @GetMapping("/page")
-    public R<Page<Scenic>> searchPages(HttpServletRequest request, @RequestParam("pages") Integer pages, @RequestParam("pageSize") Integer pageSize, Scenic scenic){
+    @GetMapping("/page/{start}/{size}")
+    public R<Page<Scenic>> searchPages(@PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,@RequestBody Scenic scenic){
         //页码数小于0 设置为0
         if (pages == null || pages < 0){
             pages = 0;
@@ -86,31 +98,67 @@ public class ScenicController {
         return new R<Page<Scenic>>(scenics);
     }
 
+
     /**
-     * 新增景点
-     * @param request
+     * 插入景点数据
+     * @param file
+     * @param scenic
+     * @return
+     * @throws IOException
+     */
+    @PostMapping("insert")
+    public R insertScenic(@RequestBody @RequestParam("file") MultipartFile file, Scenic scenic) throws IOException {
+        if(file.isEmpty()){
+            return new R(400, "文件不能为空");
+        }
+
+        // 通用标识符 UUID
+        UUID uuid = UUID.randomUUID();
+
+        // 获取文件名
+        String fileName = uuid.toString() + file.getOriginalFilename();
+
+        // 构建文件保存路径 resources/static/images
+        String path = "classpath:/static/images";
+        Resource resource = resourceLoader.getResource(path);
+        File dir = resource.getFile();
+
+        File destFile  = new File(dir, fileName);
+        file.transferTo(destFile);
+
+        // 设置hotel的hotel_img属性
+        scenic.setScienceImg(fileName);
+        //boolean isSaveSuccess = hotelService.save(scenic);
+        boolean isSaveSuccess = scenicService.save(scenic);
+        if(!isSaveSuccess){
+            return new R(400, "插入失败");
+        }
+        return new R();
+    }
+
+    /**
+     * 修改景点数据
      * @param scenic
      * @return
      */
-    @PostMapping("/insert")
-    public R insertScenic(HttpServletRequest request,@RequestBody Scenic scenic){
-        System.out.println(scenic);
-        boolean result = scenicService.insertScenic(scenic);
-        if (! result){
-            return new R<Scenic>(400, "请求参数错误");
+    @PutMapping("/update")
+    public R updateScenic(@RequestBody Scenic scenic){
+        boolean result = scenicService.updateScenic(scenic);
+        if(! result){
+            return new R(400,"请求参数错误");
         }
-        return new R<Scenic>();
+        return new R();
     }
 
     /**
      * 根据id删除景点
      * @param request
-     * @param sId
+     * @param
      * @return
      */
-    @DeleteMapping("/delete")
-    public R deleteScenic(HttpServletRequest request,@RequestParam("sId") Integer sId){
-        boolean result = scenicService.deleteScenicById(sId);
+    @DeleteMapping("/deleteById/{id}")
+    public R deleteScenic(HttpServletRequest request,@PathVariable Integer id){
+        boolean result = scenicService.deleteScenicById(id);
         if (! result){
             return new R<Scenic>(400, "请求参数错误");
         }
@@ -129,6 +177,9 @@ public class ScenicController {
         Map<String, List<Integer>> map = mapper.convertValue(json, Map.class);
         System.out.println(map.get("sIds"));
         List<Integer> list = map.get("sIds");
+        if (list.size() == 0){
+            return new R(200,"没有输入数据");
+        }
         boolean result = scenicService.deleteBatchScenic(list);
         if(!result){
             return new R<Scenic>(400,"请求参数错误");

@@ -29,5 +29,7 @@ public interface ScenicService extends IService<Scenic> {
     boolean deleteScenicById(Integer sid);
     //批量删除景点
     boolean deleteBatchScenic(List<Integer> list);
+    //修改景点数据
+    boolean updateScenic(Scenic scenic);
 
 }
