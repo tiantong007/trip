@@ -25,11 +25,7 @@ public class HotelOrders implements Serializable {
 
     @ApiModelProperty("id")
     @TableId("ho_id")
-    private String hoId;
-
-    @ApiModelProperty("	酒店id")
-    @TableField("h_id")
-    private Integer hId;
+    private Integer hoId;
 
     @ApiModelProperty("用户id")
     @TableField("u_id")
