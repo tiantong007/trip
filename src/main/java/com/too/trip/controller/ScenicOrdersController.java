@@ -31,7 +31,7 @@ public class ScenicOrdersController {
         List<ScenicOrders> scenicOrders = scenicOrdersService.selectAllScenicOrder();
         if (scenicOrders == null || scenicOrders.size() == 0) {
             System.out.println(scenicOrders);
-            return new R<>("204", "没有查到数据");
+            return new R<>(204, "没有查到数据");
         }
         return new R<>(scenicOrders);
     }
@@ -42,7 +42,7 @@ public class ScenicOrdersController {
         List<ScenicOrders> scenicOrders = scenicOrdersService.selectScenicOrderByUserId(userId);
         if (scenicOrders == null || scenicOrders.size() == 0) {
             System.out.println(scenicOrders);
-            return new R<>("204", "没有查到数据");
+            return new R<>(204, "没有查到数据");
         }
         return new R<>(scenicOrders);
     }
@@ -55,7 +55,7 @@ public class ScenicOrdersController {
         boolean result = scenicOrdersService.insertScenicOrder(scenicOrders);
         if (!result) {
             System.out.println(scenicOrders);
-            return new R<Scenic>("400", "请求参数错误");
+            return new R<Scenic>(400, "请求参数错误");
         }
         return new R<Scenic>();
     }
@@ -65,7 +65,7 @@ public class ScenicOrdersController {
     public R deleteScenicOrder(HttpServletRequest request, @RequestParam("soId") Integer soId) {
         boolean result = scenicOrdersService.deleteScenicOrdersById(soId);
         if (!result) {
-            return new R<Scenic>("400", "请求参数错误");
+            return new R<Scenic>(400, "请求参数错误");
         }
         return new R<Scenic>();
     }
@@ -77,7 +77,7 @@ public class ScenicOrdersController {
         scenicOrders.setSoTime(time);
         boolean result = scenicOrdersService.updateScenicOrder(scenicOrders);
         if (!result) {
-            return new R<Scenic>("400", "请求参数错误");
+            return new R<Scenic>(400, "请求参数错误");
         }
         return new R<Scenic>();
     }

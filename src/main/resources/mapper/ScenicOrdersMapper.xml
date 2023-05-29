@@ -40,4 +40,13 @@
         </set>
         where so_id = #{soId,jdbcType=NUMERIC}
     </update>
+
+    <select id="selectByUserIdOrderBySoTimeDesc" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from scenic_orders
+        where
+        user_id = #{userId,jdbcType=NUMERIC}
+        order by so_time desc
+    </select>
 </mapper>
