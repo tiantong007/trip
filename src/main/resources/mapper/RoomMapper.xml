@@ -4,13 +4,28 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.too.trip.entity.Room">
-        <id column="room_id" property="roomId" />
-        <result column="h_id" property="hId" />
-        <result column="room_status" property="roomStatus" />
-        <result column="room_price" property="roomPrice" />
-        <result column="room_num" property="roomNum" />
-        <result column="room_type" property="roomType" />
-        <result column="room_img" property="roomImg" />
+        <id column="room_id" property="roomId"/>
+        <result column="h_id" property="hId"/>
+        <result column="room_status" property="roomStatus"/>
+        <result column="room_price" property="roomPrice"/>
+        <result column="room_num" property="roomNum"/>
+        <result column="room_type" property="roomType"/>
+        <result column="room_img" property="roomImg"/>
     </resultMap>
+
+    <!--
+        判断有无查询条件，若无查询条件则查询全部记录
+        若有查询条件，则根据查询条件查询
+      -->
+    <select id="selectPages" resultMap="BaseResultMap">
+        select room_id, room.h_id,room_status, room_price, room_num, room_type,room_img from room left join hotel on
+        hotel.h_id = room.h_id
+        <where>
+            <if test="field != null and field != ''">
+                ${field} like "%"#{keyword}"%"
+            </if>
+        </where>
+
+    </select>
 
 </mapper>
