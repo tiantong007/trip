@@ -20,6 +20,8 @@ import java.util.List;
  * @author isixe
  * @since 2023-05-24
  */
+
+@Repository
 public interface ScenicMapper extends BaseMapper<Scenic> {
     List<Scenic> searchAllScenic();
     Scenic searchScenicById(Integer sid);
