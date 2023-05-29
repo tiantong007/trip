@@ -14,13 +14,19 @@ import java.util.List;
  * @since 2023-05-24
  */
 public interface CommentService extends IService<Comment> {
-    // 执行保存操作
-    boolean save(Comment comment);
-    // 根据id查询评论信息
+
 
     // 根据用户 id 获取评论详情
     List<Comment> getCommentsByUserId(Integer uId);
-    // 根据酒店 id 获取该酒店所有评论列表，按照评论时间倒序排列
+    // 根据酒店 id 获取该酒店所有评论列表
     List<Comment> getCommentsByHotelId(Integer hId);
+//根据景点id获取景点的评论
+    List<Comment> getCommentsBySId(Integer sId);
+//
+    boolean deleteByCommentId(Integer commentId);
+
+    List<Comment> selectByCommentId(Integer commentId);
+
+
 
 }
