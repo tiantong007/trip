@@ -8,8 +8,7 @@ import java.io.Serializable;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
@@ -17,6 +16,9 @@ import lombok.experimental.Accessors;
  * @since 2023-05-24
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("city")
