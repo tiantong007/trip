@@ -15,11 +15,56 @@
         <association property="city" javaType="com.too.trip.entity.City">
             <id column="city_id" property="cityId"/>
             <result column="city_name" property="cityName"/>
+            <result column="province" property="province"/>
         </association>
     </resultMap>
 <!--    查询所有景点-->
     <select id="searchAllScenic" resultMap="BaseResultMap">
-        select scenic_id,science_name,science_img,science_price,description,science_star,science_position,city_name
+        select scenic_id,science_name,science_img,science_price,description,science_star,science_position,city_name,province
         from scenic left join city on scenic.city_id = city.city_id
     </select>
+<!--    根据景点id查询景点-->
+    <select id="searchScenicById" resultMap="BaseResultMap">
+        select scenic_id,science_name,science_img,science_price,description,science_star,science_position,city_name,province
+        from scenic left join city on scenic.city_id = city.city_id
+        where scenic_id = #{sid}
+    </select>
+
+    <!--
+        判断有无查询条件，若无查询条件则查询全部记录
+        若有查询条件，则根据查询条件查询
+      -->
+<!--    <select id="selectPage" resultMap="BaseResultMap">-->
+<!--        select h_id, hotel_img, hotel_name, hotel_description, hotel_star, hotel_position, city_name-->
+<!--        from hotel left join city on hotel.city_id = city.city_id-->
+<!--        <where>-->
+<!--            <if test="hotel.hotelName != null and hotel.hotelName != ''">-->
+<!--                hotel_name like "%"#{hotel.hotelName}"%"-->
+<!--            </if>-->
+<!--            <if test="hotel.cityId != null and hotel.cityId != ''">-->
+<!--                and hotel.city_id = #{hotel.cityId}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+    <!--
+        分页查询
+        判断有无查询条件，若无查询条件则查询全部记录
+        若有查询条件，则根据查询条件查询
+      -->
+
+
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        select scenic_id,science_name,science_img,science_price,description,science_star,science_position,city_name,province
+        from scenic left join city on scenic.city_id = city.city_id
+        <where>
+            <if test="scenic.scienceName != null and scenic.scienceName != ''">
+                science_name like "%"#{scenic.scienceName}"%"
+            </if>
+            <if test="scenic.cityId != null and scenic.cityId != ''">
+                and scenic.city_id = #{scenic.cityId}
+            </if>
+        </where>
+    </select>
+
 </mapper>
