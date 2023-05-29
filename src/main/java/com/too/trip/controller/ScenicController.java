@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +38,10 @@ public class ScenicController {
 
     @Autowired
     private ScenicService scenicService;
+
+    //处理资源文件
+    @Autowired
+    private ResourceLoader resourceLoader;
 
 
     /**
@@ -93,21 +98,43 @@ public class ScenicController {
         return new R<Page<Scenic>>(scenics);
     }
 
+
     /**
-     * 新增景点
-     * @param
+     * 插入景点数据
+     * @param file
      * @param scenic
      * @return
+     * @throws IOException
      */
-//    @PostMapping("/insert")
-//    public R insertScenic(HttpServletRequest request,@RequestBody Scenic scenic){
-//        System.out.println(scenic);
-//        boolean result = scenicService.insertScenic(scenic);
-//        if (! result){
-//            return new R<Scenic>(400, "请求参数错误");
-//        }
-//        return new R<Scenic>();
-//    }
+    @PostMapping("insert")
+    public R insertScenic(@RequestBody @RequestParam("file") MultipartFile file, Scenic scenic) throws IOException {
+        if(file.isEmpty()){
+            return new R(400, "文件不能为空");
+        }
+
+        // 通用标识符 UUID
+        UUID uuid = UUID.randomUUID();
+
+        // 获取文件名
+        String fileName = uuid.toString() + file.getOriginalFilename();
+
+        // 构建文件保存路径 resources/static/images
+        String path = "classpath:/static/images";
+        Resource resource = resourceLoader.getResource(path);
+        File dir = resource.getFile();
+
+        File destFile  = new File(dir, fileName);
+        file.transferTo(destFile);
+
+        // 设置hotel的hotel_img属性
+        scenic.setScienceImg(fileName);
+        //boolean isSaveSuccess = hotelService.save(scenic);
+        boolean isSaveSuccess = scenicService.save(scenic);
+        if(!isSaveSuccess){
+            return new R(400, "插入失败");
+        }
+        return new R();
+    }
 
     /**
      * 修改景点数据
@@ -150,6 +177,9 @@ public class ScenicController {
         Map<String, List<Integer>> map = mapper.convertValue(json, Map.class);
         System.out.println(map.get("sIds"));
         List<Integer> list = map.get("sIds");
+        if (list.size() == 0){
+            return new R(200,"没有输入数据");
+        }
         boolean result = scenicService.deleteBatchScenic(list);
         if(!result){
             return new R<Scenic>(400,"请求参数错误");
