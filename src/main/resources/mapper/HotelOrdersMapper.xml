@@ -4,13 +4,31 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.too.trip.entity.HotelOrders">
-        <id column="ho_id" property="hoId" />
-        <result column="h_id" property="hId" />
-        <result column="u_id" property="uId" />
-        <result column="r_id" property="rId" />
-        <result column="begin_date" property="beginDate" />
-        <result column="end_date" property="endDate" />
-        <result column="status" property="status" />
+        <id column="ho_id" property="hoId"/>
+        <result column="u_id" property="uId"/>
+        <result column="r_id" property="rId"/>
+        <result column="begin_date" property="beginDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="status" property="status"/>
     </resultMap>
+    <sql id="Base_Column_List">
+        ho_id,u_id,r_id,begin_date,end_date,status
+    </sql>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from hotel_orders
+    </select>
+    <update id="updateSelective">
+        update hotel_orders
+        <set>
+            <if test="uId != null">u_id=#{uId,jdbcType=NUMERIC},</if>
+            <if test="rId != null">r_id=#{rId,jdbcType=NUMERIC},</if>
+            <if test="beginDate != null">begin_date=#{beginDate},</if>
+            <if test="endDate != null">end_date=#{endDate},</if>
+            <if test="status != null">status=#{status,jdbcType=VARCHAR},</if>
+        </set>
+        where hoId = #{hoId,jdbcType=VARCHAR}
+    </update>
 
 </mapper>

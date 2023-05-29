@@ -40,6 +40,10 @@
                 ${field} like "%"#{keyword}"%"
             </if>
         </where>
+    </select>
 
+    <select id="selectAllByPage" resultMap="BaseResultMap">
+        select h_id, hotel_img, hotel_name, hotel_description, hotel_star, hotel_position, city_name, hotel.city_id, province
+        from hotel left join city on hotel.city_id = city.city_id
     </select>
 </mapper>

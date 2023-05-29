@@ -37,4 +37,6 @@ public interface HotelService extends IService<Hotel> {
     Page<Hotel> searchPages(Integer pages, Integer pageSize,  String filed, String keyword);
 
     boolean deleteByHotelIds(List<Integer> hotelIds);
+
+    Page<Hotel> selectAllHotelByPage(Integer start, Integer size);
 }
