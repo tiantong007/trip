@@ -1,9 +1,12 @@
 package com.too.trip.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.too.trip.entity.Order;
 import com.too.trip.entity.ScenicOrders;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 15110
@@ -19,7 +22,7 @@ public interface ScenicOrdersService extends IService<ScenicOrders> {
         List<ScenicOrders> selectScenicOrderByUserId(Integer uid);
 
         //根据用户ID查询酒店订单+景点订单
-
+        List<Order> getUserOrders(Integer uid);
 
         //添加景点订单
         public boolean insertScenicOrder(ScenicOrders scenicOrders);

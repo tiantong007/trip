@@ -36,18 +36,9 @@ public class HotelController {
     @Autowired
     private ResourceLoader resourceLoader;
 
-    //查询全部宾馆信息
-    @PostMapping("/all")
-    public R<List> getAllHotel(HttpServletRequest request){
-        List<Hotel> hotels = hotelService.searchAllHotel();
-        if (hotels == null || hotels.size() == 0){
-            return new R<>(400, "没有查到数据");
-        }
-        return new R<>(hotels);
-    }
 
     //查询单个宾馆信息
-    @PostMapping("single")
+    @GetMapping()
     public R<Hotel> searchHotel(HttpServletRequest request, @RequestParam("hId") Integer hId){
         Hotel hotel = hotelService.searchById(hId);
         if (hotel == null){
@@ -56,30 +47,22 @@ public class HotelController {
         return new R<>(hotel);
     }
 
-    @PostMapping("/delete")
-    public R<Hotel> deleteHotel(HttpServletRequest request, @RequestParam("hId") Integer hId){
-        boolean result = hotelService.removeById(hId);
-        if(!result){
-            return new R<Hotel>(400, "找不到对应的宾馆id");
-        }
-        return new R<Hotel>();
-    }
-
 
     //分页查询
-    @PostMapping("/page")
-    public R<Page<Hotel>> searchPages(HttpServletRequest request, @RequestParam("pages") Integer pages, @RequestParam("pageSize") Integer pageSize, Hotel hotel){
+    @GetMapping("/page/{start}/{size}/{field}/{keyword}")
+    public R<Page<Hotel>> searchPages(HttpServletRequest request, @PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,
+                                      @PathVariable("field")String field, @PathVariable("keyword")String keyword){
         //页码数小于0 设置为0
         if(pages == null || pages < 0){
             pages = 0;
         }
         // 调用searchPage方法
-        Page<Hotel> hotels = hotelService.searchPages(pages, pageSize, hotel);
+        Page<Hotel> hotels = hotelService.searchPages(pages, pageSize, field, keyword);
 
         return new R<>(hotels);
     }
 
-    @PostMapping("insert")
+    @PostMapping()
     public R insertHotelUploadFile(@RequestBody @RequestParam("file") MultipartFile file, Hotel hotel) throws IOException {
         if(file.isEmpty()){
             return new R(400, "文件不能为空");

@@ -11,7 +11,7 @@
  Target Server Version : 80033 (8.0.33)
  File Encoding         : 65001
 
- Date: 29/05/2023 11:26:42
+ Date: 29/05/2023 22:27:53
 */
 
 SET NAMES utf8mb4;
@@ -287,7 +287,7 @@ CREATE TABLE `room`  (
   `room_status` int NULL DEFAULT NULL COMMENT '房间状态（空闲，被预定等）',
   `room_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '房间价格',
   `room_num` int NULL DEFAULT NULL COMMENT '房间数量',
-  `room_type` int NULL DEFAULT NULL COMMENT '房间类型（大床房，双人房等）',
+  `room_type` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '房间类型（大床房，双人房等）',
   `room_img` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '房间图片',
   PRIMARY KEY (`room_id`) USING BTREE,
   INDEX `h_id`(`h_id` ASC) USING BTREE,
@@ -297,21 +297,21 @@ CREATE TABLE `room`  (
 -- ----------------------------
 -- Records of room
 -- ----------------------------
-INSERT INTO `room` VALUES (1, 1, 0, 300.00, 5, 1, 'https://example.com/room1.jpg');
-INSERT INTO `room` VALUES (2, 1, 0, 350.00, 10, 2, 'https://example.com/room2.jpg');
-INSERT INTO `room` VALUES (3, 12, 1, 400.00, 8, 3, 'https://example.com/room3.jpg');
-INSERT INTO `room` VALUES (4, 1, 0, 280.00, 6, 4, 'https://example.com/room4.jpg');
-INSERT INTO `room` VALUES (5, 5, 0, 320.00, 4, 5, 'https://example.com/room5.jpg');
-INSERT INTO `room` VALUES (6, 2, 0, 200.00, 8, 1, 'https://example.com/room1.jpg');
-INSERT INTO `room` VALUES (7, 2, 1, 250.00, 12, 2, 'https://example.com/room2.jpg');
-INSERT INTO `room` VALUES (8, 7, 0, 180.00, 6, 3, 'https://example.com/room3.jpg');
-INSERT INTO `room` VALUES (9, 8, 0, 220.00, 5, 4, 'https://example.com/room4.jpg');
-INSERT INTO `room` VALUES (10, 9, 0, 240.00, 3, 5, 'https://example.com/room5.jpg');
-INSERT INTO `room` VALUES (11, 9, 0, 150.00, 7, 1, 'https://example.com/room1.jpg');
-INSERT INTO `room` VALUES (12, 3, 0, 180.00, 9, 2, 'https://example.com/room2.jpg');
-INSERT INTO `room` VALUES (13, 16, 1, 200.00, 5, 3, 'https://example.com/room3.jpg');
-INSERT INTO `room` VALUES (14, 3, 0, 120.00, 10, 4, 'https://example.com/room4.jpg');
-INSERT INTO `room` VALUES (15, 3, 0, 160.00, 6, 5, 'https://example.com/room5.jpg');
+INSERT INTO `room` VALUES (1, 1, 0, 300.00, 5, '双人房', 'https://example.com/room1.jpg');
+INSERT INTO `room` VALUES (2, 1, 0, 350.00, 10, '双人房', 'https://example.com/room2.jpg');
+INSERT INTO `room` VALUES (3, 12, 1, 400.00, 8, '大床房', 'https://example.com/room3.jpg');
+INSERT INTO `room` VALUES (4, 1, 0, 280.00, 6, '大床房', 'https://example.com/room4.jpg');
+INSERT INTO `room` VALUES (5, 5, 0, 320.00, 4, '大床房', 'https://example.com/room5.jpg');
+INSERT INTO `room` VALUES (6, 2, 0, 200.00, 8, '大床房', 'https://example.com/room1.jpg');
+INSERT INTO `room` VALUES (7, 2, 1, 250.00, 12, '双人房', 'https://example.com/room2.jpg');
+INSERT INTO `room` VALUES (8, 7, 0, 180.00, 6, '双人房', 'https://example.com/room3.jpg');
+INSERT INTO `room` VALUES (9, 8, 0, 220.00, 5, '双人房', 'https://example.com/room4.jpg');
+INSERT INTO `room` VALUES (10, 9, 0, 240.00, 3, '双人房', 'https://example.com/room5.jpg');
+INSERT INTO `room` VALUES (11, 9, 0, 150.00, 7, '大床房', 'https://example.com/room1.jpg');
+INSERT INTO `room` VALUES (12, 3, 0, 180.00, 9, '大床房', 'https://example.com/room2.jpg');
+INSERT INTO `room` VALUES (13, 16, 1, 200.00, 5, '大床房', 'https://example.com/room3.jpg');
+INSERT INTO `room` VALUES (14, 3, 0, 120.00, 10, '大床房', 'https://example.com/room4.jpg');
+INSERT INTO `room` VALUES (15, 3, 0, 160.00, 6, '大床房', 'https://example.com/room5.jpg');
 
 -- ----------------------------
 -- Table structure for scenic
@@ -383,11 +383,16 @@ CREATE TABLE `scenic_orders`  (
   INDEX `user_id`(`user_id` ASC) USING BTREE,
   CONSTRAINT `scenic_orders_ibfk_1` FOREIGN KEY (`scenic_id`) REFERENCES `scenic` (`scenic_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `scenic_orders_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 75 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of scenic_orders
 -- ----------------------------
+INSERT INTO `scenic_orders` VALUES (1, NULL, NULL, NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (2, NULL, NULL, NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (3, 1, 1, 'aa', '2022-01-01 12:30:00');
+INSERT INTO `scenic_orders` VALUES (5, NULL, NULL, NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (6, NULL, NULL, NULL, NULL);
 INSERT INTO `scenic_orders` VALUES (61, 16, 5, '已预订', '2022-01-01 12:30:00');
 INSERT INTO `scenic_orders` VALUES (62, 17, 6, '已取消', '2022-01-02 08:45:00');
 INSERT INTO `scenic_orders` VALUES (63, 20, 7, '已完成', '2022-01-03 10:15:00');
@@ -401,6 +406,7 @@ INSERT INTO `scenic_orders` VALUES (70, 26, 10, '已完成', '2022-01-10 15:35:0
 INSERT INTO `scenic_orders` VALUES (72, 22, 12, '已完成', '2022-01-12 17:25:00');
 INSERT INTO `scenic_orders` VALUES (73, 24, 13, '已预订', '2022-01-13 14:30:00');
 INSERT INTO `scenic_orders` VALUES (74, 18, 14, '已取消', '2022-01-14 09:20:00');
+INSERT INTO `scenic_orders` VALUES (100, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for user

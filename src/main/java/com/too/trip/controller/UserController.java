@@ -24,6 +24,7 @@ import java.lang.reflect.Field;
  */
 @RestController
 @Slf4j
+@CrossOrigin("*")
 @RequestMapping(value = "/user")
 public class UserController {
     @Autowired
@@ -95,8 +96,8 @@ public class UserController {
      * @param uid
      * @return 请求结果
      */
-    @DeleteMapping
-    public R deleteUser(HttpServletRequest request, @RequestParam("uid") Integer uid) {
+    @DeleteMapping("/{uid}")
+    public R deleteUser(HttpServletRequest request, @PathVariable("uid") Integer uid) {
         boolean result = userService.deleteUserById(uid);
         if (!result) {
             return new R<User>(404, "找不到对应的用户id");
@@ -198,8 +199,8 @@ public class UserController {
     public R<User> getUserById(@PathVariable int userId) {
         log.info(String.valueOf(userId));
         User user = userService.getById(userId);
-        if (user == null){
-            return new R<>(404,"用户不存在");
+        if (user == null) {
+            return new R<>(404, "用户不存在");
         }
 
         return new R<>(user);
@@ -209,16 +210,17 @@ public class UserController {
      * 用户模糊查询和分页
      *
      * @param keyword
-     * @param pageNum
-     * @param pageSize
+     * @param start
+     * @param size
      * @return 返回模糊查询和分页后的数据
      */
-    @GetMapping("/show")
-    public R<IPage<User>> getUsers(@RequestParam(defaultValue = "") String keyword,
-                                   @RequestParam(defaultValue = "1") int pageNum,
-                                   @RequestParam(defaultValue = "10") int pageSize) {
+    @GetMapping("/page/{start}/{size}/{field}/{keyword}")
+    public R<IPage<User>> getUsers(@PathVariable int start,
+                                   @PathVariable int size,
+                                   @PathVariable String field,
+                                   @PathVariable String keyword) {
         // 构造分页对象
-        Page<User> page = new Page<>(pageNum, pageSize);
+        Page<User> page = new Page<>(start, size);
 
         // 构造查询条件
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -226,7 +228,7 @@ public class UserController {
 
         //模糊查询
         if (StringUtils.isNotBlank(keyword)) {
-            queryWrapper.like("username", keyword).or().like("email", keyword);
+            queryWrapper.like(field, keyword);
         }
 
         // 执行分页查询
