@@ -75,7 +75,7 @@ public class UserController {
 
 
     // 删除用户
-    @DeleteMapping("/delete")
+    @DeleteMapping
     public R deleteUser(HttpServletRequest request, @RequestParam("uid") Integer uid) {
         boolean result = userService.deleteUserById(uid);
         if (!result) {
@@ -85,7 +85,7 @@ public class UserController {
     }
 
     // 新增用户
-    @PostMapping("/add")
+    @PostMapping
     public R insertUser(HttpServletRequest request, User user) {
         String username = user.getUsername();
         String email = user.getEmail();
@@ -104,7 +104,7 @@ public class UserController {
     }
 
     //修改用户
-    @PutMapping("/update")
+    @PutMapping
     public R updateUser(HttpServletRequest request, User user) throws IllegalAccessException {
         // 用户id为空时返回错误信息
         if (user.getUserId() == null) {
@@ -155,6 +155,12 @@ public class UserController {
         return new R<User>();
     }
 
+    @GetMapping
+    public R<User> getUserById(@RequestParam int userId) {
+        User user = userService.getById(userId);
+        return new R<>(user);
+    }
+
     // 查询用户列表
     @PostMapping("/show")
     public R<IPage<User>> getUsers(@RequestParam(defaultValue = "") String keyword,
@@ -174,6 +180,10 @@ public class UserController {
 
         // 执行分页查询
         IPage<User> userPage = userService.page(page, queryWrapper);
+
+        if (pageNum > userPage.getPages()){
+            return new R<>(400,"无效的请求页数");
+        }
         // 返回结果
         return new R<>(userPage);
     }
