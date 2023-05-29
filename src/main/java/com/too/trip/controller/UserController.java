@@ -15,9 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 前端控制器
@@ -48,7 +45,7 @@ public class UserController {
         }
 
         //如果用户名和邮箱已经注册，返回错误信息
-        return new R<>("409 Conflict", "用户名或邮箱已被注册");
+        return new R<>(409, "用户名或邮箱已被注册");
     }
 
     @PostMapping(value = "/login")
@@ -56,7 +53,7 @@ public class UserController {
         //判断登录，登录成功则返回用户信息
         User user = userService.login(username, password);
         if (user == null) {
-            return new R<User>("400 Bad Request", "用户名或密码错误");
+            return new R<User>(400, "用户名或密码错误");
         }
 
         //将信息保存进session
@@ -67,7 +64,7 @@ public class UserController {
         return new R<User>(user);
     }
 
-    @PostMapping(value = "/logout")
+    @DeleteMapping(value = "/logout")
     public R logoutUser(HttpServletRequest request) {
         //清除用户的session信息
         HttpSession session = request.getSession();
@@ -78,11 +75,11 @@ public class UserController {
 
 
     // 删除用户
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public R deleteUser(HttpServletRequest request, @RequestParam("uid") Integer uid) {
         boolean result = userService.deleteUserById(uid);
         if (!result) {
-            return new R<User>("404 Not Found", "找不到对应的用户id");
+            return new R<User>(404, "找不到对应的用户id");
         }
         return new R<User>();
     }
@@ -97,21 +94,21 @@ public class UserController {
         boolean flag = userService.isExist(username, email);
         if (flag) {
             //返回失败信息
-            return new R<>("409 Conflict", "用户名或邮箱已被注册");
+            return new R<>(409, "用户名或邮箱已被注册");
         }
         boolean result = userService.save(user);
         if (!result) {
-            return new R<User>("400 Bad Request", "请求参数错误");
+            return new R<User>(400, "请求参数错误");
         }
         return new R<User>();
     }
 
     //修改用户
-    @PostMapping("/update")
+    @PutMapping("/update")
     public R updateUser(HttpServletRequest request, User user) throws IllegalAccessException {
         // 用户id为空时返回错误信息
         if (user.getUserId() == null) {
-            return new R<User>("400 Bad Request", "用户id为空");
+            return new R<User>(400, "用户id为空");
         }
 
         // 默认所有属性都为空，当所有属性都为空时，说明用户没有进行修改操作
@@ -136,7 +133,7 @@ public class UserController {
             }
         }
         if (!allFieldsNotNull) {
-            return new R<User>("204 No Content", "没有提交修改信息");
+            return new R<User>(204, "没有提交修改信息");
         }
 
         String username = user.getUsername();
@@ -153,7 +150,7 @@ public class UserController {
         wrapper.eq("user_id", user.getUserId());
         boolean result = userService.update(user, wrapper);
         if (!result) {
-            return new R<User>("404 Not Found", "找不到对应的用户id");
+            return new R<User>(404, "找不到对应的用户id");
         }
         return new R<User>();
     }
@@ -161,8 +158,8 @@ public class UserController {
     // 查询用户列表
     @PostMapping("/show")
     public R<IPage<User>> getUsers(@RequestParam(defaultValue = "") String keyword,
-                                           @RequestParam(defaultValue = "1") int pageNum,
-                                           @RequestParam(defaultValue = "10") int pageSize) {
+                                   @RequestParam(defaultValue = "1") int pageNum,
+                                   @RequestParam(defaultValue = "10") int pageSize) {
         // 构造分页对象
         Page<User> page = new Page<>(pageNum, pageSize);
 

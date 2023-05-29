@@ -6,7 +6,6 @@ import com.too.trip.entity.User;
 import com.too.trip.service.AdminService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.apache.ibatis.annotations.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +30,7 @@ public class AdminController {
         //判断登录，登录成功则返回用户信息
         Admin admin = adminService.login(aAccount,aPassword);
         if (admin == null){
-            return new R<Admin>("400 Bad Request","用户名或密码错误");
+            return new R<Admin>(400,"用户名或密码错误");
         }
 
         //将信息保存进session

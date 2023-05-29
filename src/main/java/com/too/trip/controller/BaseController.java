@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @create: 2023-05-26 16:23
  * @description: 界面链接转发
  **/
-@Controller
+//@Controller
 @Slf4j
 public class BaseController {
 
