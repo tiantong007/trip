@@ -8,11 +8,10 @@ import com.too.trip.service.HotelService;
 import io.swagger.models.auth.In;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public class HotelController {
     public R<List> getAllHotel(HttpServletRequest request){
         List<Hotel> hotels = hotelService.searchAllHotel();
         if (hotels == null || hotels.size() == 0){
-            return new R<>("204", "没有查到数据");
+            return new R<>(400, "没有查到数据");
         }
         return new R<>(hotels);
     }
@@ -44,7 +43,7 @@ public class HotelController {
     public R<Hotel> searchHotel(HttpServletRequest request, @RequestParam("hId") Integer hId){
         Hotel hotel = hotelService.searchById(hId);
         if (hotel == null){
-            return new R<>("204", "没有查到数据");
+            return new R<>(400, "没有查到数据");
         }
         return new R<>(hotel);
     }
@@ -53,7 +52,7 @@ public class HotelController {
     public R<Hotel> deleteHotel(HttpServletRequest request, @RequestParam("hId") Integer hId){
         boolean result = hotelService.removeById(hId);
         if(!result){
-            return new R<Hotel>("204 Not Found", "找不到对应的宾馆id");
+            return new R<Hotel>(400, "找不到对应的宾馆id");
         }
         return new R<Hotel>();
     }
@@ -68,10 +67,10 @@ public class HotelController {
         }
         // 调用searchPage方法
         Page<Hotel> hotels = hotelService.searchPages(pages, pageSize, hotel);
-        if (hotels == null || hotels.getTotal() == 0){
-            return new R<>("204", "没有查到数据");
-        }
+
         return new R<>(hotels);
     }
+
+
 
 }
