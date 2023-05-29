@@ -1,5 +1,6 @@
 package com.too.trip.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.too.trip.entity.HotelOrders;
 import com.too.trip.entity.R;
 import com.too.trip.entity.Scenic;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -61,6 +63,23 @@ public class HotelOrdersController {
             return new R<Scenic>(400, "请求参数错误");
         }
         return new R<Scenic>();
+    }
+
+    //批量删除酒店订单
+    @DeleteMapping("batch")
+    public R deleteByBatch(@RequestBody Map<String, List<Integer>> json) {
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, List<Integer>> map = mapper.convertValue(json, Map.class);
+        List<Integer> hoIds = map.get("hoIds");
+        if (hoIds.size() == 0) {
+            return new R(400, "删除数据不能为空");
+        }
+        boolean result = hotelOrdersService.removeBatchByIds(hoIds);
+        if (!result) {
+            return new R(200, "没有对应的数据可删除");
+        }
+        return new R();
+
     }
 
     //更新酒店订单
