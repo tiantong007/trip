@@ -31,6 +31,10 @@ public class Comment implements Serializable {
     @TableField("u_id")
     private Integer uId;
 
+    @ApiModelProperty("景点id")
+    @TableField("s_id")
+    private  Integer sId;
+
     @ApiModelProperty("评论信息")
     @TableField("c_context")
     private String cContext;
