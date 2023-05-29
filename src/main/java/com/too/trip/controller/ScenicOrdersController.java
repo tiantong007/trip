@@ -1,5 +1,6 @@
 package com.too.trip.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.too.trip.entity.Order;
 import com.too.trip.entity.R;
 import com.too.trip.entity.Scenic;
@@ -96,6 +97,22 @@ public class ScenicOrdersController {
         return new R<Scenic>();
     }
 
+    //批量删除
+    @DeleteMapping("batch")
+    public R deleteByBatch(@RequestBody Map<String, List<Integer>> json){
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, List<Integer>> map = mapper.convertValue(json, Map.class);
+        List<Integer> soIds = map.get("soIds");
+        if(soIds.size() == 0){
+            return new R(400,"删除数据不能为空");
+        }
+        boolean result = scenicOrdersService.removeBatchByIds(soIds);
+        if(!result){
+            return new R(200,"没有对应的数据可删除");
+        }
+        return new R();
+
+    }
 
 }
 
