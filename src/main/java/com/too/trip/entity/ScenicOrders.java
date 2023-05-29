@@ -3,42 +3,43 @@ package com.too.trip.entity;
 import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * @author isixe
- * @since 2023-05-24
+ * @TableName scenic_orders
  */
+@TableName(value = "scenic_orders")
 @Data
-@TableName("scenic_orders")
-@ApiModel(value = "ScenicOrders对象", description = "")
 public class ScenicOrders implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @ApiModelProperty("id")
-    @TableId(value = "so_id", type = IdType.AUTO)
+    /**
+     * id
+     */
+    @TableId(type = IdType.AUTO)
     private Integer soId;
 
-    @ApiModelProperty("景点id")
-    @TableField("scenic_id")
+    /**
+     * 景点id
+     */
     private Integer scenicId;
 
-    @ApiModelProperty("用户id")
-    @TableField("user_id")
+    /**
+     * 用户id
+     */
     private Integer userId;
 
-    @ApiModelProperty("订单状态")
-    @TableField("so_status")
+    /**
+     * 订单状态
+     */
     private String soStatus;
 
-    @ApiModelProperty("预定时间")
-    @TableField(value = "so_time",fill = FieldFill.INSERT_UPDATE)
+    /**
+     * 预定时间
+     */
+
     private LocalDateTime soTime;
 
-
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

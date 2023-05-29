@@ -1,24 +1,26 @@
 package com.too.trip.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.too.trip.entity.City;
+import com.too.trip.entity.R;
+import com.too.trip.entity.User;
 import com.too.trip.service.CityService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author isixe
  * @since 2023-05-24
  */
 @RestController
+@Slf4j
 @RequestMapping("/city")
 public class CityController {
     @Autowired
@@ -32,8 +34,9 @@ public class CityController {
      * @return 城市列表
      */
     @GetMapping("/list")
-    public List<City> listCities(@RequestParam(required = false) String province,
-                                 @RequestParam(required = false) String keyword) {
-        return cityService.listCities(province, keyword);
+    public R<List<City>> listCities(@RequestParam(required = false) String province,
+                                    @RequestParam(required = false) String keyword) {
+        List<City> list = cityService.listCities(province, keyword);
+        return new R<>(list);
     }
 }

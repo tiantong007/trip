@@ -1,5 +1,7 @@
 package com.too.trip.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.too.trip.entity.Hotel;
 import com.too.trip.entity.Scenic;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.too.trip.entity.User;
@@ -23,5 +25,7 @@ public interface ScenicService extends IService<Scenic> {
     boolean insertScenic(Scenic scenic);
     //删除景点
     boolean deleteScenicById(Integer sid);
+    //分页查询所有景点
+    Page<Scenic> searchPageScenic(Integer pages, Integer pageSize, Scenic scenic);
 
 }

@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.too.trip.mapper.ScenicOrdersMapper">
 
-    <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.too.trip.entity.ScenicOrders">
-        <id column="so_id" property="soId" />
-        <result column="scenic_id" property="scenicId" />
-        <result column="user_id" property="userId" />
-        <result column="so_status" property="soStatus" />
-        <result column="so_time" property="soTime" />
+        <id property="soId" column="so_id" jdbcType="INTEGER"/>
+        <result property="scenicId" column="scenic_id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="soStatus" column="so_status" jdbcType="VARCHAR"/>
+        <result property="soTime" column="so_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <sql id="Base_Column_List">
+        so_id,scenic_id,user_id,
+        so_status,so_time
+    </sql>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from scenic_orders
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from scenic_orders
+        where
+        user_id = #{userId,jdbcType=NUMERIC}
+    </select>
+
+    <update id="updateSelective">
+        update scenic_orders
+        <set>
+            <if test="scenicId != null">scenic_id=#{scenicId,jdbcType=NUMERIC},</if>
+            <if test="userId != null">user_id=#{userId,jdbcType=NUMERIC},</if>
+            <if test="soStatus != null">so_status=#{soStatus,jdbcType=VARCHAR},</if>
+            <if test="soTime != null">so_time=#{soTime},</if>
+        </set>
+        where so_id = #{soId,jdbcType=NUMERIC}
+    </update>
+
+    <select id="selectByUserIdOrderBySoTimeDesc" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from scenic_orders
+        where
+        user_id = #{userId,jdbcType=NUMERIC}
+        order by so_time desc
+    </select>
 </mapper>
