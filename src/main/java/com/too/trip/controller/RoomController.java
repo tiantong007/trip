@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.too.trip.entity.R;
-import com.too.trip.entity.Room;
-import com.too.trip.entity.Scenic;
-import com.too.trip.entity.User;
+import com.too.trip.entity.*;
 import com.too.trip.service.RoomService;
 import com.too.trip.service.impl.RoomServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,6 +117,36 @@ public class RoomController {
         Page<Room> page = roomService.searchPages(pages, pageSize, field, keyword);
 
         return new R<>(page);
+    }
+
+
+    // 修改房间
+    @PutMapping()
+    public R updateHotel(@RequestBody(required = false) MultipartFile file, Room room) throws IOException {
+
+        // 如果文件为空则不做变化
+        if(file == null || file.isEmpty()){
+            room.setRoomImg(room.getRoomImg());
+        }else{
+            UUID uuid = UUID.randomUUID();
+            String fileName = uuid.toString() + file.getOriginalFilename();
+            String path = "classpath:/static/images";
+            Resource resource = resourceLoader.getResource(path);
+            File dir = resource.getFile();
+
+            File destFile  = new File(dir, fileName);
+            file.transferTo(destFile);
+            room.setRoomImg(fileName);
+        }
+
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("room_id", room.getRoomId());
+        boolean update = roomService.update(room, wrapper);
+        if(!update){
+            return new R(400,"修改失败");
+        }
+
+        return new R();
     }
 
 }
