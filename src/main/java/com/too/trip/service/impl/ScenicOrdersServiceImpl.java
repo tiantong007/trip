@@ -48,8 +48,8 @@ public class ScenicOrdersServiceImpl extends ServiceImpl<ScenicOrdersMapper, Sce
 
     @Override
     public boolean updateScenicOrder(ScenicOrders scenicOrders) {
-
-        return false;
+        int row = scenicOrdersMapperl.updateSelective(scenicOrders);
+        return row > 0;
     }
 }
 

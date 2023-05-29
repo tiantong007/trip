@@ -62,8 +62,20 @@ public class ScenicOrdersController {
 
     //根据景点订单ID删除景点订单
     @PostMapping("/delete")
-    public R deleteScenic(HttpServletRequest request, @RequestParam("soId") Integer soId) {
+    public R deleteScenicOrder(HttpServletRequest request, @RequestParam("soId") Integer soId) {
         boolean result = scenicOrdersService.deleteScenicOrdersById(soId);
+        if (!result) {
+            return new R<Scenic>("400", "请求参数错误");
+        }
+        return new R<Scenic>();
+    }
+
+    //更新景点订单
+    @PostMapping("/update")
+    public R updateScenicOrder(HttpServletRequest request, @RequestBody ScenicOrders scenicOrders) {
+        LocalDateTime time = LocalDateTime.now();
+        scenicOrders.setSoTime(time);
+        boolean result = scenicOrdersService.updateScenicOrder(scenicOrders);
         if (!result) {
             return new R<Scenic>("400", "请求参数错误");
         }

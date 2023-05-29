@@ -29,4 +29,15 @@
         where
         user_id = #{userId,jdbcType=NUMERIC}
     </select>
+
+    <update id="updateSelective">
+        update scenic_orders
+        <set>
+            <if test="scenicId != null">scenic_id=#{scenicId,jdbcType=NUMERIC},</if>
+            <if test="userId != null">user_id=#{userId,jdbcType=NUMERIC},</if>
+            <if test="soStatus != null">so_status=#{soStatus,jdbcType=VARCHAR},</if>
+            <if test="soTime != null">so_time=#{soTime},</if>
+        </set>
+        where so_id = #{soId,jdbcType=NUMERIC}
+    </update>
 </mapper>

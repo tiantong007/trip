@@ -25,4 +25,6 @@ public interface ScenicOrdersMapper extends BaseMapper<ScenicOrders> {
 
     List<ScenicOrders> selectByUserId(@Param("userId") Integer userId);
 
+    int updateSelective(ScenicOrders scenicOrders);
+
 }

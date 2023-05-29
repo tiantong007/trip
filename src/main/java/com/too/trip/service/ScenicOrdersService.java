@@ -18,6 +18,9 @@ public interface ScenicOrdersService extends IService<ScenicOrders> {
         //根据用户ID查询查询景点订单
         List<ScenicOrders> selectScenicOrderByUserId(Integer uid);
 
+        //根据用户ID查询酒店订单+景点订单
+
+
         //添加景点订单
         public boolean insertScenicOrder(ScenicOrders scenicOrders);
 
