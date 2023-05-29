@@ -43,16 +43,4 @@
         where so_id = #{soId,jdbcType=NUMERIC}
     </update>
 
-    <!--    <select id="getUserOrders" resultType="map">-->
-    <!--        SELECT science.science_name AS 景点名, NULL AS 酒店名, NULL AS 房间类型, science.science_img,-->
-    <!--               science.science_price, so.so_status, so.so_time, NULL AS end_date-->
-    <!--        FROM scenic_orders so, scenic science-->
-    <!--        WHERE so.scenic_id = science.scenic_id AND so.user_id = #{userId}-->
-    <!--        UNION ALL-->
-    <!--        SELECT NULL AS 景点名, hotel.hotel_name, room.room_type, hotel.hotel_img,-->
-    <!--               room.room_price, ho.status, ho.begin_date, ho.end_date-->
-    <!--        FROM hotel_orders ho, hotel, room-->
-    <!--        WHERE ho.r_id = room.room_id AND room.h_id = hotel.h_id AND ho.u_id = #{userId}-->
-    <!--        ORDER BY so_time DESC-->
-    <!--    </select>-->
 </mapper>

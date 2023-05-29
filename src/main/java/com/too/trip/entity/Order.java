@@ -16,7 +16,7 @@ public class Order implements Serializable {
     @TableField()
     private String scienceName;
     private String hotelName;
-    private Integer roomType;
+    private String roomType;
     private String scienceImg;
     private BigDecimal sciencePrice;
     private String soStatus;
