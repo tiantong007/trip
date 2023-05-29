@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.too.trip.entity.City">
         <id column="city_id" property="cityId" />
         <result column="city_name" property="cityName" />
+        <result column="province" property="province" />
     </resultMap>
     <sql id="Base_Column_List">
         city_id,city_name,province

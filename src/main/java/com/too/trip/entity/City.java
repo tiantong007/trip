@@ -38,9 +38,7 @@ public class City implements Serializable {
     @TableField("province")
     private String province;
 
-    @ApiModelProperty("城市名字的关键字")
-    @TableField(exist = false)
-    private String keyword;
+
 
 
 }

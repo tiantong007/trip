@@ -55,16 +55,8 @@ public class CityServiceImpl extends ServiceImpl<CityMapper, City> implements Ci
         return  row>0;
 
     }
-    //分页查询城市
-    @Override
-    public Page<City> searchPageCity(Integer pages, Integer pageSize, City city) {
 
-        Page<City> page = new Page<>(pages,pageSize);
 
-        cityMapper.selectPage(page, city);
-
-        return page;
-    }
 
     //根据城市id查询
     @Override
@@ -74,4 +66,14 @@ public class CityServiceImpl extends ServiceImpl<CityMapper, City> implements Ci
 
        return city;
     }
+
+    //批量删除
+
+    @Override
+    public boolean deleteBatchCity(List<Integer> list) {
+        int row = cityMapper.deleteBatchIds(list);
+        return row > 0;
+    }
+
+
 }

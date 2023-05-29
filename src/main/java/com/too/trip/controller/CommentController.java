@@ -1,8 +1,8 @@
 package com.too.trip.controller;
 
-import com.too.trip.entity.City;
-import com.too.trip.entity.Comment;
-import com.too.trip.entity.R;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.too.trip.entity.*;
 import com.too.trip.service.CommentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -21,6 +23,7 @@ import java.util.List;
  * @since 2023-05-24
  */
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/comment")
 public class CommentController {
 
@@ -29,7 +32,10 @@ public class CommentController {
 
     // 添加评论
     @PostMapping
-    public R<Comment> addComment(@RequestBody Comment comment){
+    public R<Comment> addComment(@ModelAttribute Comment comment){
+        System.out.println("-------------------->"+comment);
+        LocalDateTime time = LocalDateTime.now();
+        comment.setCDate(time);
         boolean result = commentService.save(comment);
         if (! result){
             return new R<>(400 , "请求参数错误");
@@ -85,13 +91,42 @@ public class CommentController {
 
     //删除评论
 
-    @DeleteMapping
-    public R deleteByCommentId( @RequestParam("cityId") Integer cityId){
-        boolean result = commentService.deleteByCommentId(cityId);
+    @DeleteMapping("{commentId}")
+    public R deleteByCommentId( @PathVariable("commentId") Integer commentId){
+        boolean result = commentService.deleteByCommentId(commentId);
         if(!result){
             return new R<City>(204 ,"没有这条评论");
         }
         return new R<City>();
+    }
+
+    //批量删除
+
+    @DeleteMapping("/batch")
+    public R deleteBatchComment(@RequestBody Map<String, List<Integer>> json){
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, List<Integer>> map = mapper.convertValue(json, Map.class);
+        System.out.println(map.get("commendIds"));
+        List<Integer> list = map.get("commentIds");
+        boolean result = commentService.deleteBatchComment(list);
+        if(!result){
+            return new R<Comment>(400,"请求参数错误");
+        }
+        return new R<Comment>();
+    }
+    //分页查询
+
+    @GetMapping("/page/{start}/{size}/{field}/{keyword}")
+    public R<Page<Comment>> searchPages( @PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,
+                                      @PathVariable("field")String field, @PathVariable("keyword")String keyword){
+        //页码数小于0 设置为0
+        if(pages == null || pages < 0){
+            pages = 0;
+        }
+        // 调用searchPage方法
+        Page<Comment> comments = commentService.searchPages(pages, pageSize, field, keyword);
+
+        return new R<>(comments);
     }
 
 

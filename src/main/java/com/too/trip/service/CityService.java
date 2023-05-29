@@ -29,9 +29,11 @@ public interface CityService extends IService<City> {
     boolean updateCity(City city);
     //删除城市
     boolean deleteByCityId(Integer cityId);
-    //分页查询所有城市
-    Page<City> searchPageCity(Integer pages, Integer pageSize, City city);
-//根据城市id查询
+
+
+    //根据城市id查询
     List<City> selectByCityId(Integer cityId);
+    //批量删除
+    boolean deleteBatchCity(List<Integer> list);
 
 }
