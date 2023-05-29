@@ -38,7 +38,7 @@ public class HotelController {
 
 
     //查询单个宾馆信息
-    @PostMapping("single")
+    @GetMapping()
     public R<Hotel> searchHotel(HttpServletRequest request, @RequestParam("hId") Integer hId){
         Hotel hotel = hotelService.searchById(hId);
         if (hotel == null){
@@ -49,14 +49,15 @@ public class HotelController {
 
 
     //分页查询
-    @GetMapping()
-    public R<Page<Hotel>> searchPages(HttpServletRequest request, @RequestParam("pages") Integer pages, @RequestParam("pageSize") Integer pageSize, Hotel hotel){
+    @GetMapping("/page/{start}/{size}/{field}/{keyword}")
+    public R<Page<Hotel>> searchPages(HttpServletRequest request, @PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,
+                                      @PathVariable("field")String field, @PathVariable("keyword")String keyword){
         //页码数小于0 设置为0
         if(pages == null || pages < 0){
             pages = 0;
         }
         // 调用searchPage方法
-        Page<Hotel> hotels = hotelService.searchPages(pages, pageSize, hotel);
+        Page<Hotel> hotels = hotelService.searchPages(pages, pageSize, field, keyword);
 
         return new R<>(hotels);
     }

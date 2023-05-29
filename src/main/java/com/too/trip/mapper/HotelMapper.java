@@ -38,8 +38,9 @@ public interface HotelMapper extends BaseMapper<Hotel> {
     /**
      * 分页查询
      * @param page 分页对象
-     * @param hotel 宾馆对象
+     * @param filed
+     * @param keyword
      * @return
      */
-    Page<Hotel> selectPage(@Param("page") Page<Hotel> page, Hotel hotel);
+    Page<Hotel> selectPage(@Param("page") Page<Hotel> page, @Param("field") String filed, @Param("keyword") String keyword);
 }
