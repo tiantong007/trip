@@ -48,6 +48,14 @@ public class UserController {
         return new R<>(409, "用户名或邮箱已被注册");
     }
 
+    /**
+     * 用户登录
+     *
+     * @param request
+     * @param username
+     * @param password
+     * @return 登录信息
+     */
     @PostMapping(value = "/login")
     public R selectUser(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
         //判断登录，登录成功则返回用户信息
@@ -64,6 +72,12 @@ public class UserController {
         return new R<User>(user);
     }
 
+    /**
+     * 用户退出
+     *
+     * @param request
+     * @return 请求结果
+     */
     @DeleteMapping(value = "/logout")
     public R logoutUser(HttpServletRequest request) {
         //清除用户的session信息
@@ -74,7 +88,13 @@ public class UserController {
     }
 
 
-    // 删除用户
+    /**
+     * 删除用户信息
+     *
+     * @param request
+     * @param uid
+     * @return 请求结果
+     */
     @DeleteMapping
     public R deleteUser(HttpServletRequest request, @RequestParam("uid") Integer uid) {
         boolean result = userService.deleteUserById(uid);
@@ -84,7 +104,13 @@ public class UserController {
         return new R<User>();
     }
 
-    // 新增用户
+    /**
+     * 更新用户信息
+     *
+     * @param request
+     * @param user
+     * @return 请求结果
+     */
     @PostMapping
     public R insertUser(HttpServletRequest request, User user) {
         String username = user.getUsername();
@@ -103,7 +129,14 @@ public class UserController {
         return new R<User>();
     }
 
-    //修改用户
+    /**
+     * 更新用户信息
+     *
+     * @param request
+     * @param user
+     * @return 请求结果
+     * @throws IllegalAccessException
+     */
     @PutMapping
     public R updateUser(HttpServletRequest request, User user) throws IllegalAccessException {
         // 用户id为空时返回错误信息
@@ -155,13 +188,26 @@ public class UserController {
         return new R<User>();
     }
 
+    /**
+     * 获取用户信息
+     *
+     * @param userId
+     * @return 用户实体信息
+     */
     @GetMapping
     public R<User> getUserById(@RequestParam int userId) {
         User user = userService.getById(userId);
         return new R<>(user);
     }
 
-    // 查询用户列表
+    /**
+     * 用户模糊查询和分页
+     *
+     * @param keyword
+     * @param pageNum
+     * @param pageSize
+     * @return 返回模糊查询和分页后的数据
+     */
     @PostMapping("/show")
     public R<IPage<User>> getUsers(@RequestParam(defaultValue = "") String keyword,
                                    @RequestParam(defaultValue = "1") int pageNum,
