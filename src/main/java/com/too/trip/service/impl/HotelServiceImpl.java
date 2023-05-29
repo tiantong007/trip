@@ -43,11 +43,9 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
      * @return
      */
     @Override
-    public List<Hotel> searchPages(Integer pages, Integer pageSize, Hotel hotel) {
-        System.out.println(hotel);
+    public Page<Hotel> searchPages(Integer pages, Integer pageSize, Hotel hotel) {
         Page<Hotel> page = new Page<>(pages, pageSize);
         hotelMapper.selectPage(page, hotel);
-        List<Hotel> records = page.getRecords();
-        return records;
+        return page;
     }
 }

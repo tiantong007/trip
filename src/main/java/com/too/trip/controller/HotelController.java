@@ -1,5 +1,6 @@
 package com.too.trip.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.Hotel;
 import com.too.trip.entity.R;
 import com.too.trip.entity.User;
@@ -60,14 +61,14 @@ public class HotelController {
 
     //分页查询
     @PostMapping("/page")
-    public R<List> searchPages(HttpServletRequest request, @RequestParam("pages") Integer pages, @RequestParam("pageSize") Integer pageSize, Hotel hotel){
+    public R<Page<Hotel>> searchPages(HttpServletRequest request, @RequestParam("pages") Integer pages, @RequestParam("pageSize") Integer pageSize, Hotel hotel){
         //页码数小于0 设置为0
         if(pages == null || pages < 0){
             pages = 0;
         }
         // 调用searchPage方法
-        List<Hotel> hotels = hotelService.searchPages(pages, pageSize, hotel);
-        if (hotels == null || hotels.size() == 0){
+        Page<Hotel> hotels = hotelService.searchPages(pages, pageSize, hotel);
+        if (hotels == null || hotels.getTotal() == 0){
             return new R<>("204", "没有查到数据");
         }
         return new R<>(hotels);
