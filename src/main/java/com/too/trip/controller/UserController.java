@@ -210,17 +210,18 @@ public class UserController {
      * 用户模糊查询和分页
      *
      * @param keyword
-     * @param start
-     * @param size
+     * @param pages
+     * @param pageSize
+     * @param field
      * @return 返回模糊查询和分页后的数据
      */
     @GetMapping("/page/{start}/{size}/{field}/{keyword}")
-    public R<IPage<User>> getUsers(@PathVariable int start,
-                                   @PathVariable int size,
-                                   @PathVariable String field,
-                                   @PathVariable String keyword) {
+    public R<IPage<User>> getUsers(@PathVariable("start") Integer pages,
+                                   @PathVariable("size") Integer pageSize,
+                                   @PathVariable("field") String field,
+                                   @PathVariable("keyword") String keyword) {
         // 构造分页对象
-        Page<User> page = new Page<>(start, size);
+        Page<User> page = new Page<>(pages, pageSize);
 
         // 构造查询条件
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
