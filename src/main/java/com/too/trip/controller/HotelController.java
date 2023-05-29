@@ -167,4 +167,13 @@ public class HotelController {
 
         return new R();
     }
+
+    @GetMapping()
+    public R selectByHotelId(@RequestBody @RequestParam("hId") Integer hId){
+        Hotel hotel = hotelService.selectByHotelId(hId);
+        if(hotel == null){
+            return new R(400, "查找失败");
+        }
+        return new R(hotel);
+    }
 }

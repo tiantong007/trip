@@ -22,7 +22,7 @@
     </select>
 
     <!--  查询单个  -->
-    <select id="searchById" resultMap="BaseResultMap">
+    <select id="selectByHotelId" resultMap="BaseResultMap">
         select *
         from hotel left join city on hotel.city_id = city.city_id
         where h_id = #{hId}

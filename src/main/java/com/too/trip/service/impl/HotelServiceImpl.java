@@ -31,8 +31,8 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
     }
 
     @Override
-    public Hotel searchById(Integer hId) {
-        Hotel hotel = hotelMapper.searchById(hId);
+    public Hotel selectByHotelId(Integer hId) {
+        Hotel hotel = hotelMapper.selectByHotelId(hId);
         return hotel;
     }
 
