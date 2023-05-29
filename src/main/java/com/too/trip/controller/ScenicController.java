@@ -1,5 +1,6 @@
 package com.too.trip.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.Hotel;
 import com.too.trip.entity.R;
 import com.too.trip.entity.Scenic;
@@ -10,10 +11,7 @@ import com.too.trip.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class ScenicController {
      * @param request
      * @return
      */
-    @PostMapping("/selectAll")
+    @GetMapping("/selectAll")
     public R selectScenicAll(HttpServletRequest request){
         List<Scenic> scenics = scenicService.selectScenicAll();
         if(scenics == null || scenics.size() == 0){
@@ -50,16 +48,38 @@ public class ScenicController {
     /**
      *根据景点id查询景点对象
      * @param request
-     * @param cId
+     * @param sId
      * @return
      */
-    @PostMapping("/selectById")
+    @GetMapping("/selectById")
     public R selectScenicById(HttpServletRequest request,@RequestParam("sId") Integer sId){
         Scenic scenic = scenicService.selectScenicById(sId);
         if(scenic == null){
             return new R<>("204", "没有查到数据");
         }
         return new R<>(scenic);
+    }
+
+    /**
+     * 分页查询，可以根据城市id和景点名称进行查询,没有输入则查取全部
+     * @param request
+     * @param pages
+     * @param pageSize
+     * @param scenic
+     * @return
+     */
+    @GetMapping("/page")
+    public R<Page<Scenic>> searchPages(HttpServletRequest request, @RequestParam("pages") Integer pages, @RequestParam("pageSize") Integer pageSize, Scenic scenic){
+        //页码数小于0 设置为0
+        if (pages == null || pages < 0){
+            pages = 0;
+        }
+        Page<Scenic> scenics = scenicService.searchPageScenic(pages,pageSize,scenic);
+        System.out.println(scenic);
+        if (scenics == null || scenics.getTotal() == 0){
+            return new R<>("204","没有查到数据");
+        }
+        return new R<Page<Scenic>>(scenics);
     }
 
     /**
@@ -83,7 +103,7 @@ public class ScenicController {
      * @param sId
      * @return
      */
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public R deleteScenic(HttpServletRequest request,@RequestParam("sId") Integer sId){
         boolean result = scenicService.deleteScenicById(sId);
         if (! result){
