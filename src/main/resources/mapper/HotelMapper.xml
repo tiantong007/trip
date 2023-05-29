@@ -35,11 +35,8 @@
         select h_id, hotel_img, hotel_name, hotel_description, hotel_star, hotel_position, city_name
         from hotel left join city on hotel.city_id = city.city_id
         <where>
-            <if test="hotel.hotelName != null and hotel.hotelName != ''">
-                hotel_name like "%"#{hotel.hotelName}"%"
-            </if>
-            <if test="hotel.cityId != null and hotel.cityId != ''">
-                and hotel.city_id = #{hotel.cityId}
+            <if test="field != null and field != ''">
+                ${field} like "%"#{keyword}"%"
             </if>
         </where>
 

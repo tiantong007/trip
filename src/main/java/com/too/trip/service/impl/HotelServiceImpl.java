@@ -5,6 +5,7 @@ import com.too.trip.entity.Hotel;
 import com.too.trip.mapper.HotelMapper;
 import com.too.trip.service.HotelService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,13 +40,16 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
      * 分页查询
      * @param pages 页码，从1开始
      * @param pageSize 每页显示几条数据
-     * @param hotel
+     * @param filed
+     * @param keyword
      * @return
      */
     @Override
-    public Page<Hotel> searchPages(Integer pages, Integer pageSize, Hotel hotel) {
+    public Page<Hotel> searchPages(Integer pages, Integer pageSize,  String filed, String keyword) {
         Page<Hotel> page = new Page<>(pages, pageSize);
-        hotelMapper.selectPage(page, hotel);
+        hotelMapper.selectPage(page, filed, keyword);
         return page;
     }
+
+
 }
