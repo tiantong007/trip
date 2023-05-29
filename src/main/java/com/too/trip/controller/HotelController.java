@@ -1,8 +1,10 @@
 package com.too.trip.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.too.trip.entity.Hotel;
 import com.too.trip.entity.R;
+import com.too.trip.entity.Scenic;
 import com.too.trip.entity.User;
 import com.too.trip.service.HotelService;
 import io.swagger.models.auth.In;
@@ -17,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -28,6 +31,7 @@ import java.util.UUID;
  * @since 2023-05-24
  */
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/hotel")
 public class HotelController {
     @Autowired
@@ -62,6 +66,7 @@ public class HotelController {
         return new R<>(hotels);
     }
 
+
     @PostMapping()
     public R insertHotelUploadFile(@RequestBody @RequestParam("file") MultipartFile file, Hotel hotel) throws IOException {
         if(file.isEmpty()){
@@ -87,6 +92,26 @@ public class HotelController {
         boolean isSaveSuccess = hotelService.save(hotel);
         if(!isSaveSuccess){
             return new R(400, "插入失败");
+        }
+        return new R();
+
+    }
+
+    /**
+     * 批量删除
+     * @return
+     */
+    @DeleteMapping("/batch")
+    public R deleteByHotelIds(@RequestBody Map<String, List<Integer>> json){
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, List<Integer>> map = mapper.convertValue(json, Map.class);
+        List<Integer> list = map.get("hIds");
+        if(list.size() == 0){
+            return new R(400,"删除数据不能为空");
+        }
+        boolean result = hotelService.deleteByHotelIds(list);
+        if(!result){
+            return new R(200,"没有对应的数据可删除");
         }
         return new R();
 
