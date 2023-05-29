@@ -143,7 +143,7 @@ public class UserController {
         boolean flag = userService.isExist(username, email);
         if (flag) {
             //返回失败信息
-            return new R<>("409 Conflict", "用户名或邮箱已被注册");
+            return new R<>(409, "用户名或邮箱已被注册");
         }
 
         UpdateWrapper<User> wrapper = new UpdateWrapper<>();
