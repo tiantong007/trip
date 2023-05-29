@@ -71,6 +71,17 @@ public class ScenicServiceImpl extends ServiceImpl<ScenicMapper, Scenic> impleme
         return row > 0;
     }
 
+    /**
+     * 批量删除景点
+     * @param list
+     * @return
+     */
+    @Override
+    public boolean deleteBatchScenic(List<Integer> list) {
+        int row = scenicMapper.deleteBatchIds(list);
+        return row > 0;
+    }
+
 
     /**
      * 分页查询景点，可以根据城市id或者景点名字查询
@@ -82,13 +93,8 @@ public class ScenicServiceImpl extends ServiceImpl<ScenicMapper, Scenic> impleme
 
     @Override
     public Page<Scenic> searchPageScenic(Integer pages, Integer pageSize, Scenic scenic) {
-//        System.out.println(scenic);
-
         Page<Scenic> page = new Page<>(pages,pageSize);
         scenicMapper.selectPage(page,scenic);
-//        System.out.println("page为："+page.getRecords());
-//        List<Scenic> records = page.getRecords();
-//        return records;
         return page;
     }
 }

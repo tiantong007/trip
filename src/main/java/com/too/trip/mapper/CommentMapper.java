@@ -1,4 +1,5 @@
 package com.too.trip.mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.too.trip.entity.Comment;
@@ -21,5 +22,21 @@ import java.util.List;
 @Mapper
 @Repository
 public interface CommentMapper extends BaseMapper<Comment> {
+
+
+
+    List<Comment> selectByCommentId(@Param("commentId") Integer commentId);
+
+    int insertSelective(Comment comment);
+
+    int deleteByCommentId(@Param("commentId") Integer commentId);
+
+    List<Comment> selectAllByUId(@Param("uId") Integer uId);
+
+    List<Comment> selectAllByHId(@Param("hId") Integer hId);
+
+    List<Comment> selectAllBySId(@Param("sId") Integer sId);
+
+
 
 }

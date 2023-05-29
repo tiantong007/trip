@@ -21,11 +21,13 @@ public interface ScenicService extends IService<Scenic> {
     List<Scenic> selectScenicAll();
     //按id查找景点
     Scenic selectScenicById(Integer sid);
+    //分页搜索所有景点
+    Page<Scenic> searchPageScenic(Integer pages, Integer pageSize, Scenic scenic);
     //插入景点
     boolean insertScenic(Scenic scenic);
     //删除景点
     boolean deleteScenicById(Integer sid);
-    //分页查询所有景点
-    Page<Scenic> searchPageScenic(Integer pages, Integer pageSize, Scenic scenic);
+    //批量删除景点
+    boolean deleteBatchScenic(List<Integer> list);
 
 }
