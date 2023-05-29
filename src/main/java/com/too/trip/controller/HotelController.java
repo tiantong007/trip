@@ -57,7 +57,6 @@ public class HotelController {
 
     /**
      * 分页查询
-     * @param request
      * @param pages
      * @param pageSize
      * @param field
@@ -65,7 +64,7 @@ public class HotelController {
      * @return
      */
     @GetMapping("/page/{start}/{size}/{field}/{keyword}")
-    public R<Page<Hotel>> searchPages(HttpServletRequest request, @PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,
+    public R<Page<Hotel>> searchPages(@PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,
                                       @PathVariable("field")String field, @PathVariable("keyword")String keyword){
         //页码数小于0 设置为0
         if(pages == null || pages < 0){
@@ -135,5 +134,37 @@ public class HotelController {
 
     }
 
+    /**
+     * 修改酒店
+     * @param file
+     * @param hotel
+     * @return
+     */
+    @PutMapping()
+    public R updateHotel(@RequestBody(required = false) MultipartFile file, Hotel hotel) throws IOException {
 
+        // 如果文件为空则不做变化
+        if(file == null || file.isEmpty()){
+            hotel.setHotelImg(hotel.getHotelImg());
+        }else{
+            UUID uuid = UUID.randomUUID();
+            String fileName = uuid.toString() + file.getOriginalFilename();
+            String path = "classpath:/static/images";
+            Resource resource = resourceLoader.getResource(path);
+            File dir = resource.getFile();
+
+            File destFile  = new File(dir, fileName);
+            file.transferTo(destFile);
+            hotel.setHotelImg(fileName);
+        }
+        System.out.println(hotel);
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("h_id", hotel.getHId());
+        boolean update = hotelService.update(hotel, wrapper);
+        if(!update){
+            return new R(400,"修改失败");
+        }
+
+        return new R();
+    }
 }
