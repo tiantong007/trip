@@ -51,5 +51,17 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
         return page;
     }
 
-
+    /**
+     * 批量删除
+     * @param hotelIds
+     * @return
+     */
+    @Override
+    public boolean deleteByHotelIds(List<Integer> hotelIds) {
+        int i = hotelMapper.deleteBatchIds(hotelIds);
+        if(i == 0){
+            return false;
+        }
+        return true;
+    }
 }

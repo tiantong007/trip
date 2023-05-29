@@ -2,12 +2,19 @@ package com.too.trip.controller;
 
 import com.too.trip.entity.R;
 import com.too.trip.entity.Room;
+import com.too.trip.entity.Scenic;
 import com.too.trip.service.RoomService;
 import com.too.trip.service.impl.RoomServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * <p>
@@ -24,21 +31,41 @@ public class RoomController {
 
     @Autowired
     private RoomService roomService;
+    //处理资源文件
+    @Autowired
+    private ResourceLoader resourceLoader;
 
-    /**
-     * 房间增加
-     *
-     * @param room 要添加的房间对象
-     */
-    @PostMapping
-    public R<Room> addRoom(@RequestBody Room room) {
-        boolean flag = roomService.save(room);
 
-        if (!flag) {
-            return new R<>(400, "添加失败");
+
+    @PostMapping("insert")
+    public R insertScenic(@RequestBody @RequestParam("file") MultipartFile file, Room room) throws IOException {
+        if(file.isEmpty()){
+            return new R(400, "文件不能为空");
         }
 
-        return new R<>();
+        // 通用标识符 UUID
+        UUID uuid = UUID.randomUUID();
+
+        // 获取文件名
+        String fileName = uuid.toString() + file.getOriginalFilename();
+
+        // 构建文件保存路径 resources/static/images
+        String path = "classpath:/static/images";
+        Resource resource = resourceLoader.getResource(path);
+        File dir = resource.getFile();
+
+        File destFile  = new File(dir, fileName);
+        file.transferTo(destFile);
+
+        // 设置hotel的hotel_img属性
+//        scenic.setScienceImg(fileName);
+        room.setRoomImg(fileName);
+        //boolean isSaveSuccess = hotelService.save(scenic);
+        boolean isSaveSuccess = roomService.save(room);
+        if(!isSaveSuccess){
+            return new R(400, "插入失败");
+        }
+        return new R();
     }
 
     /**
