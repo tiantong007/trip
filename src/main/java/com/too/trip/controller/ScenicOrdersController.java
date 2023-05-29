@@ -30,7 +30,7 @@ public class ScenicOrdersController {
     private ScenicOrdersService scenicOrdersService;
 
     //查询所有订单
-    @PostMapping("/selectAll")
+    @GetMapping("/selectAll")
     public R selectScenicOredrsAll(HttpServletRequest request) {
         List<ScenicOrders> scenicOrders = scenicOrdersService.selectAllScenicOrder();
         if (scenicOrders == null || scenicOrders.size() == 0) {
@@ -41,7 +41,7 @@ public class ScenicOrdersController {
     }
 
     //根据用户id查询订单
-    @PostMapping("/selectByUid")
+    @GetMapping("/selectByUid")
     public R selectScenicOrderByUserId(HttpServletRequest request, @RequestParam("userId") Integer userId) {
         List<ScenicOrders> scenicOrders = scenicOrdersService.selectScenicOrderByUserId(userId);
         if (scenicOrders == null || scenicOrders.size() == 0) {
@@ -52,7 +52,7 @@ public class ScenicOrdersController {
     }
 
     //根据用户ID查询酒店订单+景点订单
-    @PostMapping("/getUserOrder")
+    @GetMapping("/getUserOrder")
     public R<List<Order>> getUserOrders(HttpServletRequest request, @RequestParam("userId") Integer userId) {
         List<Order> orders = scenicOrdersService.getUserOrders(userId);
         System.out.println("ffffffff" + orders);
@@ -63,7 +63,7 @@ public class ScenicOrdersController {
     }
 
     //添加景点订单
-    @PostMapping("/insert")
+    @PostMapping()
     public R insertScenicOrder(HttpServletRequest request, @RequestBody ScenicOrders scenicOrders) {
         LocalDateTime time = LocalDateTime.now();
         scenicOrders.setSoTime(time);
@@ -76,7 +76,7 @@ public class ScenicOrdersController {
     }
 
     //根据景点订单ID删除景点订单
-    @PostMapping("/delete")
+    @DeleteMapping()
     public R deleteScenicOrder(HttpServletRequest request, @RequestParam("soId") Integer soId) {
         boolean result = scenicOrdersService.deleteScenicOrdersById(soId);
         if (!result) {
@@ -86,7 +86,7 @@ public class ScenicOrdersController {
     }
 
     //更新景点订单
-    @PostMapping("/update")
+    @PutMapping()
     public R updateScenicOrder(HttpServletRequest request, @RequestBody ScenicOrders scenicOrders) {
         LocalDateTime time = LocalDateTime.now();
         scenicOrders.setSoTime(time);
