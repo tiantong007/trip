@@ -1,5 +1,7 @@
 package com.too.trip.controller;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.too.trip.entity.Hotel;
@@ -41,18 +43,27 @@ public class HotelController {
     private ResourceLoader resourceLoader;
 
 
-    //查询单个宾馆信息
-    @GetMapping()
-    public R<Hotel> searchHotel(HttpServletRequest request, @RequestParam("hId") Integer hId){
-        Hotel hotel = hotelService.searchById(hId);
-        if (hotel == null){
-            return new R<>(400, "没有查到数据");
-        }
-        return new R<>(hotel);
+    /**
+     * 查询所有宾馆
+     * @return
+     */
+    @GetMapping("selectAll")
+    public R<Page<Hotel>> searchHotel(@RequestParam("start") Integer start, @RequestParam("size") Integer size){
+
+        Page<Hotel> page = hotelService.selectAllHotelByPage(start, size);
+        return new R<>(page);
     }
 
 
-    //分页查询
+    /**
+     * 分页查询
+     * @param request
+     * @param pages
+     * @param pageSize
+     * @param field
+     * @param keyword
+     * @return
+     */
     @GetMapping("/page/{start}/{size}/{field}/{keyword}")
     public R<Page<Hotel>> searchPages(HttpServletRequest request, @PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,
                                       @PathVariable("field")String field, @PathVariable("keyword")String keyword){
@@ -67,6 +78,13 @@ public class HotelController {
     }
 
 
+    /**
+     * 新增宾馆
+     * @param file
+     * @param hotel
+     * @return
+     * @throws IOException
+     */
     @PostMapping()
     public R insertHotelUploadFile(@RequestBody @RequestParam("file") MultipartFile file, Hotel hotel) throws IOException {
         if(file.isEmpty()){
@@ -98,7 +116,7 @@ public class HotelController {
     }
 
     /**
-     * 批量删除
+     * 宾馆批量删除
      * @return
      */
     @DeleteMapping("/batch")
@@ -116,5 +134,6 @@ public class HotelController {
         return new R();
 
     }
+
 
 }

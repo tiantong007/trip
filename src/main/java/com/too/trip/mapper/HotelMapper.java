@@ -43,4 +43,6 @@ public interface HotelMapper extends BaseMapper<Hotel> {
      * @return
      */
     Page<Hotel> selectPage(@Param("page") Page<Hotel> page, @Param("field") String filed, @Param("keyword") String keyword);
+
+    Page<Hotel> selectAllByPage(@Param("page") Page<Hotel> page);
 }

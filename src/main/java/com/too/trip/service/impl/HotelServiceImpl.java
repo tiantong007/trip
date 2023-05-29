@@ -64,4 +64,11 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
         }
         return true;
     }
+
+    @Override
+    public Page<Hotel> selectAllHotelByPage(Integer start, Integer size) {
+        Page<Hotel> page = new Page<>(start, size);
+        hotelMapper.selectAllByPage(page);
+        return page;
+    }
 }
