@@ -105,7 +105,7 @@ public class UserController {
     }
 
     /**
-     * 更新用户信息
+     * 添加用户信息
      *
      * @param request
      * @param user
@@ -194,9 +194,14 @@ public class UserController {
      * @param userId
      * @return 用户实体信息
      */
-    @GetMapping
-    public R<User> getUserById(@RequestParam int userId) {
+    @GetMapping("/{userId}")
+    public R<User> getUserById(@PathVariable int userId) {
+        log.info(String.valueOf(userId));
         User user = userService.getById(userId);
+        if (user == null){
+            return new R<>(404,"用户不存在");
+        }
+
         return new R<>(user);
     }
 
@@ -208,7 +213,7 @@ public class UserController {
      * @param pageSize
      * @return 返回模糊查询和分页后的数据
      */
-    @PostMapping("/show")
+    @GetMapping("/show")
     public R<IPage<User>> getUsers(@RequestParam(defaultValue = "") String keyword,
                                    @RequestParam(defaultValue = "1") int pageNum,
                                    @RequestParam(defaultValue = "10") int pageSize) {
