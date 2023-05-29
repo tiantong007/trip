@@ -1,6 +1,8 @@
 package com.too.trip.controller;
 
+import com.too.trip.entity.R;
 import com.too.trip.entity.Room;
+import com.too.trip.service.RoomService;
 import com.too.trip.service.impl.RoomServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author isixe
@@ -21,7 +23,50 @@ import java.util.List;
 public class RoomController {
 
     @Autowired
-    private RoomServiceImpl roomService; // 注入 RoomServiceImpl 服务实现
+    private RoomService roomService;
+
+    /**
+     * 房间增加
+     *
+     * @param room 要添加的房间对象
+     */
+    @PostMapping
+    public R<Room> addRoom(@RequestBody Room room) {
+        boolean flag = roomService.save(room);
+
+        if (!flag) {
+            return new R<>(400, "添加失败");
+        }
+
+        return new R<>();
+    }
+
+    /**
+     * 房间的ID查询
+     *
+     * @param roomId
+     * @return Room
+     */
+    @GetMapping("/{roomId}")
+    public R<Room> getRoomById(@PathVariable("roomId") Integer roomId) {
+        Room room = roomService.selectRoomById(roomId);
+        return new R<>(room);
+    }
+
+    /**
+     * 房间ID删除
+     *
+     * @param roomId
+     * @return R
+     */
+    @DeleteMapping("/{roomId}")
+    public R<Room> deleteRoomById(@PathVariable("roomId") Integer roomId) {
+        boolean flag = roomService.removeById(roomId);
+        if (!flag) {
+            return new R<Room>(404, "找不到对应的房间id");
+        }
+        return new R<>();
+    }
 
     /**
      * 根据酒店 ID 查询所有可用的某种房间类型列表
@@ -34,26 +79,6 @@ public class RoomController {
         return roomService.selectRoomTypeByHotelId(hotelId);
     }
 
-    /**
-     * 根据房间 ID 查询房间信息
-     *
-     * @param roomId 房间 ID
-     * @return 房间信息
-     */
-    @GetMapping("{roomId}")
-    public Room getRoomById(@PathVariable("roomId") Integer roomId) {
-        return roomService.selectRoomById(roomId);
-    }
-
-    /**
-     * 添加一个新的房间
-     *
-     * @param room 要添加的房间对象
-     */
-    @PostMapping
-    public void addRoom(@RequestBody Room room) {
-        roomService.insertRoom(room);
-    }
 
     /**
      * 更新指定 ID 的房间信息
@@ -67,16 +92,6 @@ public class RoomController {
         room.setRoomId(roomId);
         // 调用底层服务来更新房间信息
         roomService.updateRoom(room);
-    }
-
-    /**
-     * 根据房间 ID 删除指定房间
-     *
-     * @param roomId 要删除的房间 ID
-     */
-    @DeleteMapping("{roomId}")
-    public void deleteRoomById(@PathVariable("roomId") Integer roomId) {
-        roomService.deleteRoomById(roomId);
     }
 
     /**
