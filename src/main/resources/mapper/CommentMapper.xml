@@ -10,5 +10,59 @@
         <result column="c_context" property="cContext" />
         <result column="c_date" property="cDate" />
     </resultMap>
+    <sql id="Base_Column_List">
+     c_id,h_id,u_id,s_id,hc_context,hc_date
+    </sql>
+    <select id="selectByCommentId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comment
+        where
+        comment_id = #{commentId,jdbcType=NUMERIC}
+    </select>
+    <insert id="insertSelective">
+        insert into comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">comment_id,</if>
+            <if test="hId != null">h_id,</if>
+            <if test="uId != null">u_id,</if>
+            <if test="cContext != null">c_context,</if>
+            <if test="cDate != null">c_date,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commentId != null">#{commentId,jdbcType=NUMERIC},</if>
+            <if test="hId != null">#{hId,jdbcType=NUMERIC},</if>
+            <if test="uId != null">#{uId,jdbcType=NUMERIC},</if>
+            <if test="cContext != null">#{cContext,jdbcType=VARCHAR},</if>
+            <if test="cDate != null">#{cDate},</if>
+        </trim>
+    </insert>
+    <delete id="deleteByCommentId">
+        delete
+        from comment
+        where comment_id = #{commentId,jdbcType=NUMERIC}
+    </delete>
+    <select id="selectAllByUId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comment
+        where
+        u_id = #{uId,jdbcType=NUMERIC}
+    </select>
+    <select id="selectAllByHId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comment
+        where
+        h_id = #{hId,jdbcType=NUMERIC}
+    </select>
+    <select id="selectAllBySId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comment
+        where
+        s_id = #{sId,jdbcType=NUMERIC}
+    </select>
 
 </mapper>

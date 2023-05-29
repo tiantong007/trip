@@ -1,5 +1,6 @@
 package com.too.trip.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.Hotel;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.swagger.models.auth.In;
@@ -33,5 +34,7 @@ public interface HotelService extends IService<Hotel> {
      * @param pageSize 每页显示几条数据
      * @return
      */
-    List<Hotel> searchPages(Integer pages, Integer pageSize, Hotel hotel);
+    Page<Hotel> searchPages(Integer pages, Integer pageSize,  String filed, String keyword);
+
+
 }

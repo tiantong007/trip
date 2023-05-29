@@ -1,8 +1,10 @@
 package com.too.trip.controller;
 
+import com.too.trip.entity.City;
 import com.too.trip.entity.Comment;
 import com.too.trip.entity.R;
 import com.too.trip.service.CommentService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +28,13 @@ public class CommentController {
     private CommentService commentService;  // 实现了 CommentService 接口
 
     // 添加评论
-    @PostMapping("")
-    public R<Comment> saveComment(@RequestBody Comment comment) {
-        boolean success = commentService.save(comment);
-        if (success) {
-            return new R<>(comment);
-        } else {
-            return new R<>("204", "评论失败");
+    @PostMapping
+    public R<Comment> addComment(@RequestBody Comment comment){
+        boolean result = commentService.save(comment);
+        if (! result){
+            return new R<>(400 , "请求参数错误");
         }
+        return new R<>();
     }
 
 
@@ -44,7 +45,7 @@ public class CommentController {
         if (comments != null && !comments.isEmpty()) {
             return new R<>( comments);
         } else {
-            return new R<>("204", "未找到该用户的评论");
+            return new R<>(204, "未找到该用户的评论");
         }
     }
 
@@ -56,8 +57,43 @@ public class CommentController {
         if (comments != null && !comments.isEmpty()) {
             return new R<>( comments);
         } else {
-            return new R<>("204", "未找到该用户的评论");
+            return new R<>(204, "未找到该酒店的评论");
         }
     }
+    //根据景点id获取该景点的评论
+    @GetMapping("/byScenic/{scenicId}")
+    public R<List<Comment>>  getCommentsBySId(@PathVariable Integer scenicId) {
+        List<Comment> comments =  commentService.getCommentsBySId(scenicId);
+        if (comments != null && !comments.isEmpty()) {
+            return new R<>( comments);
+        } else {
+            return new R<>(204, "未找到该景点的评论");
+        }
+    }
+
+    //根据评论id获取该评论完整信息
+
+    @GetMapping("/byCommentId/{commentId}")
+    public R<List<Comment>>  selectByCommentId(@PathVariable Integer commentId) {
+        List<Comment> comments =  commentService.selectByCommentId(commentId);
+        if (comments != null && !comments.isEmpty()) {
+            return new R<>( comments);
+        } else {
+            return new R<>(204, "未找到该评论");
+        }
+    }
+
+    //删除评论
+
+    @DeleteMapping
+    public R deleteByCommentId( @RequestParam("cityId") Integer cityId){
+        boolean result = commentService.deleteByCommentId(cityId);
+        if(!result){
+            return new R<City>(204 ,"没有这条评论");
+        }
+        return new R<City>();
+    }
+
+
 }
 

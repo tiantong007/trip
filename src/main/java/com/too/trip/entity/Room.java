@@ -49,5 +49,6 @@ public class Room implements Serializable {
     @TableField("room_img")
     private String roomImg;
 
+    private Hotel hotel;
 
 }

@@ -24,6 +24,7 @@ import java.lang.reflect.Field;
  */
 @RestController
 @Slf4j
+@CrossOrigin("*")
 @RequestMapping(value = "/user")
 public class UserController {
     @Autowired
@@ -48,6 +49,14 @@ public class UserController {
         return new R<>(409, "用户名或邮箱已被注册");
     }
 
+    /**
+     * 用户登录
+     *
+     * @param request
+     * @param username
+     * @param password
+     * @return 登录信息
+     */
     @PostMapping(value = "/login")
     public R selectUser(HttpServletRequest request, @RequestParam String username, @RequestParam String password) {
         //判断登录，登录成功则返回用户信息
@@ -64,6 +73,12 @@ public class UserController {
         return new R<User>(user);
     }
 
+    /**
+     * 用户退出
+     *
+     * @param request
+     * @return 请求结果
+     */
     @DeleteMapping(value = "/logout")
     public R logoutUser(HttpServletRequest request) {
         //清除用户的session信息
@@ -74,9 +89,15 @@ public class UserController {
     }
 
 
-    // 删除用户
-    @DeleteMapping("/delete")
-    public R deleteUser(HttpServletRequest request, @RequestParam("uid") Integer uid) {
+    /**
+     * 删除用户信息
+     *
+     * @param request
+     * @param uid
+     * @return 请求结果
+     */
+    @DeleteMapping("/{uid}")
+    public R deleteUser(HttpServletRequest request, @PathVariable("uid") Integer uid) {
         boolean result = userService.deleteUserById(uid);
         if (!result) {
             return new R<User>(404, "找不到对应的用户id");
@@ -84,8 +105,14 @@ public class UserController {
         return new R<User>();
     }
 
-    // 新增用户
-    @PostMapping("/add")
+    /**
+     * 添加用户信息
+     *
+     * @param request
+     * @param user
+     * @return 请求结果
+     */
+    @PostMapping
     public R insertUser(HttpServletRequest request, User user) {
         String username = user.getUsername();
         String email = user.getEmail();
@@ -103,8 +130,15 @@ public class UserController {
         return new R<User>();
     }
 
-    //修改用户
-    @PutMapping("/update")
+    /**
+     * 更新用户信息
+     *
+     * @param request
+     * @param user
+     * @return 请求结果
+     * @throws IllegalAccessException
+     */
+    @PutMapping
     public R updateUser(HttpServletRequest request, User user) throws IllegalAccessException {
         // 用户id为空时返回错误信息
         if (user.getUserId() == null) {
@@ -155,13 +189,38 @@ public class UserController {
         return new R<User>();
     }
 
-    // 查询用户列表
-    @PostMapping("/show")
-    public R<IPage<User>> getUsers(@RequestParam(defaultValue = "") String keyword,
-                                   @RequestParam(defaultValue = "1") int pageNum,
-                                   @RequestParam(defaultValue = "10") int pageSize) {
+    /**
+     * 获取用户信息
+     *
+     * @param userId
+     * @return 用户实体信息
+     */
+    @GetMapping("/{userId}")
+    public R<User> getUserById(@PathVariable int userId) {
+        log.info(String.valueOf(userId));
+        User user = userService.getById(userId);
+        if (user == null) {
+            return new R<>(404, "用户不存在");
+        }
+
+        return new R<>(user);
+    }
+
+    /**
+     * 用户模糊查询和分页
+     *
+     * @param keyword
+     * @param start
+     * @param size
+     * @return 返回模糊查询和分页后的数据
+     */
+    @GetMapping("/page/{start}/{size}/{field}/{keyword}")
+    public R<IPage<User>> getUsers(@PathVariable int start,
+                                   @PathVariable int size,
+                                   @PathVariable String field,
+                                   @PathVariable String keyword) {
         // 构造分页对象
-        Page<User> page = new Page<>(pageNum, pageSize);
+        Page<User> page = new Page<>(start, size);
 
         // 构造查询条件
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -169,11 +228,12 @@ public class UserController {
 
         //模糊查询
         if (StringUtils.isNotBlank(keyword)) {
-            queryWrapper.like("username", keyword).or().like("email", keyword);
+            queryWrapper.like(field, keyword);
         }
 
         // 执行分页查询
         IPage<User> userPage = userService.page(page, queryWrapper);
+
         // 返回结果
         return new R<>(userPage);
     }

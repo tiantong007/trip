@@ -7,5 +7,45 @@
         <id column="city_id" property="cityId" />
         <result column="city_name" property="cityName" />
     </resultMap>
+    <sql id="Base_Column_List">
+        city_id,city_name,province
+    </sql>
+    <select id="selectByCityId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from city
+        where
+        city_id = #{cityId,jdbcType=NUMERIC}
+    </select>
+    <delete id="deleteByCityId">
+        delete
+        from city
+        where city_id = #{cityId,jdbcType=NUMERIC}
+    </delete>
+    <insert id="insertSelective">
+        insert into city
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cityId != null">city_id,</if>
+            <if test="cityName != null">city_name,</if>
+            <if test="province != null">province,</if>
+            <if test="keyword != null">,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cityId != null">#{cityId,jdbcType=NUMERIC},</if>
+            <if test="cityName != null">#{cityName,jdbcType=VARCHAR},</if>
+            <if test="province != null">#{province,jdbcType=VARCHAR},</if>
+            <if test="keyword != null">#{keyword,jdbcType=VARCHAR},</if>
+        </trim>
+    </insert>
+    <select id="selectPage" resultMap="BaseResultMap">
+        select city_id,province, city_name
+        from  city
+        where city_id = #{cityId}
+    </select>
+    <update id="updateCityName">
+        update city
+        set city_name = #{cityName,jdbcType=VARCHAR}
+    </update>
 
 </mapper>
