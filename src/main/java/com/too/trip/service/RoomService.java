@@ -27,4 +27,6 @@ public interface RoomService extends IService<Room> {
 
 
     Page<Room> searchPages(Integer pages, Integer pageSize, String filed, String keyword);
+
+    List<Room> selectByHotelId(Integer hId);
 }

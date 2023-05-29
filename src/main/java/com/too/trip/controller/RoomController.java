@@ -149,4 +149,14 @@ public class RoomController {
         return new R();
     }
 
+    @GetMapping("/select/{hotelId}")
+    public R selectRoomByHotelId(@RequestBody @PathVariable("hotelId") Integer hId){
+
+        List<Room> rooms = roomService.selectByHotelId(hId);
+        if(rooms.size() == 0 || rooms == null){
+            return new R(400, "查找失败");
+        }
+        return new R<>();
+    }
+
 }
