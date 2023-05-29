@@ -1,6 +1,7 @@
 package com.too.trip.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.too.trip.entity.Order;
 import com.too.trip.entity.ScenicOrders;
 import com.too.trip.service.ScenicOrdersService;
 import com.too.trip.mapper.ScenicOrdersMapper;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 15110
@@ -32,6 +34,13 @@ public class ScenicOrdersServiceImpl extends ServiceImpl<ScenicOrdersMapper, Sce
     public List<ScenicOrders> selectScenicOrderByUserId(Integer uid) {
         List<ScenicOrders> scenicOrders = scenicOrdersMapperl.selectByUserId(uid);
         return scenicOrders;
+    }
+
+    @Override
+    public List<Order> getUserOrders(Integer uid) {
+//        System.out.println(scenicOrdersMapperl.getUserOrders(uid));
+        List<Order> orders = scenicOrdersMapperl.getUserOrders(uid);
+        return orders;
     }
 
     @Override

@@ -29,8 +29,7 @@ spring:
       additional-paths: src/main/java
   freemarker:
     cache: false
-  jackson:
-    default-property-inclusion: non_null
+
 
 mybatis-plus:
   configuration:
