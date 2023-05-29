@@ -181,9 +181,6 @@ public class UserController {
         // 执行分页查询
         IPage<User> userPage = userService.page(page, queryWrapper);
 
-        if (pageNum > userPage.getPages()){
-            return new R<>(400,"无效的请求页数");
-        }
         // 返回结果
         return new R<>(userPage);
     }
