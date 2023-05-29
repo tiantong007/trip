@@ -1,6 +1,7 @@
 package com.too.trip.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.too.trip.entity.Hotel;
 import com.too.trip.entity.R;
 import com.too.trip.entity.Scenic;
@@ -8,12 +9,14 @@ import com.too.trip.entity.User;
 import com.too.trip.mapper.ScenicMapper;
 import com.too.trip.service.ScenicService;
 import com.too.trip.service.UserService;
+import io.swagger.models.auth.In;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -40,7 +43,7 @@ public class ScenicController {
     public R selectScenicAll(HttpServletRequest request){
         List<Scenic> scenics = scenicService.selectScenicAll();
         if(scenics == null || scenics.size() == 0){
-            return new R<>("204", "没有查到数据");
+            return new R<>(204, "没有查到数据");
         }
         return new R<>(scenics);
     }
@@ -55,13 +58,14 @@ public class ScenicController {
     public R selectScenicById(HttpServletRequest request,@RequestParam("sId") Integer sId){
         Scenic scenic = scenicService.selectScenicById(sId);
         if(scenic == null){
-            return new R<>("204", "没有查到数据");
+            return new R<>(204, "没有查到数据");
         }
         return new R<>(scenic);
     }
 
     /**
-     * 分页查询，可以根据城市id和景点名称进行查询,没有输入则查取全部
+     *
+     * 分页查询，可以根据城市id和景点名称进行搜索,没有输入则查取全部
      * @param request
      * @param pages
      * @param pageSize
@@ -77,7 +81,7 @@ public class ScenicController {
         Page<Scenic> scenics = scenicService.searchPageScenic(pages,pageSize,scenic);
         System.out.println(scenic);
         if (scenics == null || scenics.getTotal() == 0){
-            return new R<>("204","没有查到数据");
+            return new R<>(204,"没有查到数据");
         }
         return new R<Page<Scenic>>(scenics);
     }
@@ -89,10 +93,11 @@ public class ScenicController {
      * @return
      */
     @PostMapping("/insert")
-    public R insertScenic(HttpServletRequest request,Scenic scenic){
+    public R insertScenic(HttpServletRequest request,@RequestBody Scenic scenic){
+        System.out.println(scenic);
         boolean result = scenicService.insertScenic(scenic);
         if (! result){
-            return new R<Scenic>("400 Bad Request", "请求参数错误");
+            return new R<Scenic>(400, "请求参数错误");
         }
         return new R<Scenic>();
     }
@@ -107,7 +112,26 @@ public class ScenicController {
     public R deleteScenic(HttpServletRequest request,@RequestParam("sId") Integer sId){
         boolean result = scenicService.deleteScenicById(sId);
         if (! result){
-            return new R<Scenic>("400 Bad Request", "请求参数错误");
+            return new R<Scenic>(400, "请求参数错误");
+        }
+        return new R<Scenic>();
+    }
+
+    /**
+     * 批量删除功能
+     * @param request
+     * @param json
+     * @return
+     */
+    @DeleteMapping("/batch")
+    public R batchDeleteScenic(HttpServletRequest request,@RequestBody Map<String, List<Integer>> json){
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, List<Integer>> map = mapper.convertValue(json, Map.class);
+        System.out.println(map.get("sIds"));
+        List<Integer> list = map.get("sIds");
+        boolean result = scenicService.deleteBatchScenic(list);
+        if(!result){
+            return new R<Scenic>(400,"请求参数错误");
         }
         return new R<Scenic>();
     }
