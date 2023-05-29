@@ -47,8 +47,8 @@ public class HotelController {
      * 查询所有宾馆
      * @return
      */
-    @GetMapping("selectAll")
-    public R<Page<Hotel>> searchHotel(@RequestParam("start") Integer start, @RequestParam("size") Integer size){
+    @GetMapping("/selectAll/{start}/{size}")
+    public R<Page<Hotel>> searchHotel(@PathVariable("start") Integer start, @PathVariable("size") Integer size){
 
         Page<Hotel> page = hotelService.selectAllHotelByPage(start, size);
         return new R<>(page);
@@ -168,8 +168,8 @@ public class HotelController {
         return new R();
     }
 
-    @GetMapping()
-    public R selectByHotelId(@RequestBody @RequestParam("hId") Integer hId){
+    @GetMapping("selectById/{hId}")
+    public R selectByHotelId(@PathVariable("hId") Integer hId){
         Hotel hotel = hotelService.selectByHotelId(hId);
         if(hotel == null){
             return new R(400, "查找失败");
