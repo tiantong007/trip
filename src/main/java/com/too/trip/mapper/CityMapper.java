@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.City;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.too.trip.entity.Hotel;
 import com.too.trip.entity.Scenic;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -34,7 +35,7 @@ public interface CityMapper extends BaseMapper<City> {
 
     int updateCityName(@Param("cityName") String cityName);
 
-
-
     int insertSelective(City city);
+
+
 }
