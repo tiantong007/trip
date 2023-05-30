@@ -41,5 +41,13 @@ public class ScenicOrders implements Serializable {
     private LocalDateTime soTime;
 
     @TableField(exist = false)
+    private String username;
+    @TableField(exist = false)
+    private String scienceName;
+    @TableField(exist = false)
+    private String scienceImg;
+
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

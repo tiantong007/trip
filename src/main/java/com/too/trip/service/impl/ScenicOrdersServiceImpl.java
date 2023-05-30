@@ -1,6 +1,7 @@
 package com.too.trip.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.too.trip.entity.HotelOrders;
 import com.too.trip.entity.Order;
 import com.too.trip.entity.ScenicOrders;
 import com.too.trip.service.ScenicOrdersService;
@@ -31,10 +32,17 @@ public class ScenicOrdersServiceImpl extends ServiceImpl<ScenicOrdersMapper, Sce
     }
 
     @Override
+    public List<ScenicOrders> selectAllScenicOrderF() {
+        List<ScenicOrders> scenicOrders = scenicOrdersMapperl.selectAllF();
+        return scenicOrders;
+    }
+
+    @Override
     public List<ScenicOrders> selectScenicOrderByUserId(Integer uid) {
         List<ScenicOrders> scenicOrders = scenicOrdersMapperl.selectByUserId(uid);
         return scenicOrders;
     }
+
 
     @Override
     public List<Order> getUserOrders(Integer uid) {

@@ -26,6 +26,8 @@ import java.util.Map;
 public interface ScenicOrdersMapper extends BaseMapper<ScenicOrders> {
     List<ScenicOrders> selectAll();
 
+    List<ScenicOrders> selectAllF();
+
     List<ScenicOrders> selectByUserId(@Param("userId") Integer userId);
 
     int updateSelective(ScenicOrders scenicOrders);
