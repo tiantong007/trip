@@ -36,4 +36,6 @@ public interface CityService extends IService<City> {
     //批量删除
     boolean deleteBatchCity(List<Integer> list);
 
+    List<City> getAllCities();
+
 }

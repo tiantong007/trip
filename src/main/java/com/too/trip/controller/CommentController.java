@@ -114,11 +114,21 @@ public class CommentController {
         }
         return new R<Comment>();
     }
-    //分页查询
 
-    @GetMapping("/page/{start}/{size}/{field}/{keyword}")
-    public R<Page<Comment>> searchPages( @PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,
-                                      @PathVariable("field")String field, @PathVariable("keyword")String keyword){
+    /**
+     * 分页查询
+     * @param pages
+     * @param pageSize
+     * @param field
+     * @param keyword
+     * @return
+     */
+    @GetMapping("/page")
+    public R<Page<Comment>> searchPages(@RequestParam(value = "start", defaultValue = "0") Integer pages,
+                                      @RequestParam(value = "size", defaultValue = "5") Integer pageSize,
+                                      @RequestParam(value = "field", required = false)String field,
+                                      @RequestParam(value = "keyword", required = false)String keyword){
+
         //页码数小于0 设置为0
         if(pages == null || pages < 0){
             pages = 0;
@@ -126,9 +136,18 @@ public class CommentController {
         // 调用searchPage方法
         Page<Comment> comments = commentService.searchPages(pages, pageSize, field, keyword);
 
-        return new R<>(comments);
+        System.out.println(comments);
+        if (comments == null || comments.getTotal() == 0){
+            return new R<>(204,"没有查到数据");
+        }
+        return new R<Page<Comment>>(comments);
     }
 
-
 }
+
+
+
+
+
+
 

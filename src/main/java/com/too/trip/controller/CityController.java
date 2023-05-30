@@ -98,6 +98,18 @@ public class CityController {
         return new R<Scenic>();
     }
 
+    //查找所有城市
+
+    @GetMapping
+    public R getAllCities(HttpServletRequest request) {
+        List<City> city = cityService.getAllCities();
+        if (city == null || city.size() == 0) {
+            System.out.println(city);
+            return new R<>(204, "没有查到数据");
+        }
+        return new R<>(city);
+    }
+
 
 
 }

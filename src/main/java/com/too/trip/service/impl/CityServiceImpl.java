@@ -74,6 +74,12 @@ public class CityServiceImpl extends ServiceImpl<CityMapper, City> implements Ci
         int row = cityMapper.deleteBatchIds(list);
         return row > 0;
     }
+    //查询所有城市
+
+    public List<City> getAllCities() {
+        QueryWrapper<City> queryWrapper = new QueryWrapper<>();
+        return cityMapper.selectList(queryWrapper);
+    }
 
 
 }
