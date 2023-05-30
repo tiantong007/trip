@@ -11,7 +11,7 @@
  Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 30/05/2023 20:15:55
+ Date: 30/05/2023 20:25:26
 */
 
 SET NAMES utf8mb4;
@@ -381,7 +381,7 @@ CREATE TABLE `scenic_orders`  (
                                   `so_status` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '订单状态',
                                   `so_time` datetime(0) NULL DEFAULT NULL COMMENT '预定时间',
                                   `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '订单金额',
-                                  `nuber` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '订单门票数量',
+                                  `number` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '订单门票数量',
                                   PRIMARY KEY (`so_id`) USING BTREE,
                                   INDEX `scenic_id`(`scenic_id`) USING BTREE,
                                   INDEX `user_id`(`user_id`) USING BTREE,
