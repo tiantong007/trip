@@ -40,12 +40,21 @@ public class HotelOrders implements Serializable {
     private LocalDateTime beginDate;
 
     @ApiModelProperty("离开时间")
-    @TableField(value = "end_date",fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "end_date", fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime endDate;
 
     @ApiModelProperty("订单状态")
     @TableField("status")
     private String status;
 
+
+    @TableField(exist = false)
+    private String username;
+    @TableField(exist = false)
+    private String hotelName;
+    @TableField(exist = false)
+    private String roomType;
+    @TableField(exist = false)
+    private String hotelImg;
 
 }

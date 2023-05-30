@@ -23,6 +23,8 @@ import java.util.List;
 public interface HotelOrdersMapper extends BaseMapper<HotelOrders> {
     List<HotelOrders> selectAll();
 
+    List<HotelOrders> selectAllF();
+
     int updateSelective(HotelOrders hotelOrders);
 
 }

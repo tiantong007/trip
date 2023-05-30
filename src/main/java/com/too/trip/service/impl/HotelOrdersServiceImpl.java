@@ -31,6 +31,12 @@ public class HotelOrdersServiceImpl extends ServiceImpl<HotelOrdersMapper, Hotel
     }
 
     @Override
+    public List<HotelOrders> selectAllHotelOrderF() {
+        List<HotelOrders> hotelOrders = hotelOrdersMapper.selectAllF();
+        return hotelOrders;
+    }
+
+    @Override
     public boolean insertHotelOrder(HotelOrders hotelOrders) {
         int row = hotelOrdersMapper.insert(hotelOrders);
         return row > 0;
