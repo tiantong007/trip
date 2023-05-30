@@ -40,6 +40,17 @@ public class ScenicOrdersController {
         return new R<>(scenicOrders);
     }
 
+    //查询所有订单(前端)
+    @GetMapping("/selectAllF")
+    public R selectScenicOredrsAllF(HttpServletRequest request) {
+        List<ScenicOrders> scenicOrders = scenicOrdersService.selectAllScenicOrderF();
+        if (scenicOrders == null || scenicOrders.size() == 0) {
+            System.out.println(scenicOrders);
+            return new R<>(204, "没有查到数据");
+        }
+        return new R<>(scenicOrders);
+    }
+
     //根据用户id查询订单
     @GetMapping("/selectByUid")
     public R selectScenicOrderByUserId(HttpServletRequest request, @RequestParam("userId") Integer userId) {

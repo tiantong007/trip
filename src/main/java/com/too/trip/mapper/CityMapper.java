@@ -34,7 +34,7 @@ public interface CityMapper extends BaseMapper<City> {
 
     int updateCityName(@Param("cityName") String cityName);
 
-    Page<City> selectPage(@Param("page") Page<City> page, City city);
+
 
     int insertSelective(City city);
 }

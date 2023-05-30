@@ -23,6 +23,14 @@
         from scenic_orders
         order by so_time desc
     </select>
+    <select id="selectAllF" resultMap="BaseResultMap">
+        SELECT so_id, username, science_name, science_img, so_status, so_time
+        FROM scenic,
+             scenic_orders,
+             user
+        WHERE scenic.scenic_id = scenic_orders.scenic_id
+          and scenic_orders.user_id = user.user_id
+    </select>
     <select id="selectByUserId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

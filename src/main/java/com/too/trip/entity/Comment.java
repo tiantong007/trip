@@ -20,8 +20,9 @@ public class Comment implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "comment_id", type = IdType.AUTO)
+    @TableId(value = "c_id", type = IdType.AUTO)
     private Integer commentId;
+
 
     @ApiModelProperty("酒店id")
     @TableField("h_id")
@@ -36,12 +37,13 @@ public class Comment implements Serializable {
     private  Integer sId;
 
     @ApiModelProperty("评论信息")
-    @TableField("c_context")
+    @TableField("hc_context")
     private String cContext;
 
     @ApiModelProperty("评论时间")
-    @TableField(value = "c_date",fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "hc_date",fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime cDate;
 
-
+    @TableField(exist = false)
+    private String username;
 }

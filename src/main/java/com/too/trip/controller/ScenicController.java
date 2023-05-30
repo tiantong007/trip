@@ -1,5 +1,6 @@
 package com.too.trip.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.too.trip.entity.Hotel;
@@ -143,11 +144,28 @@ public class ScenicController {
      * @param scenic
      * @return
      */
-    @PutMapping("/update")
-    public R updateScenic(@RequestBody Scenic scenic){
-        boolean result = scenicService.updateScenic(scenic);
+    @PutMapping()
+    public R updateScenic(@RequestBody(required = false) MultipartFile file,  Scenic scenic) throws IOException {
+        if(file == null || file.isEmpty()){
+            scenic.setScienceImg(scenic.getScienceImg());
+        }else{
+            UUID uuid = UUID.randomUUID();
+            String fileName = uuid.toString() + file.getOriginalFilename();
+            String path = "classpath:/static/images";
+            Resource resource = resourceLoader.getResource(path);
+            File dir = resource.getFile();
+
+            File destFile  = new File(dir, fileName);
+            file.transferTo(destFile);
+            scenic.setScienceImg(fileName);
+        }
+
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("scenic_id", scenic.getScenicId());
+
+        boolean result = scenicService.update(scenic, wrapper);
         if(! result){
-            return new R(400,"请求参数错误");
+            return new R(400,"修改失败");
         }
         return new R();
     }

@@ -17,6 +17,9 @@ public interface HotelOrdersService extends IService<HotelOrders> {
         //查询所有酒店订单
         List<HotelOrders> selectAllHotelOrder();
 
+        //查询所有酒店订单(前端)
+        List<HotelOrders> selectAllHotelOrderF();
+
         //        //根据酒店名搜索
 //        List<HotelOrders> selectHotelOrderByH
         //插入酒店订单

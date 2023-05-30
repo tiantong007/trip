@@ -41,6 +41,19 @@ public class HotelOrdersController {
         return new R<>(hotelOrders);
     }
 
+    //查询所有酒店(前端用)
+    @PostMapping("/selectAllF")
+    public R selectHotelOredrsAllF(HttpServletRequest request) {
+        List<HotelOrders> hotelOrders = hotelOrdersService.selectAllHotelOrderF();
+        System.out.println("2222222222" + hotelOrders);
+
+        if (hotelOrders == null || hotelOrders.size() == 0) {
+            System.out.println(hotelOrders);
+            return new R<>(204, "没有查到数据");
+        }
+        return new R<>(hotelOrders);
+    }
+
     //添加酒店订单
     @PostMapping("/insert")
     public R insertHotelOrder(HttpServletRequest request, @RequestBody HotelOrders hotelOrders) {

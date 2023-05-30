@@ -1,4 +1,6 @@
 package com.too.trip.mapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.too.trip.entity.Hotel;
 import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -37,6 +39,17 @@ public interface CommentMapper extends BaseMapper<Comment> {
 
     List<Comment> selectAllBySId(@Param("sId") Integer sId);
 
-
-
+    /**
+     * 分页查询
+     * @param page 分页对象
+     * @param filed
+     * @param keyword
+     * @return
+     */
+    Page<Comment> selectPage(@Param("page") Page<Comment> page, @Param("field") String filed, @Param("keyword") String keyword);
 }
+
+
+
+
+

@@ -31,8 +31,8 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
     }
 
     @Override
-    public Hotel searchById(Integer hId) {
-        Hotel hotel = hotelMapper.searchById(hId);
+    public Hotel selectByHotelId(Integer hId) {
+        Hotel hotel = hotelMapper.selectByHotelId(hId);
         return hotel;
     }
 
@@ -63,5 +63,12 @@ public class HotelServiceImpl extends ServiceImpl<HotelMapper, Hotel> implements
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Page<Hotel> selectAllHotelByPage(Integer start, Integer size) {
+        Page<Hotel> page = new Page<>(start, size);
+        hotelMapper.selectAllByPage(page);
+        return page;
     }
 }

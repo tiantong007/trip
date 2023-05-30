@@ -1,6 +1,7 @@
 package com.too.trip.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.City;
 import com.too.trip.entity.Comment;
 import com.too.trip.entity.Hotel;
@@ -41,7 +42,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Override
     public List<Comment> getCommentsByUserId(Integer uId) {
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
-        wrapper.eq("u_id", uId).orderByDesc("c_date");
+        wrapper.eq("u_id", uId).orderByDesc("hc_date");
         return commentMapper.selectList(wrapper);
     }
 
@@ -49,7 +50,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Override
     public List<Comment> getCommentsByHotelId(Integer hId) {
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
-        wrapper.eq("h_id", hId).orderByDesc("c_date");
+        wrapper.eq("h_id", hId).orderByDesc("hc_date");
         return commentMapper.selectList(wrapper);
     }
 
@@ -58,7 +59,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Override
     public  List<Comment> getCommentsBySId(Integer sId){
         QueryWrapper<Comment> wrapper = new QueryWrapper<>();
-        wrapper.eq("s_id",sId).orderByDesc("c_date");
+        wrapper.eq("s_id",sId).orderByDesc("hc_date");
         return commentMapper.selectList(wrapper);
     }
 
@@ -69,6 +70,26 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         return row > 0;
     }
 
-    //分页查询
+    //批量删除
+    @Override
+    public boolean deleteBatchComment(List<Integer> list) {
+        int row = commentMapper.deleteBatchIds(list);
+        return row > 0;
+    }
+
+    /**
+     * 分页查询
+     * @param pages 页码，从1开始
+     * @param pageSize 每页显示几条数据
+     * @param filed
+     * @param keyword
+     * @return
+     */
+    @Override
+    public Page<Comment> searchPages(Integer pages, Integer pageSize, String filed, String keyword) {
+        Page<Comment> page = new Page<>(pages, pageSize);
+        commentMapper.selectPage(page, filed, keyword);
+        return page;
+    }
 
 }

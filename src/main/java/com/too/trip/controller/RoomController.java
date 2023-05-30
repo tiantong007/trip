@@ -1,8 +1,10 @@
 package com.too.trip.controller;
 
-import com.too.trip.entity.R;
-import com.too.trip.entity.Room;
-import com.too.trip.entity.Scenic;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.too.trip.entity.*;
 import com.too.trip.service.RoomService;
 import com.too.trip.service.impl.RoomServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ import java.util.UUID;
  * @author isixe
  * @since 2023-05-24
  */
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/room")
 public class RoomController {
@@ -35,11 +37,17 @@ public class RoomController {
     @Autowired
     private ResourceLoader resourceLoader;
 
-
-
-    @PostMapping("insert")
-    public R insertScenic(@RequestBody @RequestParam("file") MultipartFile file, Room room) throws IOException {
-        if(file.isEmpty()){
+    /**
+     * 房间的增加
+     *
+     * @param file
+     * @param room
+     * @return 房间实体
+     * @throws IOException
+     */
+    @PostMapping
+    public R<Room> insertRoom(@RequestBody @RequestParam("file") MultipartFile file, Room room) throws IOException {
+        if (file.isEmpty()) {
             return new R(400, "文件不能为空");
         }
 
@@ -54,7 +62,7 @@ public class RoomController {
         Resource resource = resourceLoader.getResource(path);
         File dir = resource.getFile();
 
-        File destFile  = new File(dir, fileName);
+        File destFile = new File(dir, fileName);
         file.transferTo(destFile);
 
         // 设置hotel的hotel_img属性
@@ -62,7 +70,7 @@ public class RoomController {
         room.setRoomImg(fileName);
         //boolean isSaveSuccess = hotelService.save(scenic);
         boolean isSaveSuccess = roomService.save(room);
-        if(!isSaveSuccess){
+        if (!isSaveSuccess) {
             return new R(400, "插入失败");
         }
         return new R();
@@ -95,41 +103,60 @@ public class RoomController {
         return new R<>();
     }
 
-    /**
-     * 根据酒店 ID 查询所有可用的某种房间类型列表
-     *
-     * @param hotelId 酒店 ID
-     * @return 某种房间类型列表
-     */
-    @GetMapping("/type")
-    public List<Room> getRoomTypeByHotelId(@RequestParam("hotelId") Integer hotelId) {
-        return roomService.selectRoomTypeByHotelId(hotelId);
+    @GetMapping("/page/{start}/{size}/{field}/{keyword}")
+    public R<Page> getRoom(@PathVariable("start") Integer pages,
+                           @PathVariable("size") Integer pageSize,
+                           @PathVariable("field") String field,
+                           @PathVariable("keyword") String keyword) {
+
+        //页码数小于0 设置为0
+        if (pages == null || pages < 0) {
+            pages = 0;
+        }
+
+        Page<Room> page = roomService.searchPages(pages, pageSize, field, keyword);
+
+        return new R<>(page);
     }
 
 
-    /**
-     * 更新指定 ID 的房间信息
-     *
-     * @param roomId 要更新的房间 ID
-     * @param room   新的房间信息
-     */
-    @PutMapping("{roomId}")
-    public void updateRoom(@PathVariable("roomId") Integer roomId, @RequestBody Room room) {
-        // 设置要更新的房间的 ID
-        room.setRoomId(roomId);
-        // 调用底层服务来更新房间信息
-        roomService.updateRoom(room);
+    // 修改房间
+    @PutMapping()
+    public R updateHotel(@RequestBody(required = false) MultipartFile file, Room room) throws IOException {
+
+        // 如果文件为空则不做变化
+        if(file == null || file.isEmpty()){
+            room.setRoomImg(room.getRoomImg());
+        }else{
+            UUID uuid = UUID.randomUUID();
+            String fileName = uuid.toString() + file.getOriginalFilename();
+            String path = "classpath:/static/images";
+            Resource resource = resourceLoader.getResource(path);
+            File dir = resource.getFile();
+
+            File destFile  = new File(dir, fileName);
+            file.transferTo(destFile);
+            room.setRoomImg(fileName);
+        }
+
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("room_id", room.getRoomId());
+        boolean update = roomService.update(room, wrapper);
+        if(!update){
+            return new R(400,"修改失败");
+        }
+
+        return new R();
     }
 
-    /**
-     * 根据酒店 ID 和房间类型查询房间列表
-     *
-     * @param hotelId  酒店 ID
-     * @param roomtype 房间类型
-     * @return 房间列表
-     */
-    @GetMapping
-    public List<Room> getRooms(@RequestParam("hotelId") Integer hotelId, @RequestParam("roomtype") String roomtype) {
-        return roomService.selectRoomByHotelIdAndRoomType(hotelId, roomtype);
+    @GetMapping("/select/{hotelId}")
+    public R selectRoomByHotelId(@RequestBody @PathVariable("hotelId") Integer hId){
+
+        List<Room> rooms = roomService.selectByHotelId(hId);
+        if(rooms.size() == 0 || rooms == null){
+            return new R(400, "查找失败");
+        }
+        return new R<>();
     }
+
 }

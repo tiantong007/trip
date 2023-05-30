@@ -29,11 +29,11 @@ public interface HotelMapper extends BaseMapper<Hotel> {
     List<Hotel> searchAllHotel();
 
     /**
-     * 更加hId查找宾馆
+     * 根据hId查找宾馆
      * @param hId
      * @return
      */
-    Hotel searchById(@Param("hId") Integer hId);
+    Hotel selectByHotelId(@Param("hId") Integer hId);
 
     /**
      * 分页查询
@@ -43,4 +43,6 @@ public interface HotelMapper extends BaseMapper<Hotel> {
      * @return
      */
     Page<Hotel> selectPage(@Param("page") Page<Hotel> page, @Param("field") String filed, @Param("keyword") String keyword);
+
+    Page<Hotel> selectAllByPage(@Param("page") Page<Hotel> page);
 }

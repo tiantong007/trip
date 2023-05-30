@@ -1,7 +1,9 @@
 package com.too.trip.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.too.trip.entity.Hotel;
 
 import java.util.List;
 
@@ -22,10 +24,17 @@ public interface CommentService extends IService<Comment> {
     List<Comment> getCommentsByHotelId(Integer hId);
 //根据景点id获取景点的评论
     List<Comment> getCommentsBySId(Integer sId);
-//
+
     boolean deleteByCommentId(Integer commentId);
 
     List<Comment> selectByCommentId(Integer commentId);
+
+    //批量删除
+    boolean deleteBatchComment(List<Integer> list);
+
+    //分页查询
+    Page<Comment> searchPages(Integer pages, Integer pageSize, String filed, String keyword);
+
 
 
 

@@ -1,6 +1,7 @@
 package com.too.trip.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.too.trip.entity.HotelOrders;
 import com.too.trip.entity.Order;
 import com.too.trip.entity.ScenicOrders;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -15,20 +16,23 @@ import java.util.Map;
  */
 public interface ScenicOrdersService extends IService<ScenicOrders> {
 
-        //查询所有景点订单
-        List<ScenicOrders> selectAllScenicOrder();
+    //查询所有景点订单
+    List<ScenicOrders> selectAllScenicOrder();
 
-        //根据用户ID查询查询景点订单
-        List<ScenicOrders> selectScenicOrderByUserId(Integer uid);
+    //根据用户ID查询查询景点订单
+    List<ScenicOrders> selectScenicOrderByUserId(Integer uid);
 
-        //根据用户ID查询酒店订单+景点订单
-        List<Order> getUserOrders(Integer uid);
+    //查询所有酒店订单(前端)
+    List<ScenicOrders> selectAllScenicOrderF();
 
-        //添加景点订单
-        public boolean insertScenicOrder(ScenicOrders scenicOrders);
+    //根据用户ID查询酒店订单+景点订单
+    List<Order> getUserOrders(Integer uid);
 
-        //删除景点订单
-        public boolean deleteScenicOrdersById(Integer so_id);
+    //添加景点订单
+    public boolean insertScenicOrder(ScenicOrders scenicOrders);
+
+    //删除景点订单
+    public boolean deleteScenicOrdersById(Integer so_id);
 
         //景点订单状态更新
         public boolean updateScenicOrder(ScenicOrders scenicOrders);
