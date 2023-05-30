@@ -69,9 +69,12 @@ public class HotelController {
      * @param keyword
      * @return
      */
-    @GetMapping("/page/{start}/{size}/{field}/{keyword}")
-    public R<Page<Hotel>> searchPages(@PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,
-                                      @PathVariable("field")String field, @PathVariable("keyword")String keyword){
+    @GetMapping("/page")
+    public R<Page<Hotel>> searchPages(@RequestParam(value = "start", defaultValue = "0") Integer pages,
+                                      @RequestParam(value = "size", defaultValue = "5") Integer pageSize,
+                                      @RequestParam(value = "field", required = false)String field,
+                                      @RequestParam(value = "keyword", required = false)String keyword){
+
         //页码数小于0 设置为0
         if(pages == null || pages < 0){
             pages = 0;
