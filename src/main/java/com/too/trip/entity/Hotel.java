@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -52,5 +53,5 @@ public class Hotel implements Serializable {
     @TableField(exist = false)
     private City city;
 
-
+    private List<Room> rooms;
 }

@@ -4,11 +4,12 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.too.trip.entity.Comment">
-        <id column="comment_id" property="commentId" />
+        <id column="c_id" property="commentId" />
         <result column="h_id" property="hId" />
         <result column="u_id" property="uId" />
-        <result column="c_context" property="cContext" />
-        <result column="c_date" property="cDate" />
+        <result column="s_id" property="sId" />
+        <result column="hc_context" property="cContext" />
+        <result column="hc_date" property="cDate" />
     </resultMap>
     <sql id="Base_Column_List">
      c_id,h_id,u_id,s_id,hc_context,hc_date
@@ -18,7 +19,7 @@
         <include refid="Base_Column_List"/>
         from comment
         where
-        comment_id = #{commentId,jdbcType=NUMERIC}
+        c_id = #{commentId,jdbcType=NUMERIC}
     </select>
     <insert id="insertSelective">
         insert into comment
@@ -41,7 +42,7 @@
     <delete id="deleteByCommentId">
         delete
         from comment
-        where comment_id = #{commentId,jdbcType=NUMERIC}
+        where c_id = #{commentId,jdbcType=NUMERIC}
     </delete>
     <select id="selectAllByUId" resultMap="BaseResultMap">
         select
@@ -64,5 +65,18 @@
         where
         s_id = #{sId,jdbcType=NUMERIC}
     </select>
+    <!--
+           判断有无查询条件，若无查询条件则查询全部记录
+           若有查询条件，则根据查询条件查询
+         -->
+    <select id="selectPage" resultMap="BaseResultMap">
+        select hc_context,hc_date,username
+        from comment left join user on comment.u_id= user.user_id
+        <where>
+            <if test="field != null and field != ''">
+                ${field} like "%"#{keyword}"%"
+            </if>
+        </where>
 
+    </select>
 </mapper>

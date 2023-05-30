@@ -49,7 +49,7 @@ public class Room implements Serializable {
     @TableField("room_img")
     private String roomImg;
 
-
+    @TableField(exist = false)
     private Hotel hotel;
 
 }

@@ -1,6 +1,7 @@
 package com.too.trip.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.Room;
 import com.too.trip.mapper.RoomMapper;
 import com.too.trip.service.RoomService;
@@ -12,7 +13,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author isixe
@@ -20,41 +21,30 @@ import java.util.List;
  */
 @Service
 public class RoomServiceImpl extends ServiceImpl<RoomMapper, Room> implements RoomService {
-    @Autowired RoomMapper roomMapper;
-//查找房间类型通过酒店id
-    @Override
-    public List<Room> selectRoomTypeByHotelId(Integer hotelId) {
-        return roomMapper.selectRoomTypeByHotelId(hotelId);
-    }
-//添加房间
-    @Override
-    public void insertRoom(Room room) {
-        roomMapper.insert(room);
-    }
-//查找房间通过房间id
+    @Autowired
+    RoomMapper roomMapper;
+
     @Override
     public Room selectRoomById(Integer roomId) {
         return roomMapper.selectById(roomId);
     }
-//修改房间
+
     @Override
-    public void updateRoom(Room room) {
-        roomMapper.updateById(room);
+    public Page<Room> searchPages(Integer pages, Integer pageSize, String filed, String keyword) {
+        Page<Room> page = new Page<>(pages, pageSize);
+        roomMapper.selectPages(page, pageSize, filed, keyword);
+        return page;
     }
-//删除房间
+
     @Override
-    public void deleteRoomById(Integer roomId) {
-        roomMapper.deleteById(roomId);
+    public List<Room> selectByHotelId(Integer hId) {
+        QueryWrapper<Room> queryWrapper =  new QueryWrapper<Room>();
+        queryWrapper.eq("h_id", hId);
+        List<Room> rooms = roomMapper.selectList(queryWrapper);
+        return rooms;
     }
-//查找房间通过酒店id和房间id
-    @Override
-    public List<Room> selectRoomByHotelIdAndRoomType(Integer hotelId, String roomtype) {
-        return roomMapper.selectList(
-                new QueryWrapper<Room>()
-                        .eq("h_id", hotelId)
-                        .eq("room_type", roomtype)
-        );
-    }
+
+
 }
 
 

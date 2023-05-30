@@ -26,7 +26,7 @@ public interface HotelService extends IService<Hotel> {
      * 根据id查询单个宾馆信息
      * @return
      */
-    Hotel searchById(Integer hId);
+    Hotel selectByHotelId(Integer hId);
 
     /**
      * 分页查询
@@ -37,4 +37,6 @@ public interface HotelService extends IService<Hotel> {
     Page<Hotel> searchPages(Integer pages, Integer pageSize,  String filed, String keyword);
 
     boolean deleteByHotelIds(List<Integer> hotelIds);
+
+    Page<Hotel> selectAllHotelByPage(Integer start, Integer size);
 }

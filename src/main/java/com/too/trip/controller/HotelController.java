@@ -1,12 +1,12 @@
 package com.too.trip.controller;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.too.trip.entity.Hotel;
-import com.too.trip.entity.R;
-import com.too.trip.entity.Scenic;
-import com.too.trip.entity.User;
+import com.too.trip.entity.*;
 import com.too.trip.service.HotelService;
+import com.too.trip.service.RoomService;
 import io.swagger.models.auth.In;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,21 +40,37 @@ public class HotelController {
     @Autowired
     private ResourceLoader resourceLoader;
 
+    @Autowired
+    private RoomService roomService;
 
-    //查询单个宾馆信息
-    @GetMapping()
-    public R<Hotel> searchHotel(HttpServletRequest request, @RequestParam("hId") Integer hId){
-        Hotel hotel = hotelService.searchById(hId);
-        if (hotel == null){
-            return new R<>(400, "没有查到数据");
+    /**
+     * 查询所有宾馆
+     * @return
+     */
+    @GetMapping("/selectAll/{start}/{size}")
+    public R<Page<Hotel>> searchHotel(@PathVariable("start") Integer start, @PathVariable("size") Integer size){
+
+        Page<Hotel> page = hotelService.selectAllHotelByPage(start, size);
+        List<Hotel> records = page.getRecords();
+        for(Hotel hotel : records){
+            Integer hId = hotel.getHId();
+            List<Room> rooms = roomService.selectByHotelId(hId);
+            hotel.setRooms(rooms);
         }
-        return new R<>(hotel);
+        return new R<>(page);
     }
 
 
-    //分页查询
+    /**
+     * 分页查询
+     * @param pages
+     * @param pageSize
+     * @param field
+     * @param keyword
+     * @return
+     */
     @GetMapping("/page/{start}/{size}/{field}/{keyword}")
-    public R<Page<Hotel>> searchPages(HttpServletRequest request, @PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,
+    public R<Page<Hotel>> searchPages(@PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,
                                       @PathVariable("field")String field, @PathVariable("keyword")String keyword){
         //页码数小于0 设置为0
         if(pages == null || pages < 0){
@@ -63,10 +79,23 @@ public class HotelController {
         // 调用searchPage方法
         Page<Hotel> hotels = hotelService.searchPages(pages, pageSize, field, keyword);
 
+        List<Hotel> records = hotels.getRecords();
+        for(Hotel hotel : records){
+            Integer hId = hotel.getHId();
+            List<Room> rooms = roomService.selectByHotelId(hId);
+            hotel.setRooms(rooms);
+        }
         return new R<>(hotels);
     }
 
 
+    /**
+     * 新增宾馆
+     * @param file
+     * @param hotel
+     * @return
+     * @throws IOException
+     */
     @PostMapping()
     public R insertHotelUploadFile(@RequestBody @RequestParam("file") MultipartFile file, Hotel hotel) throws IOException {
         if(file.isEmpty()){
@@ -98,7 +127,7 @@ public class HotelController {
     }
 
     /**
-     * 批量删除
+     * 宾馆批量删除
      * @return
      */
     @DeleteMapping("/batch")
@@ -117,4 +146,48 @@ public class HotelController {
 
     }
 
+    /**
+     * 修改酒店
+     * @param file
+     * @param hotel
+     * @return
+     */
+    @PutMapping()
+    public R updateHotel(@RequestBody(required = false) MultipartFile file, Hotel hotel) throws IOException {
+
+        // 如果文件为空则不做变化
+        if(file == null || file.isEmpty()){
+            hotel.setHotelImg(hotel.getHotelImg());
+        }else{
+            UUID uuid = UUID.randomUUID();
+            String fileName = uuid.toString() + file.getOriginalFilename();
+            String path = "classpath:/static/images";
+            Resource resource = resourceLoader.getResource(path);
+            File dir = resource.getFile();
+
+            File destFile  = new File(dir, fileName);
+            file.transferTo(destFile);
+            hotel.setHotelImg(fileName);
+        }
+        System.out.println(hotel);
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("h_id", hotel.getHId());
+        boolean update = hotelService.update(hotel, wrapper);
+        if(!update){
+            return new R(400,"修改失败");
+        }
+
+        return new R();
+    }
+
+    @GetMapping("selectById/{hId}")
+    public R selectByHotelId(@PathVariable("hId") Integer hId){
+        Hotel hotel = hotelService.selectByHotelId(hId);
+        if(hotel == null){
+            return new R(400, "查找失败");
+        }
+        List<Room> rooms = roomService.selectByHotelId(hotel.getHId());
+        hotel.setRooms(rooms);
+        return new R(hotel);
+    }
 }

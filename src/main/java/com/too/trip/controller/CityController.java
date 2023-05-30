@@ -1,6 +1,7 @@
 package com.too.trip.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.too.trip.entity.*;
 import com.too.trip.service.CityService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -19,6 +21,7 @@ import java.util.List;
  * @since 2023-05-24
  */
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/city")
 public class CityController {
     @Autowired
@@ -39,8 +42,8 @@ public class CityController {
 
     //删除城市
 
-    @DeleteMapping
-    public R deleteByCityId(HttpServletRequest request, @RequestParam("cityId") Integer cityId){
+    @DeleteMapping("{byCityId}")
+    public R deleteByCityId( @PathVariable("byCityId") int cityId){
         boolean result = cityService.deleteByCityId(cityId);
         if(!result){
             return new R<City>(204 ,"找不到对应的宾馆id");
@@ -60,8 +63,8 @@ public class CityController {
         return new R<City>();
     }
     //查询城市
-    @GetMapping("/select/{cityId}")
-    public R<List<City>> selectByCityId(HttpServletRequest request, @RequestParam("CityId") Integer cityId){
+    @GetMapping("{cityId}")
+    public R<List<City>> selectByCityId( @PathVariable("cityId") Integer cityId){
         List<City> city = cityService.selectByCityId(cityId);
         if (city == null){
             return new R<>(204, "没有查到数据");
@@ -69,8 +72,8 @@ public class CityController {
         return new R<>(city);
     }
     //修改城市
-    @PutMapping
-    public R updateCity(HttpServletRequest request, @RequestBody City city) {
+    @PutMapping("/update")
+    public R updateCity( @RequestBody City city) {
 
         boolean result = cityService.updateCity(city);
         if (!result) {
@@ -78,18 +81,21 @@ public class CityController {
         }
         return new R<Scenic>();
     }
-    //分页查询
 
-    @GetMapping("/page/{start}/{size}")
-    public R<Page<City>> searchPageCity(HttpServletRequest request, @PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,@RequestBody City city){
-        //页码数小于0 设置为0
-        if(pages == null || pages < 0){
-            pages = 0;
+
+
+    //批量删除
+    @DeleteMapping("/batch")
+    public R deleteBatchCity(@RequestBody Map<String, List<Integer>> json){
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, List<Integer>> map = mapper.convertValue(json, Map.class);
+        System.out.println(map.get("cityIds"));
+        List<Integer> list = map.get("cityIds");
+        boolean result = cityService.deleteBatchCity(list);
+        if(!result){
+            return new R<Scenic>(400,"请求参数错误");
         }
-        // 调用searchPage方法
-        Page<City> citys = cityService.searchPageCity(pages, pageSize, city);
-
-        return new R<>(citys);
+        return new R<Scenic>();
     }
 
 
