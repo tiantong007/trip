@@ -33,7 +33,7 @@ public interface ScenicOrdersMapper extends BaseMapper<ScenicOrders> {
     int updateSelective(ScenicOrders scenicOrders);
 
     @Select("SELECT science.science_name, Null as hotel_name, Null as room_type, science.science_img, " +
-            "science.science_price, so.so_status, so.so_time, NULL AS end_date " +
+            "so.price, so.so_status, so.so_time, NULL AS end_date " +
             "FROM scenic_orders so, scenic science " +
             "WHERE so.scenic_id = science.scenic_id AND so.user_id = #{userId} " +
             "UNION ALL " +

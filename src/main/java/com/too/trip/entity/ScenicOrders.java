@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Data;
 
@@ -40,12 +41,20 @@ public class ScenicOrders implements Serializable {
 
     private LocalDateTime soTime;
 
+    //当前订单价格
+    private BigDecimal price;
+
+    //当前订单景点门票数量
+    private Integer number;
+
+
     @TableField(exist = false)
     private String username;
     @TableField(exist = false)
     private String scienceName;
     @TableField(exist = false)
     private String scienceImg;
+
 
 
     @TableField(exist = false)

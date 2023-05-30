@@ -22,6 +22,8 @@ public class Order implements Serializable {
     private String soStatus;
     private LocalDateTime soTime;
     private LocalDateTime endDate;
+    //订单价格
+    private BigDecimal price;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
