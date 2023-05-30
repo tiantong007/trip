@@ -46,7 +46,7 @@ public class CityController {
     public R deleteByCityId( @PathVariable("byCityId") int cityId){
         boolean result = cityService.deleteByCityId(cityId);
         if(!result){
-            return new R<City>(204 ,"找不到对应的宾馆id");
+            return new R<City>(204 ,"找不到对应的城市id");
         }
         return new R<City>();
     }
@@ -97,6 +97,7 @@ public class CityController {
         }
         return new R<Scenic>();
     }
+
 
     //查找所有城市
 

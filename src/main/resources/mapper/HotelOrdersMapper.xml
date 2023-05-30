@@ -10,9 +10,11 @@
         <result column="begin_date" property="beginDate"/>
         <result column="end_date" property="endDate"/>
         <result column="status" property="status"/>
+        <result column="price" property="price"/>
+        <result column="number" property="number"/>
     </resultMap>
     <sql id="Base_Column_List">
-        ho_id,u_id,r_id,begin_date,end_date,status
+        ho_id,u_id,r_id,begin_date,end_date,status,price,number
     </sql>
     <select id="selectAll" resultMap="BaseResultMap">
         select
@@ -27,7 +29,10 @@
                room_type,
                begin_date,
                end_date,
-               status
+               status,
+               price,
+               number
+
         FROM hotel,
              hotel_orders,
              room,
@@ -41,11 +46,13 @@
         <set>
             <if test="uId != null">u_id=#{uId,jdbcType=NUMERIC},</if>
             <if test="rId != null">r_id=#{rId,jdbcType=NUMERIC},</if>
-            <if test="beginDate != null">begin_date=#{beginDate},</if>
-            <if test="endDate != null">end_date=#{endDate},</if>
+            <if test="begin_date != null">begin_date=#{beginDate},</if>
+            <if test="end_date != null">end_date=#{endDate},</if>
             <if test="status != null">status=#{status,jdbcType=VARCHAR},</if>
+            <if test="price != null">price=#{price},</if>
+            <if test="number != null">number=#{number},</if>
         </set>
-        where hoId = #{hoId,jdbcType=VARCHAR}
+        where ho_id = #{hoId,jdbcType=VARCHAR}
     </update>
 
 </mapper>
