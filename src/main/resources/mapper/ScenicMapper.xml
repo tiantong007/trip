@@ -39,11 +39,8 @@
         select scenic_id,science_name,science_img,science_price,description,science_star,science_position,city_name,province
         from scenic left join city on scenic.city_id = city.city_id
         <where>
-            <if test="scenic.scienceName != null and scenic.scienceName != ''">
-                science_name like "%"#{scenic.scienceName}"%"
-            </if>
-            <if test="scenic.cityId != null and scenic.cityId != ''">
-                and scenic.city_id = #{scenic.cityId}
+            <if test="field != null and field != ''">
+                ${field} like "%"#{keyword}"%"
             </if>
         </where>
     </select>

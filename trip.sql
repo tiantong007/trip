@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : aliyun
+ Source Server         : 8.130.41.55
  Source Server Type    : MySQL
- Source Server Version : 80033 (8.0.33)
+ Source Server Version : 80033
  Source Host           : 8.130.41.55:3306
  Source Schema         : trip
 
  Target Server Type    : MySQL
- Target Server Version : 80033 (8.0.33)
+ Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 29/05/2023 22:27:53
+ Date: 30/05/2023 20:25:26
 */
 
 SET NAMES utf8mb4;
@@ -22,11 +22,11 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin`  (
-  `a_id` int NOT NULL AUTO_INCREMENT,
-  `a_account` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '账号',
-  `a_password` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '密码',
-  PRIMARY KEY (`a_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+                          `a_id` int(0) NOT NULL AUTO_INCREMENT,
+                          `a_account` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '账号',
+                          `a_password` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '密码',
+                          PRIMARY KEY (`a_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of admin
@@ -38,11 +38,11 @@ INSERT INTO `admin` VALUES (2, 'admin', '123456');
 -- ----------------------------
 DROP TABLE IF EXISTS `city`;
 CREATE TABLE `city`  (
-  `city_id` int NOT NULL AUTO_INCREMENT,
-  `city_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '城市名',
-  `province` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '城市所属的省份',
-  PRIMARY KEY (`city_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+                         `city_id` int(0) NOT NULL AUTO_INCREMENT,
+                         `city_name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '城市名',
+                         `province` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '城市所属的省份',
+                         PRIMARY KEY (`city_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of city
@@ -104,20 +104,20 @@ INSERT INTO `city` VALUES (51, '南平', '福建省');
 -- ----------------------------
 DROP TABLE IF EXISTS `comment`;
 CREATE TABLE `comment`  (
-  `c_id` int NOT NULL AUTO_INCREMENT,
-  `h_id` int NOT NULL COMMENT '酒店id',
-  `u_id` int NOT NULL COMMENT '用户id',
-  `s_id` int NOT NULL COMMENT '景点id',
-  `hc_context` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '评论信息',
-  `hc_date` datetime NULL DEFAULT NULL COMMENT '评论时间',
-  PRIMARY KEY (`c_id`) USING BTREE,
-  INDEX `h_id`(`h_id` ASC) USING BTREE,
-  INDEX `u_id`(`u_id` ASC) USING BTREE,
-  INDEX `s_id`(`s_id` ASC) USING BTREE,
-  CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`h_id`) REFERENCES `hotel` (`h_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `comment_ibfk_3` FOREIGN KEY (`s_id`) REFERENCES `scenic` (`scenic_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 170 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+                            `c_id` int(0) NOT NULL AUTO_INCREMENT,
+                            `h_id` int(0) NOT NULL COMMENT '酒店id',
+                            `u_id` int(0) NOT NULL COMMENT '用户id',
+                            `s_id` int(0) NOT NULL COMMENT '景点id',
+                            `hc_context` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '评论信息',
+                            `hc_date` datetime(0) NULL DEFAULT NULL COMMENT '评论时间',
+                            PRIMARY KEY (`c_id`) USING BTREE,
+                            INDEX `h_id`(`h_id`) USING BTREE,
+                            INDEX `u_id`(`u_id`) USING BTREE,
+                            INDEX `s_id`(`s_id`) USING BTREE,
+                            CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`h_id`) REFERENCES `hotel` (`h_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+                            CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+                            CONSTRAINT `comment_ibfk_3` FOREIGN KEY (`s_id`) REFERENCES `scenic` (`scenic_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 170 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of comment
@@ -135,17 +135,17 @@ INSERT INTO `comment` VALUES (7, 3, 7, 20, '早餐种类丰富味道不错，但
 -- ----------------------------
 DROP TABLE IF EXISTS `hotel`;
 CREATE TABLE `hotel`  (
-  `h_id` int NOT NULL AUTO_INCREMENT,
-  `hotel_img` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '图片',
-  `hotel_name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '酒店名称',
-  `hotel_description` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '描述',
-  `hotel_star` int NULL DEFAULT 0 COMMENT '星级',
-  `hotel_position` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '具体位置',
-  `city_id` int NULL DEFAULT NULL COMMENT '所在城市',
-  PRIMARY KEY (`h_id`) USING BTREE,
-  INDEX `city_id`(`city_id` ASC) USING BTREE,
-  CONSTRAINT `hotel_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`city_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+                          `h_id` int(0) NOT NULL AUTO_INCREMENT,
+                          `hotel_img` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '图片',
+                          `hotel_name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '酒店名称',
+                          `hotel_description` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '描述',
+                          `hotel_star` int(0) NULL DEFAULT 0 COMMENT '星级',
+                          `hotel_position` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NOT NULL COMMENT '具体位置',
+                          `city_id` int(0) NULL DEFAULT NULL COMMENT '所在城市',
+                          PRIMARY KEY (`h_id`) USING BTREE,
+                          INDEX `city_id`(`city_id`) USING BTREE,
+                          CONSTRAINT `hotel_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`city_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of hotel
@@ -196,82 +196,84 @@ INSERT INTO `hotel` VALUES (40, 'http://image.xxx.com/012.jpg', '厦门浦东大
 -- ----------------------------
 DROP TABLE IF EXISTS `hotel_orders`;
 CREATE TABLE `hotel_orders`  (
-  `ho_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `u_id` int NOT NULL COMMENT '用户id',
-  `r_id` int NOT NULL COMMENT '房间id',
-  `begin_date` datetime NULL DEFAULT NULL COMMENT '入住时间',
-  `end_date` datetime NULL DEFAULT NULL COMMENT '离开时间',
-  `status` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '订单状态',
-  PRIMARY KEY (`ho_id`) USING BTREE,
-  INDEX `u_id`(`u_id` ASC) USING BTREE,
-  INDEX `r_id`(`r_id` ASC) USING BTREE,
-  CONSTRAINT `hotel_orders_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `hotel_orders_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `room` (`room_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+                                 `ho_id` int(0) NOT NULL AUTO_INCREMENT COMMENT 'id',
+                                 `u_id` int(0) NOT NULL COMMENT '用户id',
+                                 `r_id` int(0) NOT NULL COMMENT '房间id',
+                                 `begin_date` datetime(0) NULL DEFAULT NULL COMMENT '入住时间',
+                                 `end_date` datetime(0) NULL DEFAULT NULL COMMENT '离开时间',
+                                 `status` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '订单状态',
+                                 `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '订单金额',
+                                 `number` int(0) NULL DEFAULT NULL COMMENT '订单的房间数量',
+                                 PRIMARY KEY (`ho_id`) USING BTREE,
+                                 INDEX `u_id`(`u_id`) USING BTREE,
+                                 INDEX `r_id`(`r_id`) USING BTREE,
+                                 CONSTRAINT `hotel_orders_ibfk_2` FOREIGN KEY (`u_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+                                 CONSTRAINT `hotel_orders_ibfk_3` FOREIGN KEY (`r_id`) REFERENCES `room` (`room_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of hotel_orders
 -- ----------------------------
-INSERT INTO `hotel_orders` VALUES (1, 1, 1, '2022-01-01 14:00:00', '2022-01-02 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (3, 3, 3, '2022-01-05 14:00:00', '2022-01-07 12:00:00', '已取消');
-INSERT INTO `hotel_orders` VALUES (4, 4, 4, '2022-01-08 14:00:00', '2022-01-10 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (5, 5, 5, '2022-01-11 14:00:00', '2022-01-13 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (6, 6, 6, '2022-01-14 14:00:00', '2022-01-16 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (7, 7, 7, '2022-01-17 14:00:00', '2022-01-19 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (8, 8, 8, '2022-01-20 14:00:00', '2022-01-22 12:00:00', '已取消');
-INSERT INTO `hotel_orders` VALUES (9, 9, 9, '2022-01-23 14:00:00', '2022-01-25 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (10, 10, 10, '2022-01-26 14:00:00', '2022-01-28 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (11, 11, 11, '2022-01-29 14:00:00', '2022-01-31 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (12, 12, 12, '2022-02-01 14:00:00', '2022-02-03 12:00:00', '已取消');
-INSERT INTO `hotel_orders` VALUES (13, 13, 13, '2022-02-04 14:00:00', '2022-02-06 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (14, 14, 14, '2022-02-07 14:00:00', '2022-02-09 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (15, 15, 15, '2022-02-10 14:00:00', '2022-02-12 12:00:00', '已取消');
-INSERT INTO `hotel_orders` VALUES (16, 6, 1, '2022-02-13 14:00:00', '2022-02-15 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (17, 7, 1, '2022-02-16 14:00:00', '2022-02-18 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (18, 8, 8, '2022-02-19 14:00:00', '2022-02-21 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (19, 9, 1, '2022-02-22 14:00:00', '2022-02-24 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (20, 4, 2, '2022-02-25 14:00:00', '2022-02-27 12:00:00', '已取消');
-INSERT INTO `hotel_orders` VALUES (21, 1, 1, '2022-02-28 14:00:00', '2022-03-02 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (22, 3, 2, '2022-03-03 14:00:00', '2022-03-05 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (23, 5, 3, '2022-03-06 14:00:00', '2022-03-08 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (24, 4, 4, '2022-03-09 14:00:00', '2022-03-11 12:00:00', '已取消');
-INSERT INTO `hotel_orders` VALUES (25, 5, 5, '2022-03-12 14:00:00', '2022-03-14 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (26, 6, 6, '2022-03-15 14:00:00', '2022-03-17 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (27, 7, 7, '2022-03-18 14:00:00', '2022-03-20 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (28, 8, 8, '2022-03-21 14:00:00', '2022-03-23 12:00:00', '已取消');
-INSERT INTO `hotel_orders` VALUES (29, 9, 9, '2022-03-24 14:00:00', '2022-03-26 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (30, 5, 3, '2022-03-06 14:00:00', '2022-03-08 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (31, 4, 1, '2022-01-01 14:00:00', '2022-01-02 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (32, 5, 2, '2022-01-03 14:00:00', '2022-01-05 12:00:00', '已取消');
-INSERT INTO `hotel_orders` VALUES (33, 6, 3, '2022-01-07 14:00:00', '2022-01-10 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (34, 4, 4, '2022-01-12 14:00:00', '2022-01-13 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (35, 5, 5, '2022-01-16 14:00:00', '2022-01-18 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (36, 6, 6, '2022-01-03 14:00:00', '2022-01-04 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (37, 7, 7, '2022-01-06 14:00:00', '2022-01-08 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (38, 8, 8, '2022-01-11 14:00:00', '2022-01-14 12:00:00', '已取消');
-INSERT INTO `hotel_orders` VALUES (39, 9, 9, '2022-01-16 14:00:00', '2022-01-17 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (40, 10, 10, '2022-01-02 14:00:00', '2022-01-04 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (41, 11, 11, '2022-01-05 14:00:00', '2022-01-07 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (42, 12, 12, '2022-01-09 14:00:00', '2022-01-11 12:00:00', '已完成');
-INSERT INTO `hotel_orders` VALUES (43, 13, 13, '2022-01-12 14:00:00', '2022-01-15 12:00:00', '已预订');
-INSERT INTO `hotel_orders` VALUES (44, 14, 14, '2022-01-18 14:00:00', '2022-01-20 12:00:00', '已取消');
-INSERT INTO `hotel_orders` VALUES (45, 15, 15, '2022-01-22 14:00:00', '2022-01-23 12:00:00', '已预订');
+INSERT INTO `hotel_orders` VALUES (1, 1, 1, '2022-01-01 14:00:00', '2022-01-02 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (3, 3, 3, '2022-01-05 14:00:00', '2022-01-07 12:00:00', '已取消', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (4, 4, 4, '2022-01-08 14:00:00', '2022-01-10 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (5, 5, 5, '2022-01-11 14:00:00', '2022-01-13 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (6, 6, 6, '2022-01-14 14:00:00', '2022-01-16 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (7, 7, 7, '2022-01-17 14:00:00', '2022-01-19 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (8, 8, 8, '2022-01-20 14:00:00', '2022-01-22 12:00:00', '已取消', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (9, 9, 9, '2022-01-23 14:00:00', '2022-01-25 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (10, 10, 10, '2022-01-26 14:00:00', '2022-01-28 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (11, 11, 11, '2022-01-29 14:00:00', '2022-01-31 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (12, 12, 12, '2022-02-01 14:00:00', '2022-02-03 12:00:00', '已取消', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (13, 13, 13, '2022-02-04 14:00:00', '2022-02-06 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (14, 14, 14, '2022-02-07 14:00:00', '2022-02-09 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (15, 15, 15, '2022-02-10 14:00:00', '2022-02-12 12:00:00', '已取消', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (16, 6, 1, '2022-02-13 14:00:00', '2022-02-15 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (17, 7, 1, '2022-02-16 14:00:00', '2022-02-18 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (18, 8, 8, '2022-02-19 14:00:00', '2022-02-21 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (19, 9, 1, '2022-02-22 14:00:00', '2022-02-24 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (20, 4, 2, '2022-02-25 14:00:00', '2022-02-27 12:00:00', '已取消', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (21, 1, 1, '2022-02-28 14:00:00', '2022-03-02 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (22, 3, 2, '2022-03-03 14:00:00', '2022-03-05 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (23, 5, 3, '2022-03-06 14:00:00', '2022-03-08 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (24, 4, 4, '2022-03-09 14:00:00', '2022-03-11 12:00:00', '已取消', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (25, 5, 5, '2022-03-12 14:00:00', '2022-03-14 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (26, 6, 6, '2022-03-15 14:00:00', '2022-03-17 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (27, 7, 7, '2022-03-18 14:00:00', '2022-03-20 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (28, 8, 8, '2022-03-21 14:00:00', '2022-03-23 12:00:00', '已取消', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (29, 9, 9, '2022-03-24 14:00:00', '2022-03-26 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (30, 5, 3, '2022-03-06 14:00:00', '2022-03-08 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (31, 4, 1, '2022-01-01 14:00:00', '2022-01-02 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (32, 5, 2, '2022-01-03 14:00:00', '2022-01-05 12:00:00', '已取消', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (33, 6, 3, '2022-01-07 14:00:00', '2022-01-10 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (34, 4, 4, '2022-01-12 14:00:00', '2022-01-13 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (35, 5, 5, '2022-01-16 14:00:00', '2022-01-18 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (36, 6, 6, '2022-01-03 14:00:00', '2022-01-04 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (37, 7, 7, '2022-01-06 14:00:00', '2022-01-08 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (38, 8, 8, '2022-01-11 14:00:00', '2022-01-14 12:00:00', '已取消', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (39, 9, 9, '2022-01-16 14:00:00', '2022-01-17 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (40, 10, 10, '2022-01-02 14:00:00', '2022-01-04 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (41, 11, 11, '2022-01-05 14:00:00', '2022-01-07 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (42, 12, 12, '2022-01-09 14:00:00', '2022-01-11 12:00:00', '已完成', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (43, 13, 13, '2022-01-12 14:00:00', '2022-01-15 12:00:00', '已预订', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (44, 14, 14, '2022-01-18 14:00:00', '2022-01-20 12:00:00', '已取消', NULL, NULL);
+INSERT INTO `hotel_orders` VALUES (45, 15, 15, '2022-01-22 14:00:00', '2022-01-23 12:00:00', '已预订', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for image
 -- ----------------------------
 DROP TABLE IF EXISTS `image`;
 CREATE TABLE `image`  (
-  `img_id` int NOT NULL AUTO_INCREMENT,
-  `h_id` int NULL DEFAULT NULL,
-  `s_id` int NULL DEFAULT NULL,
-  `img_src` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`img_id`) USING BTREE,
-  INDEX `h_id`(`h_id` ASC) USING BTREE,
-  INDEX `s_id`(`s_id` ASC) USING BTREE,
-  CONSTRAINT `image_ibfk_1` FOREIGN KEY (`h_id`) REFERENCES `hotel` (`h_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `image_ibfk_2` FOREIGN KEY (`s_id`) REFERENCES `scenic` (`scenic_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+                          `img_id` int(0) NOT NULL AUTO_INCREMENT,
+                          `h_id` int(0) NULL DEFAULT NULL,
+                          `s_id` int(0) NULL DEFAULT NULL,
+                          `img_src` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+                          PRIMARY KEY (`img_id`) USING BTREE,
+                          INDEX `h_id`(`h_id`) USING BTREE,
+                          INDEX `s_id`(`s_id`) USING BTREE,
+                          CONSTRAINT `image_ibfk_1` FOREIGN KEY (`h_id`) REFERENCES `hotel` (`h_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+                          CONSTRAINT `image_ibfk_2` FOREIGN KEY (`s_id`) REFERENCES `scenic` (`scenic_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of image
@@ -282,17 +284,17 @@ CREATE TABLE `image`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `room`;
 CREATE TABLE `room`  (
-  `room_id` int NOT NULL AUTO_INCREMENT,
-  `h_id` int NOT NULL COMMENT '关联酒店id',
-  `room_status` int NULL DEFAULT NULL COMMENT '房间状态（空闲，被预定等）',
-  `room_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '房间价格',
-  `room_num` int NULL DEFAULT NULL COMMENT '房间数量',
-  `room_type` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '房间类型（大床房，双人房等）',
-  `room_img` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '房间图片',
-  PRIMARY KEY (`room_id`) USING BTREE,
-  INDEX `h_id`(`h_id` ASC) USING BTREE,
-  CONSTRAINT `room_ibfk_1` FOREIGN KEY (`h_id`) REFERENCES `hotel` (`h_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+                         `room_id` int(0) NOT NULL AUTO_INCREMENT,
+                         `h_id` int(0) NOT NULL COMMENT '关联酒店id',
+                         `room_status` int(0) NULL DEFAULT NULL COMMENT '房间状态（空闲，被预定等）',
+                         `room_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '房间价格',
+                         `room_num` int(0) NULL DEFAULT NULL COMMENT '房间数量',
+                         `room_type` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '房间类型（大床房，双人房等）',
+                         `room_img` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL COMMENT '房间图片',
+                         PRIMARY KEY (`room_id`) USING BTREE,
+                         INDEX `h_id`(`h_id`) USING BTREE,
+                         CONSTRAINT `room_ibfk_1` FOREIGN KEY (`h_id`) REFERENCES `hotel` (`h_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of room
@@ -318,18 +320,18 @@ INSERT INTO `room` VALUES (15, 3, 0, 160.00, 6, '大床房', 'https://example.co
 -- ----------------------------
 DROP TABLE IF EXISTS `scenic`;
 CREATE TABLE `scenic`  (
-  `scenic_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `science_name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '景点名称',
-  `science_img` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '景点图片',
-  `science_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '景点价格',
-  `description` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '景点描述',
-  `science_star` int NULL DEFAULT NULL COMMENT '评分',
-  `city_id` int NOT NULL COMMENT '所在城市',
-  `science_position` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '具体位置',
-  PRIMARY KEY (`scenic_id`) USING BTREE,
-  INDEX `city_id`(`city_id` ASC) USING BTREE,
-  CONSTRAINT `scenic_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`city_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+                           `scenic_id` int(0) NOT NULL AUTO_INCREMENT COMMENT 'id',
+                           `science_name` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '景点名称',
+                           `science_img` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '景点图片',
+                           `science_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '景点价格',
+                           `description` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '景点描述',
+                           `science_star` int(0) NULL DEFAULT NULL COMMENT '评分',
+                           `city_id` int(0) NOT NULL COMMENT '所在城市',
+                           `science_position` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '具体位置',
+                           PRIMARY KEY (`scenic_id`) USING BTREE,
+                           INDEX `city_id`(`city_id`) USING BTREE,
+                           CONSTRAINT `scenic_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`city_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scenic
@@ -373,57 +375,59 @@ INSERT INTO `scenic` VALUES (33, '葛纠纤维拉', 'https://example.com/scenic2
 -- ----------------------------
 DROP TABLE IF EXISTS `scenic_orders`;
 CREATE TABLE `scenic_orders`  (
-  `so_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `scenic_id` int NULL DEFAULT NULL COMMENT '景点id',
-  `user_id` int NULL DEFAULT NULL COMMENT '用户id',
-  `so_status` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '订单状态',
-  `so_time` datetime NULL DEFAULT NULL COMMENT '预定时间',
-  PRIMARY KEY (`so_id`) USING BTREE,
-  INDEX `scenic_id`(`scenic_id` ASC) USING BTREE,
-  INDEX `user_id`(`user_id` ASC) USING BTREE,
-  CONSTRAINT `scenic_orders_ibfk_1` FOREIGN KEY (`scenic_id`) REFERENCES `scenic` (`scenic_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `scenic_orders_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+                                  `so_id` int(0) NOT NULL AUTO_INCREMENT COMMENT 'id',
+                                  `scenic_id` int(0) NULL DEFAULT NULL COMMENT '景点id',
+                                  `user_id` int(0) NULL DEFAULT NULL COMMENT '用户id',
+                                  `so_status` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '订单状态',
+                                  `so_time` datetime(0) NULL DEFAULT NULL COMMENT '预定时间',
+                                  `price` decimal(10, 2) NULL DEFAULT NULL COMMENT '订单金额',
+                                  `number` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '订单门票数量',
+                                  PRIMARY KEY (`so_id`) USING BTREE,
+                                  INDEX `scenic_id`(`scenic_id`) USING BTREE,
+                                  INDEX `user_id`(`user_id`) USING BTREE,
+                                  CONSTRAINT `scenic_orders_ibfk_1` FOREIGN KEY (`scenic_id`) REFERENCES `scenic` (`scenic_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+                                  CONSTRAINT `scenic_orders_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 101 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of scenic_orders
 -- ----------------------------
-INSERT INTO `scenic_orders` VALUES (1, NULL, NULL, NULL, NULL);
-INSERT INTO `scenic_orders` VALUES (2, NULL, NULL, NULL, NULL);
-INSERT INTO `scenic_orders` VALUES (3, 1, 1, 'aa', '2022-01-01 12:30:00');
-INSERT INTO `scenic_orders` VALUES (5, NULL, NULL, NULL, NULL);
-INSERT INTO `scenic_orders` VALUES (6, NULL, NULL, NULL, NULL);
-INSERT INTO `scenic_orders` VALUES (61, 16, 5, '已预订', '2022-01-01 12:30:00');
-INSERT INTO `scenic_orders` VALUES (62, 17, 6, '已取消', '2022-01-02 08:45:00');
-INSERT INTO `scenic_orders` VALUES (63, 20, 7, '已完成', '2022-01-03 10:15:00');
-INSERT INTO `scenic_orders` VALUES (64, 21, 4, '已预订', '2022-01-04 14:20:00');
-INSERT INTO `scenic_orders` VALUES (65, 20, 5, '已预订', '2022-01-05 16:30:00');
-INSERT INTO `scenic_orders` VALUES (66, 22, 6, '已完成', '2022-01-06 11:50:00');
-INSERT INTO `scenic_orders` VALUES (67, 22, 7, '已预订', '2022-01-07 09:40:00');
-INSERT INTO `scenic_orders` VALUES (68, 22, 8, '已取消', '2022-01-08 10:55:00');
-INSERT INTO `scenic_orders` VALUES (69, 17, 9, '已预订', '2022-01-09 13:25:00');
-INSERT INTO `scenic_orders` VALUES (70, 26, 10, '已完成', '2022-01-10 15:35:00');
-INSERT INTO `scenic_orders` VALUES (72, 22, 12, '已完成', '2022-01-12 17:25:00');
-INSERT INTO `scenic_orders` VALUES (73, 24, 13, '已预订', '2022-01-13 14:30:00');
-INSERT INTO `scenic_orders` VALUES (74, 18, 14, '已取消', '2022-01-14 09:20:00');
-INSERT INTO `scenic_orders` VALUES (100, NULL, NULL, NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (1, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (2, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (3, 1, 1, 'aa', '2022-01-01 12:30:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (5, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (6, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (61, 16, 5, '已预订', '2022-01-01 12:30:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (62, 17, 6, '已取消', '2022-01-02 08:45:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (63, 20, 7, '已完成', '2022-01-03 10:15:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (64, 21, 4, '已预订', '2022-01-04 14:20:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (65, 20, 5, '已预订', '2022-01-05 16:30:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (66, 22, 6, '已完成', '2022-01-06 11:50:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (67, 22, 7, '已预订', '2022-01-07 09:40:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (68, 22, 8, '已取消', '2022-01-08 10:55:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (69, 17, 9, '已预订', '2022-01-09 13:25:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (70, 26, 10, '已完成', '2022-01-10 15:35:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (72, 22, 12, '已完成', '2022-01-12 17:25:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (73, 24, 13, '已预订', '2022-01-13 14:30:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (74, 18, 14, '已取消', '2022-01-14 09:20:00', NULL, NULL);
+INSERT INTO `scenic_orders` VALUES (100, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
-  `user_id` int NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `username` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '姓名',
-  `password` varchar(120) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '密码',
-  `phone` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '手机号码',
-  `email` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '邮箱',
-  `sex` char(6) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '1' COMMENT '性别，男1，女0',
-  `age` int NULL DEFAULT NULL COMMENT '年龄',
-  `id_card` varchar(18) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '身份证',
-  `balance` decimal(10, 2) UNSIGNED NULL DEFAULT 0.00 COMMENT '用户余额',
-  PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = DYNAMIC;
+                         `user_id` int(0) NOT NULL AUTO_INCREMENT COMMENT 'id',
+                         `username` varchar(64) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '姓名',
+                         `password` varchar(120) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '密码',
+                         `phone` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '手机号码',
+                         `email` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '邮箱',
+                         `sex` char(6) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT '1' COMMENT '性别，男1，女0',
+                         `age` int(0) NULL DEFAULT NULL COMMENT '年龄',
+                         `id_card` varchar(18) CHARACTER SET utf8mb3 COLLATE utf8mb3_bin NULL DEFAULT NULL COMMENT '身份证',
+                         `balance` decimal(10, 2) UNSIGNED NULL COMMENT '用户余额',
+                         PRIMARY KEY (`user_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
