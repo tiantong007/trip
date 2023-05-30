@@ -111,6 +111,33 @@ public class CityController {
         return new R<>(city);
     }
 
+    /**
+     * 分页查询
+     * @param pages
+     * @param pageSize
+     * @param field
+     * @param keyword
+     * @return
+     */
+    @GetMapping("/page")
+    public R<Page<City>> searchPages(@RequestParam(value = "start", defaultValue = "0") Integer pages,
+                                        @RequestParam(value = "size", defaultValue = "5") Integer pageSize,
+                                        @RequestParam(value = "field", required = false)String field,
+                                        @RequestParam(value = "keyword", required = false)String keyword){
+
+        //页码数小于0 设置为0
+        if(pages == null || pages < 0){
+            pages = 0;
+        }
+        // 调用searchPage方法
+        Page<City> cityPage = cityService.searchPages(pages, pageSize, field, keyword);
+
+        System.out.println(cityPage);
+        if (cityPage == null || cityPage.getTotal() == 0){
+            return new R<>(204,"没有查到数据");
+        }
+        return new R<Page<City>>(cityPage);
+    }
 
 
 }

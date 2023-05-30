@@ -3,6 +3,7 @@ package com.too.trip.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.City;
+import com.too.trip.entity.Comment;
 import com.too.trip.mapper.CityMapper;
 import com.too.trip.service.CityService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -80,6 +81,19 @@ public class CityServiceImpl extends ServiceImpl<CityMapper, City> implements Ci
         QueryWrapper<City> queryWrapper = new QueryWrapper<>();
         return cityMapper.selectList(queryWrapper);
     }
-
+    /**
+     * 分页查询
+     * @param pages 页码，从1开始
+     * @param pageSize 每页显示几条数据
+     * @param filed
+     * @param keyword
+     * @return
+     */
+    @Override
+    public Page<City> searchPages(Integer pages, Integer pageSize, String filed, String keyword) {
+        Page<City> page = new Page<>(pages, pageSize);
+        cityMapper.selectPage(page, filed, keyword);
+        return page;
+    }
 
 }

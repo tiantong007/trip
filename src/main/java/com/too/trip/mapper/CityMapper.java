@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.City;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.too.trip.entity.Comment;
 import com.too.trip.entity.Hotel;
 import com.too.trip.entity.Scenic;
 import org.apache.ibatis.annotations.Mapper;
@@ -37,5 +38,15 @@ public interface CityMapper extends BaseMapper<City> {
 
     int insertSelective(City city);
 
-
+    /**
+     * 分页查询
+     * @param page 分页对象
+     * @param filed
+     * @param keyword
+     * @return
+     */
+    Page<City> selectPage(@Param("page") Page<City> page, @Param("field") String filed, @Param("keyword") String keyword);
 }
+
+
+
