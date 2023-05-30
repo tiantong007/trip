@@ -4,11 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.too.trip.entity.Hotel;
-import com.too.trip.entity.R;
-import com.too.trip.entity.Scenic;
-import com.too.trip.entity.User;
+import com.too.trip.entity.*;
 import com.too.trip.service.HotelService;
+import com.too.trip.service.RoomService;
 import io.swagger.models.auth.In;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,8 @@ public class HotelController {
     @Autowired
     private ResourceLoader resourceLoader;
 
+    @Autowired
+    private RoomService roomService;
 
     /**
      * 查询所有宾馆
@@ -51,6 +51,12 @@ public class HotelController {
     public R<Page<Hotel>> searchHotel(@PathVariable("start") Integer start, @PathVariable("size") Integer size){
 
         Page<Hotel> page = hotelService.selectAllHotelByPage(start, size);
+        List<Hotel> records = page.getRecords();
+        for(Hotel hotel : records){
+            Integer hId = hotel.getHId();
+            List<Room> rooms = roomService.selectByHotelId(hId);
+            hotel.setRooms(rooms);
+        }
         return new R<>(page);
     }
 
@@ -73,6 +79,12 @@ public class HotelController {
         // 调用searchPage方法
         Page<Hotel> hotels = hotelService.searchPages(pages, pageSize, field, keyword);
 
+        List<Hotel> records = hotels.getRecords();
+        for(Hotel hotel : records){
+            Integer hId = hotel.getHId();
+            List<Room> rooms = roomService.selectByHotelId(hId);
+            hotel.setRooms(rooms);
+        }
         return new R<>(hotels);
     }
 
@@ -174,6 +186,8 @@ public class HotelController {
         if(hotel == null){
             return new R(400, "查找失败");
         }
+        List<Room> rooms = roomService.selectByHotelId(hotel.getHId());
+        hotel.setRooms(rooms);
         return new R(hotel);
     }
 }
