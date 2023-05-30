@@ -96,12 +96,8 @@ public class HotelOrdersController {
     }
 
     //更新酒店订单
-    @PutMapping
+    @PutMapping("/update")
     public R updateHotelOrder(HttpServletRequest request, @RequestBody HotelOrders hotelOrders) {
-        System.out.println("========================="+hotelOrders.getBeginDate());
-        LocalDateTime time = LocalDateTime.now();
-        hotelOrders.setBeginDate(time);
-        hotelOrders.setEndDate(time);
         boolean result = hotelOrdersService.updateHotelOrder(hotelOrders);
         if (!result) {
             return new R<HotelOrders>(400, "请求参数错误");
