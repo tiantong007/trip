@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.too.trip.mapper.PositionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.too.trip.entity.Position">
+        <result column="science_name" property="name" />
+        <result column="x" property="x" />
+        <result column="y" property="y" />
+    </resultMap>
+
+    <select id="selectScenicByPositionRange" resultMap="BaseResultMap">
+        select science_name, x, y
+        from scenic join location on scenic.scenic_id = location.s_id
+        where x between #{lowLongitude} and #{upLongitude} and y between #{lowLatitude} and #{upLatitude}
+    </select>
+
+</mapper>
