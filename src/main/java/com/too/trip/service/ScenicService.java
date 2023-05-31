@@ -32,4 +32,5 @@ public interface ScenicService extends IService<Scenic> {
     //修改景点数据
     boolean updateScenic(Scenic scenic);
 
+
 }

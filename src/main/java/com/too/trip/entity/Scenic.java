@@ -64,6 +64,8 @@ public class Scenic implements Serializable {
     private City city;
     @TableField(exist = false)
     private Image image;
+
+    private List<String> scenicDetailImages;
     //本体有参构造
     public Scenic(Integer scenicId, String scienceName, String scienceImg, BigDecimal sciencePrice, String description, Integer scienceStar, Integer cityId, String sciencePosition) {
         this.scenicId = scenicId;
