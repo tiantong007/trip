@@ -58,13 +58,12 @@ public class CommentController {
 
     // 根据酒店 id 获取该酒店所有评论列表
     @GetMapping("/byHotel/{hotelId}")
-    public R<List<Comment>>  getCommentsByHotelId(@PathVariable Integer hotelId) {
-       List<Comment> comments =  commentService.getCommentsByHotelId(hotelId);
-        if (comments != null && !comments.isEmpty()) {
-            return new R<>( comments);
-        } else {
-            return new R<>(204, "未找到该酒店的评论");
+    public R  getCommentsByHotelId(@RequestParam(value = "start", defaultValue = "0") Integer start, @RequestParam(value = "size", defaultValue = "5") Integer size) {
+       Page<Comment> page =  commentService.selectAllCommentByPage(start,size);
+        if (page.getRecords().size() == 0 || page.getRecords() != null) {
+            return new R(400, "未找到该酒店的评论");
         }
+        return new R();
     }
     //根据景点id获取该景点的评论
     @GetMapping("/byScenic/{scenicId}")

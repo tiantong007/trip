@@ -91,5 +91,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         commentMapper.selectPage(page, filed, keyword);
         return page;
     }
+    //查找全部评论
+    @Override
+    public Page<Comment> selectAllCommentByPage(Integer start, Integer size) {
+        Page<Comment> page = new Page<>(start, size);
+        commentMapper.selectAllByPage(page);
+        return page;
+    }
 
 }

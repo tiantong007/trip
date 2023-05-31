@@ -35,6 +35,10 @@ public interface CommentService extends IService<Comment> {
     //分页查询
     Page<Comment> searchPages(Integer pages, Integer pageSize, String filed, String keyword);
 
+    //查询全部
+
+    Page<Comment> selectAllCommentByPage(Integer start, Integer size);
+
 
 
 

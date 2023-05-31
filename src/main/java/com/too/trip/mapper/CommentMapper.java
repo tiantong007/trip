@@ -47,6 +47,8 @@ public interface CommentMapper extends BaseMapper<Comment> {
      * @return
      */
     Page<Comment> selectPage(@Param("page") Page<Comment> page, @Param("field") String filed, @Param("keyword") String keyword);
+
+    Page<Comment> selectAllByPage(@Param("page") Page<Comment> page);
 }
 
 
