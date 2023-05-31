@@ -2,34 +2,17 @@ package com.too.trip.controller;
 
 import com.too.trip.utils.DistanceUtil;
 import lombok.Data;
+import com.too.trip.entity.Position;
 
 import java.util.ArrayList;
 import java.util.List;
-
-@Data
-class Position {
-    public Position() {
-    }
-
-    //景点名
-    String name;
-    double x;
-    double y;
-
-    //有参构造 父节点
-    public Position(String name, double x, double y) {
-        this.name = name;
-        this.x = x;
-        this.y = y;
-    }
-}
 
 public class ShortDistanceController {
     public static void main(String[] args) {
         // 周边景点的列表
         List<Position> points = new ArrayList<>();
         //0为出发点  其余为周边景点
-        points.add(0, new Position("火车站", 118.08055, 24.64267));
+        points.add(0, new Position("我的位置", 118.08055, 24.64267));
         //获取列表循环添加   pointList为周边景点列表（数据库中获取）
 //        List<Position> pointList= new ArrayList();
 //        for (int i;pointList.size()>0;pointList.remove(0),i++){
@@ -64,6 +47,7 @@ public class ShortDistanceController {
             }
             System.out.println(distance);
         }
+        System.out.println(nameList);
         System.out.println("最短路线为" + String.join("->", nameList));
         System.out.println("最短距离" + mindistance);
 
