@@ -30,7 +30,7 @@ public class HotelOrdersController {
     @Autowired
     private HotelOrdersService hotelOrdersService;
 
-    //查询所有酒店
+    //查询所有酒店订单
     @GetMapping("/selectAll")
     public R selectHotelOredrsAll(HttpServletRequest request) {
         List<HotelOrders> hotelOrders = hotelOrdersService.selectAllHotelOrder();
