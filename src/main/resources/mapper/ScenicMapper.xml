@@ -17,6 +17,11 @@
             <result column="city_name" property="cityName"/>
             <result column="province" property="province"/>
         </association>
+        <association property="image" javaType="com.too.trip.entity.Image">
+            <id column="img_id" property="imgId"/>
+            <result column="s_id" property="sId"/>
+            <result column="img_src" property="imgSrc"/>
+        </association>
     </resultMap>
 <!--    查询所有景点-->
     <select id="searchAllScenic" resultMap="BaseResultMap">
@@ -25,9 +30,13 @@
     </select>
 <!--    根据景点id查询景点-->
     <select id="searchScenicById" resultMap="BaseResultMap">
-        select scenic_id,science_name,science_img,science_price,description,science_star,science_position,city_name,province
-        from scenic left join city on scenic.city_id = city.city_id
-        where scenic_id = #{sid}
+        SELECT scenic.scenic_id, scenic.science_name, scenic.science_img, scenic.science_price, scenic.description,
+               scenic.science_star, scenic.science_position, city.city_name, city.province, GROUP_CONCAT(image.img_src SEPARATOR ', ') AS img_src
+        FROM scenic
+                 LEFT JOIN city ON scenic.city_id = city.city_id
+                 LEFT JOIN image ON scenic.scenic_id = image.s_id
+        WHERE scenic.scenic_id = 29
+        GROUP BY scenic.scenic_id;
     </select>
 
     <!--

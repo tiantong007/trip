@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -61,6 +62,8 @@ public class Scenic implements Serializable {
 
     @TableField(exist = false)
     private City city;
+    @TableField(exist = false)
+    private Image image;
     //本体有参构造
     public Scenic(Integer scenicId, String scienceName, String scienceImg, BigDecimal sciencePrice, String description, Integer scienceStar, Integer cityId, String sciencePosition) {
         this.scenicId = scenicId;
