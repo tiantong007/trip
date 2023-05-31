@@ -31,11 +31,10 @@
 <!--    根据景点id查询景点-->
     <select id="searchScenicById" resultMap="BaseResultMap">
         SELECT scenic.scenic_id, scenic.science_name, scenic.science_img, scenic.science_price, scenic.description,
-               scenic.science_star, scenic.science_position, city.city_name, city.province, GROUP_CONCAT(image.img_src SEPARATOR ', ') AS img_src
+               scenic.science_star, scenic.science_position, city.city_name, city.province
         FROM scenic
                  LEFT JOIN city ON scenic.city_id = city.city_id
-                 LEFT JOIN image ON scenic.scenic_id = image.s_id
-        WHERE scenic.scenic_id = 29
+        WHERE scenic.scenic_id = ${sid}
         GROUP BY scenic.scenic_id;
     </select>
 
@@ -54,4 +53,9 @@
         </where>
     </select>
 
+
+
+    <select id="selectFromImageByScenicId" resultType="string">
+        select img_src  from image WHERE s_id = #{scenicId}
+    </select>
 </mapper>

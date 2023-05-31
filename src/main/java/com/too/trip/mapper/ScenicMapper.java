@@ -27,5 +27,5 @@ public interface ScenicMapper extends BaseMapper<Scenic> {
     Scenic searchScenicById(Integer sid);
     Page<Scenic> selectPage(@Param("page") Page<Scenic> page, @Param("field") String filed, @Param("keyword") String keyword);
 
-
+    List<String> selectFromImageByScenicId(@Param("scenicId") Integer scenicId);
 }
