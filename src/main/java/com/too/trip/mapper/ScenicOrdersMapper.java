@@ -32,13 +32,22 @@ public interface ScenicOrdersMapper extends BaseMapper<ScenicOrders> {
 
     int updateSelective(ScenicOrders scenicOrders);
 
-    @Select("SELECT science.science_name, Null as hotel_name, Null as room_type, science.science_img, " +
-            "so.price, so.so_status, so.so_time, NULL AS end_date " +
+//    @Select("SELECT science.science_name, Null as hotel_name, Null as room_type, science.science_img, " +
+//            "so.price, so.so_status, so.so_time, NULL AS end_date " +
+//            "FROM scenic_orders so, scenic science " +
+//            "WHERE so.scenic_id = science.scenic_id AND so.user_id = #{userId} " +
+//            "UNION ALL " +
+//            "SELECT Null, hotel.hotel_name, room.room_type, hotel.hotel_img, room.room_price, " +
+//            "ho.status, ho.begin_date, ho.end_date " +
+//            "FROM hotel_orders ho, hotel, room " +
+//            "WHERE ho.r_id = room.room_id AND room.h_id = hotel.h_id AND ho.u_id = #{userId} " +
+//            "ORDER BY so_time DESC")
+    @Select("SELECT science.science_name, Null as hotel_name, Null as room_type, science.science_img, science.science_price, " +
+            " so.price, so.so_status, so.so_time, NULL AS end_date, so.number " + // 增加number属性
             "FROM scenic_orders so, scenic science " +
             "WHERE so.scenic_id = science.scenic_id AND so.user_id = #{userId} " +
-            "UNION ALL " +
-            "SELECT Null, hotel.hotel_name, room.room_type, hotel.hotel_img, room.room_price, " +
-            "ho.status, ho.begin_date, ho.end_date " +
+            "UNION ALL " + "SELECT Null, hotel.hotel_name, room.room_type, hotel.hotel_img, ho.price, room.room_price, " +
+            "ho.status, ho.begin_date, ho.end_date, ho.number " + // 增加number属性
             "FROM hotel_orders ho, hotel, room " +
             "WHERE ho.r_id = room.room_id AND room.h_id = hotel.h_id AND ho.u_id = #{userId} " +
             "ORDER BY so_time DESC")
