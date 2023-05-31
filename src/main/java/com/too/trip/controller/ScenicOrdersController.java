@@ -85,7 +85,7 @@ public class ScenicOrdersController {
         scenicOrders.setSoTime(time);
         //判断数量是否合理
         if (scenicOrders.getNumber()<=0){
-            return new R(200,"数量输入错误");
+            return new R(400,"数量输入错误");
         }
 
         //获取景点价格并给订单
@@ -97,7 +97,7 @@ public class ScenicOrdersController {
         scenicOrders.setPrice(price);
         boolean result = scenicOrdersService.determineUserAmount(scenicOrders);
         if (result){
-            return new R(200,"用户余额不足");
+            return new R(400,"用户余额不足");
         }
         result = scenicOrdersService.insertScenicOrder(scenicOrders);
         if (!result) {
@@ -140,7 +140,7 @@ public class ScenicOrdersController {
         }
         boolean result = scenicOrdersService.removeBatchByIds(soIds);
         if(!result){
-            return new R(200,"没有对应的数据可删除");
+            return new R(400,"没有对应的数据可删除");
         }
         return new R();
 
