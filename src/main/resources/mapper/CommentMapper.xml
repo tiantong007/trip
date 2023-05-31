@@ -70,7 +70,7 @@
            若有查询条件，则根据查询条件查询
          -->
     <select id="selectPage" resultMap="BaseResultMap">
-        select hc_context,hc_date,username
+        select c_id,hc_context,hc_date,username
         from comment left join user on comment.u_id= user.user_id
         <where>
             <if test="field != null and field != ''">

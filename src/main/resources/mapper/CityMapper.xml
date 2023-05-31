@@ -39,14 +39,25 @@
             <if test="keyword != null">#{keyword,jdbcType=VARCHAR},</if>
         </trim>
     </insert>
-    <select id="selectPage" resultMap="BaseResultMap">
-        select city_id,province, city_name
-        from  city
-        where city_id = #{cityId}
-    </select>
+
     <update id="updateCityName">
         update city
         set city_name = #{cityName,jdbcType=VARCHAR}
     </update>
+
+    <!--
+          判断有无查询条件，若无查询条件则查询全部记录
+          若有查询条件，则根据查询条件查询
+        -->
+    <select id="selectPage" resultMap="BaseResultMap">
+        select city_id,city_name,province
+        from city
+        <where>
+            <if test="field != null and field != ''">
+                ${field} like "%"#{keyword}"%"
+            </if>
+        </where>
+
+    </select>
 
 </mapper>

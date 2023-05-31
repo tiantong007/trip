@@ -3,6 +3,7 @@ package com.too.trip.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.City;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.too.trip.entity.Comment;
 
 import java.util.List;
 
@@ -35,5 +36,10 @@ public interface CityService extends IService<City> {
     List<City> selectByCityId(Integer cityId);
     //批量删除
     boolean deleteBatchCity(List<Integer> list);
+    //查询所有城市
+    List<City> getAllCities();
+
+    //分页查询
+    Page<City> searchPages(Integer pages, Integer pageSize, String filed, String keyword);
 
 }

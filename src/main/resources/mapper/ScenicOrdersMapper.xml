@@ -14,7 +14,7 @@
 
     <sql id="Base_Column_List">
         so_id,scenic_id,user_id,
-        so_status,so_time
+        so_status,so_time,price,number
     </sql>
 
     <select id="selectAll" resultMap="BaseResultMap">
@@ -24,7 +24,7 @@
         order by so_time desc
     </select>
     <select id="selectAllF" resultMap="BaseResultMap">
-        SELECT so_id, username, science_name, science_img, so_status, so_time
+        SELECT so_id, username, science_name, science_img, so_status, so_time,price,number
         FROM scenic,
              scenic_orders,
              user
@@ -47,6 +47,8 @@
             <if test="userId != null">user_id=#{userId,jdbcType=NUMERIC},</if>
             <if test="soStatus != null">so_status=#{soStatus,jdbcType=VARCHAR},</if>
             <if test="soTime != null">so_time=#{soTime},</if>
+            <if test="price != null">price=#{price},</if>
+            <if test="number != null">number=#{number},</if>
         </set>
         where so_id = #{soId,jdbcType=NUMERIC}
     </update>

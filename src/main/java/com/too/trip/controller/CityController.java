@@ -46,7 +46,7 @@ public class CityController {
     public R deleteByCityId( @PathVariable("byCityId") int cityId){
         boolean result = cityService.deleteByCityId(cityId);
         if(!result){
-            return new R<City>(204 ,"找不到对应的宾馆id");
+            return new R<City>(204 ,"找不到对应的城市id");
         }
         return new R<City>();
     }
@@ -98,6 +98,46 @@ public class CityController {
         return new R<Scenic>();
     }
 
+
+    //查找所有城市
+
+    @GetMapping
+    public R getAllCities(HttpServletRequest request) {
+        List<City> city = cityService.getAllCities();
+        if (city == null || city.size() == 0) {
+            System.out.println(city);
+            return new R<>(204, "没有查到数据");
+        }
+        return new R<>(city);
+    }
+
+    /**
+     * 分页查询
+     * @param pages
+     * @param pageSize
+     * @param field
+     * @param keyword
+     * @return
+     */
+    @GetMapping("/page")
+    public R<Page<City>> searchPages(@RequestParam(value = "start", defaultValue = "0") Integer pages,
+                                        @RequestParam(value = "size", defaultValue = "5") Integer pageSize,
+                                        @RequestParam(value = "field", required = false)String field,
+                                        @RequestParam(value = "keyword", required = false)String keyword){
+
+        //页码数小于0 设置为0
+        if(pages == null || pages < 0){
+            pages = 0;
+        }
+        // 调用searchPage方法
+        Page<City> cityPage = cityService.searchPages(pages, pageSize, field, keyword);
+
+        System.out.println(cityPage);
+        if (cityPage == null || cityPage.getTotal() == 0){
+            return new R<>(204,"没有查到数据");
+        }
+        return new R<Page<City>>(cityPage);
+    }
 
 
 }

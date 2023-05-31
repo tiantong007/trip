@@ -48,6 +48,10 @@ public class ScenicServiceImpl extends ServiceImpl<ScenicMapper, Scenic> impleme
     @Override
     public Scenic selectScenicById(Integer sid) {
         Scenic scenic = scenicMapper.searchScenicById(sid);
+        List<String> images = scenicMapper.selectFromImageByScenicId(sid);
+        if(scenic != null){
+            scenic.setScenicDetailImages(images);
+        }
         return scenic;
     }
 
@@ -98,18 +102,18 @@ public class ScenicServiceImpl extends ServiceImpl<ScenicMapper, Scenic> impleme
     }
 
 
+
     /**
      * 分页查询景点，可以根据城市id或者景点名字查询
      * @param pages
      * @param pageSize
-     * @param scenic
      * @return
      */
 
     @Override
-    public Page<Scenic> searchPageScenic(Integer pages, Integer pageSize, Scenic scenic) {
+    public Page<Scenic> searchPageScenic(Integer pages, Integer pageSize, String filed, String keyword) {
         Page<Scenic> page = new Page<>(pages,pageSize);
-        scenicMapper.selectPage(page,scenic);
+        scenicMapper.selectPage(page,filed,keyword);
         return page;
     }
 }

@@ -82,23 +82,26 @@ public class ScenicController {
      * @param
      * @param pages
      * @param pageSize
-     * @param scenic
+     * @param
      * @return
      */
-    @GetMapping("/page/{start}/{size}")
-    public R<Page<Scenic>> searchPages(@PathVariable("start") Integer pages, @PathVariable("size") Integer pageSize,@RequestBody Scenic scenic){
+    @GetMapping("/page")
+    public R<Page<Scenic>> searchPages(@RequestParam(value = "start", defaultValue = "2") Integer pages,
+                                       @RequestParam(value = "size", defaultValue = "6") Integer pageSize,
+                                       @RequestParam(value = "field", required = false)String field,
+                                       @RequestParam(value = "keyword", required = false)String keyword){
         //页码数小于0 设置为0
         if (pages == null || pages < 0){
             pages = 0;
         }
-        Page<Scenic> scenics = scenicService.searchPageScenic(pages,pageSize,scenic);
-        System.out.println(scenic);
-        if (scenics == null || scenics.getTotal() == 0){
-            return new R<>(204,"没有查到数据");
-        }
-        return new R<Page<Scenic>>(scenics);
+//        Page<Scenic> scenics = scenicService.searchPageScenic(pages,pageSize,scenic);
+//        System.out.println(scenic);
+//        if (scenics == null || scenics.getTotal() == 0){
+//            return new R<>(204,"没有查到数据");
+//        }
+        Page<Scenic> scenics = scenicService.searchPageScenic(pages,pageSize,field,keyword);
+        return new R<>(scenics);
     }
-
 
     /**
      * 插入景点数据

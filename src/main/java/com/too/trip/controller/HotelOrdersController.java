@@ -30,8 +30,8 @@ public class HotelOrdersController {
     @Autowired
     private HotelOrdersService hotelOrdersService;
 
-    //查询所有酒店
-    @PostMapping("/selectAll")
+    //查询所有酒店订单
+    @GetMapping("/selectAll")
     public R selectHotelOredrsAll(HttpServletRequest request) {
         List<HotelOrders> hotelOrders = hotelOrdersService.selectAllHotelOrder();
         if (hotelOrders == null || hotelOrders.size() == 0) {
@@ -42,7 +42,7 @@ public class HotelOrdersController {
     }
 
     //查询所有酒店(前端用)
-    @PostMapping("/selectAllF")
+    @GetMapping("/selectAllF")
     public R selectHotelOredrsAllF(HttpServletRequest request) {
         List<HotelOrders> hotelOrders = hotelOrdersService.selectAllHotelOrderF();
         System.out.println("2222222222" + hotelOrders);
@@ -69,7 +69,7 @@ public class HotelOrdersController {
     }
 
     //根据酒店订单ID删除酒店订单
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public R deleteHotelOrder(HttpServletRequest request, @RequestParam("hoId") Integer hoId) {
         boolean result = hotelOrdersService.deleteHotelOrder(hoId);
         if (!result) {
@@ -96,15 +96,13 @@ public class HotelOrdersController {
     }
 
     //更新酒店订单
-    @PostMapping("/update")
+    @PutMapping("/update")
     public R updateHotelOrder(HttpServletRequest request, @RequestBody HotelOrders hotelOrders) {
-        LocalDateTime time = LocalDateTime.now();
-        hotelOrders.setBeginDate(time);
         boolean result = hotelOrdersService.updateHotelOrder(hotelOrders);
         if (!result) {
-            return new R<Scenic>(400, "请求参数错误");
+            return new R<HotelOrders>(400, "请求参数错误");
         }
-        return new R<Scenic>();
+        return new R<HotelOrders>();
     }
 
 }

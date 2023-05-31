@@ -17,6 +17,11 @@
             <result column="city_name" property="cityName"/>
             <result column="province" property="province"/>
         </association>
+        <association property="image" javaType="com.too.trip.entity.Image">
+            <id column="img_id" property="imgId"/>
+            <result column="s_id" property="sId"/>
+            <result column="img_src" property="imgSrc"/>
+        </association>
     </resultMap>
 <!--    查询所有景点-->
     <select id="searchAllScenic" resultMap="BaseResultMap">
@@ -25,9 +30,12 @@
     </select>
 <!--    根据景点id查询景点-->
     <select id="searchScenicById" resultMap="BaseResultMap">
-        select scenic_id,science_name,science_img,science_price,description,science_star,science_position,city_name,province
-        from scenic left join city on scenic.city_id = city.city_id
-        where scenic_id = #{sid}
+        SELECT scenic.scenic_id, scenic.science_name, scenic.science_img, scenic.science_price, scenic.description,
+               scenic.science_star, scenic.science_position, city.city_name, city.province
+        FROM scenic
+                 LEFT JOIN city ON scenic.city_id = city.city_id
+        WHERE scenic.scenic_id = ${sid}
+        GROUP BY scenic.scenic_id;
     </select>
 
     <!--
@@ -39,13 +47,15 @@
         select scenic_id,science_name,science_img,science_price,description,science_star,science_position,city_name,province
         from scenic left join city on scenic.city_id = city.city_id
         <where>
-            <if test="scenic.scienceName != null and scenic.scienceName != ''">
-                science_name like "%"#{scenic.scienceName}"%"
-            </if>
-            <if test="scenic.cityId != null and scenic.cityId != ''">
-                and scenic.city_id = #{scenic.cityId}
+            <if test="field != null and field != ''">
+                ${field} like "%"#{keyword}"%"
             </if>
         </where>
     </select>
 
+
+
+    <select id="selectFromImageByScenicId" resultType="string">
+        select img_src  from image WHERE s_id = #{scenicId}
+    </select>
 </mapper>

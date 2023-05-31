@@ -25,7 +25,7 @@ import java.util.List;
 public interface ScenicMapper extends BaseMapper<Scenic> {
     List<Scenic> searchAllScenic();
     Scenic searchScenicById(Integer sid);
-    Page<Scenic> selectPage(@Param("page") Page<Scenic> page, Scenic scenic);
+    Page<Scenic> selectPage(@Param("page") Page<Scenic> page, @Param("field") String filed, @Param("keyword") String keyword);
 
-
+    List<String> selectFromImageByScenicId(@Param("scenicId") Integer scenicId);
 }
