@@ -1,6 +1,7 @@
 package com.too.trip.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.HotelOrders;
 import com.too.trip.entity.Order;
 import com.too.trip.entity.ScenicOrders;
@@ -24,7 +25,7 @@ public interface ScenicOrdersService extends IService<ScenicOrders> {
     List<ScenicOrders> selectScenicOrderByUserId(Integer uid);
 
     //查询所有酒店订单(前端)
-    List<ScenicOrders> selectAllScenicOrderF();
+    Page<ScenicOrders> selectAllByPage(Integer pages, Integer pageSize,  String filed, String keyword);
 
     //根据用户ID查询酒店订单+景点订单
     List<Order> getUserOrders(Integer uid);

@@ -23,13 +23,16 @@
         from scenic_orders
         order by so_time desc
     </select>
-    <select id="selectAllF" resultMap="BaseResultMap">
+    <select id="selectAllByPage" resultMap="BaseResultMap">
         SELECT so_id, username, science_name, science_img, so_status, so_time,price,number
         FROM scenic,
              scenic_orders,
              user
         WHERE scenic.scenic_id = scenic_orders.scenic_id
           and scenic_orders.user_id = user.user_id
+        <if test="field != null and field != ''">
+          and   ${field} like "%"#{keyword}"%"
+        </if>
     </select>
     <select id="selectByUserId" resultMap="BaseResultMap">
         select

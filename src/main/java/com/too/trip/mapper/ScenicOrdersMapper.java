@@ -1,5 +1,7 @@
 package com.too.trip.mapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.Order;
+import com.too.trip.entity.Scenic;
 import org.apache.ibatis.annotations.Param;
 
 import com.too.trip.entity.ScenicOrders;
@@ -25,7 +27,7 @@ import java.util.List;
 public interface ScenicOrdersMapper extends BaseMapper<ScenicOrders> {
     List<ScenicOrders> selectAll();
 
-    List<ScenicOrders> selectAllF();
+    Page<Scenic> selectAllByPage(@Param("page") Page<ScenicOrders> page, @Param("field") String filed, @Param("keyword") String keyword);
 
     List<ScenicOrders> selectByUserId(@Param("userId") Integer userId);
 

@@ -1,5 +1,6 @@
 package com.too.trip.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.too.trip.entity.Order;
 import com.too.trip.entity.R;
@@ -42,14 +43,16 @@ public class ScenicOrdersController {
     }
 
     //查询所有订单(前端)
-    @GetMapping("/selectAllF")
-    public R selectScenicOredrsAllF(HttpServletRequest request) {
-        List<ScenicOrders> scenicOrders = scenicOrdersService.selectAllScenicOrderF();
-        if (scenicOrders == null || scenicOrders.size() == 0) {
-            System.out.println(scenicOrders);
-            return new R<>(204, "没有查到数据");
+    @GetMapping("/page")
+    public R selectScenicOrdersAllF(@RequestParam(value = "start", defaultValue = "0") Integer pages,
+                                    @RequestParam(value = "size", defaultValue = "5") Integer pageSize,
+                                    @RequestParam(value = "field", required = false)String field,
+                                    @RequestParam(value = "keyword", required = false)String keyword) {
+        Page<ScenicOrders> page = scenicOrdersService.selectAllByPage(pages, pageSize, field, keyword);
+        if (page.getRecords() == null || page.getRecords().size() == 0) {
+            return new R<>(400, "查询失败");
         }
-        return new R<>(scenicOrders);
+        return new R<>(page);
     }
 
     //根据用户id查询订单
