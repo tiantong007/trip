@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -53,14 +54,46 @@ public class HotelOrdersController {
     //添加酒店订单
     @PostMapping("/insert")
     public R insertHotelOrder(HttpServletRequest request, @RequestBody HotelOrders hotelOrders) {
-        LocalDateTime time = LocalDateTime.now();
-        hotelOrders.setBeginDate(time);
-        System.out.println("aaaaaa" + hotelOrders);
+//        LocalDateTime time = LocalDateTime.now();
+//        hotelOrders.setBeginDate(time);
+        //1.计算酒店订单用户入住天数(如果为负数则日期错误）
+        LocalDateTime beginDate = hotelOrders.getBeginDate();
+        LocalDateTime endDate = hotelOrders.getEndDate();
+        long day = hotelOrdersService.determineNumberDays(beginDate, endDate);
+        if (day<0){
+            return new R<Scenic>(400, "入住时间错误");
+        }
+        //酒店数量进行判断不能为负数
+        Integer number = hotelOrders.getNumber();
+        if (number<0){
+            return new R<Scenic>(400, "房间数量错误");
+        }
+        //2.获取当前酒店房间的价格
+        BigDecimal roomMoney = hotelOrdersService.selectRoomMoney(hotelOrders.getRId());
+        //计算当前订单总价格=房间价格*入住天数*预定房间数量
+        BigDecimal sumPrice = roomMoney.multiply(BigDecimal.valueOf(number).multiply(BigDecimal.valueOf(day))) ;
+        //将酒店价格set到对象中
+        hotelOrders.setPrice(sumPrice);
+        //获取用户金额
+        BigDecimal userMoney = hotelOrdersService.selectUserMoney(hotelOrders.getUId());
+        //3.判断用户金钱是否大于等于当前订单总价格
+//        if (usermoney.compareTo(BigDecimal.ZERO) >0 && usermoney.compareTo(scenicOrders.getPrice()) > 0)
+        if (userMoney.compareTo(BigDecimal.ZERO) <=0 || userMoney.compareTo(sumPrice) < 0){
+            return new R<Scenic>(400, "用户余额不足");
+        }
+        //4.添加数据到数据库
         boolean result = hotelOrdersService.insertHotelOrder(hotelOrders);
         if (!result) {
             System.out.println(hotelOrders);
             return new R<Scenic>(400, "请求参数错误");
         }
+        //用户减少对应价格
+        boolean b = hotelOrdersService.updateUserMoney(hotelOrders.getUId(), sumPrice);
+        if (!b) {
+            System.out.println(hotelOrders);
+            return new R<Scenic>(400, "减少用户价格错误");
+        }
+
         return new R<Scenic>();
     }
 

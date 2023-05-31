@@ -8,6 +8,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -48,5 +52,33 @@ public class HotelOrdersServiceImpl extends ServiceImpl<HotelOrdersMapper, Hotel
     public boolean updateHotelOrder(HotelOrders hotelOrders) {
         int row = hotelOrdersMapper.updateSelective(hotelOrders);
         return row > 0;
+    }
+
+    //判断入住天数
+    @Override
+    public long determineNumberDays(LocalDateTime star, LocalDateTime end) {
+        LocalDate date1 = star.toLocalDate();
+        LocalDate date2 = end.toLocalDate();
+        long days = ChronoUnit.DAYS.between(date1, date2);
+        return days;
+    }
+
+    //查询房间金额
+    @Override
+    public BigDecimal selectRoomMoney(Integer rId) {
+        BigDecimal bigDecimal = hotelOrdersMapper.selectRoomMoney(rId);
+        return bigDecimal;
+    }
+    //查询用户余额
+    @Override
+    public BigDecimal selectUserMoney(Integer uId) {
+        BigDecimal bigDecimal = hotelOrdersMapper.selectUserMoney(uId);
+        return bigDecimal;
+    }
+
+    @Override
+    public boolean updateUserMoney(Integer uId, BigDecimal price) {
+        boolean b = hotelOrdersMapper.updateUserMoney(uId, price);
+        return b;
     }
 }
