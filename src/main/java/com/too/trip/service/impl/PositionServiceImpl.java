@@ -18,7 +18,7 @@ public class PositionServiceImpl extends ServiceImpl<PositionMapper, Position> i
     private PositionMapper positionMapper;
     @Override
     public List<Position> selectScenicByPositionRange(Double x, Double y) {
-        List<Position> positionMappers = positionMapper.selectScenicByPositionRange(x - 0.3, x + 0.3, y - 0.3, y + 0.3);
+        List<Position> positionMappers = positionMapper.selectScenicByPositionRange(x - 0.5, x + 0.5, y - 0.5, y + 0.5);
         return positionMappers;
     }
 }

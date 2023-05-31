@@ -66,6 +66,7 @@ public class ScenicOrdersController {
         return new R<>(scenicOrders);
     }
 
+
     //根据用户ID查询酒店订单+景点订单
     @GetMapping("/getUserOrder")
     public R<List<Order>> getUserOrders(HttpServletRequest request, @RequestParam("userId") Integer userId) {

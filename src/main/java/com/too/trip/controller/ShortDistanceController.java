@@ -1,7 +1,9 @@
 package com.too.trip.controller;
 
 import com.too.trip.entity.Position;
+import com.too.trip.service.PositionService;
 import com.too.trip.utils.DistanceUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,22 +15,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/route")
 public class ShortDistanceController {
+    @Autowired
+    private PositionService positionService;
 
     @PostMapping("/calculate")
     public List<String> calculateShortestPath(@RequestParam("x0") Double x0,
                                               @RequestParam("y0") Double y0) {
         {
             List<Position> points = new ArrayList<>();
-            points.add(0, new Position("我的位置", x0, y0));
+
             //获取列表循环添加   pointList为周边景点列表（数据库中获取）
-//            List<Position> pointList= new ArrayList();
-//        for (int i;pointList.size()>0;pointList.remove(0),i++){
-//            points.add(i=0,new Position(pointList.get(i).getName(),pointList.get(i).getX(),pointList.get(i).getY()));
-//        }
-            points.add(1, new Position("厦门理工", 118.07981, 24.63927));
-            points.add(2, new Position("三期宿舍", 118.09583, 24.63773));
-            points.add(3, new Position("上李水库", 118.09644, 24.48541));
-            points.add(4, new Position("环东浪漫线", 118.15034, 24.61799));
+//            List<Position> positions = positionService.selectScenicByPositionRange(x0, y0);
+//            if (positions == null || positions.size() == 0){
+//                System.out.println(1);
+//            }
+            List<Position> pointList = positionService.selectScenicByPositionRange(x0, y0);
+            System.out.println("aaaaaaaaaaaa" + pointList);
+            for (int i; pointList.size() > 0; pointList.remove(0), i++) {
+                points.add(i = 0, new Position(pointList.get(i).getName(), pointList.get(i).getX(), pointList.get(i).getY()));
+            }
+            points.add(0, new Position("我的位置", x0, y0));
+//            points.add(1, new Position("厦门理工", 118.07981, 24.63927));
+//            points.add(2, new Position("三期宿舍", 118.09583, 24.63773));
+//            points.add(3, new Position("上李水库", 118.09644, 24.48541));
+//            points.add(4, new Position("环东浪漫线", 118.15034, 24.61799));
             DistanceUtil distanceUtil = new DistanceUtil();
             List<List<Position>> perms = permute(points.subList(1, points.size()));
             double mindistance = 999999999;
@@ -50,6 +60,7 @@ public class ShortDistanceController {
             }
             //System.out.println("最短路线为" + String.join("->", nameList));
             //System.out.println("最短距离" + mindistance);
+            System.out.println("aaaaaa" + nameList);
             return nameList;
         }
     }
