@@ -46,12 +46,12 @@ public class CommentController {
 
     // 根据用户 id 获取用户评论
     @GetMapping("/byUser/{userId}")
-    public R<List<Comment>> getCommentsByUserId(@PathVariable Integer userId) {
-        List<Comment> comments = commentService.getCommentsByUserId(userId);
-        if (comments != null && !comments.isEmpty()) {
-            return new R<>( comments);
-        } else {
-            return new R<>(204, "未找到该用户的评论");
+    public R getCommentsByUserId(@RequestParam(value = "start", defaultValue = "0") Integer start, @RequestParam(value = "size", defaultValue = "5") Integer size) {
+        Page<Comment> page = commentService.selectAllCommentByPage(start,size);
+        if (page.getRecords().size() == 0 || page.getRecords() == null) {
+            return new R(400, "未找到该用户的评论");
+        }else {
+            return new R(page);
         }
     }
 
@@ -60,19 +60,21 @@ public class CommentController {
     @GetMapping("/byHotel/{hotelId}")
     public R  getCommentsByHotelId(@RequestParam(value = "start", defaultValue = "0") Integer start, @RequestParam(value = "size", defaultValue = "5") Integer size) {
        Page<Comment> page =  commentService.selectAllCommentByPage(start,size);
-        if (page.getRecords().size() == 0 || page.getRecords() != null) {
+
+        if (page.getRecords().size() == 0 || page.getRecords() == null) {
             return new R(400, "未找到该酒店的评论");
+        }else {
+            return new R(page);
         }
-        return new R();
     }
     //根据景点id获取该景点的评论
     @GetMapping("/byScenic/{scenicId}")
-    public R<List<Comment>>  getCommentsBySId(@PathVariable Integer scenicId) {
-        List<Comment> comments =  commentService.getCommentsBySId(scenicId);
-        if (comments != null && !comments.isEmpty()) {
-            return new R<>( comments);
+    public R getCommentsBySId(@RequestParam(value = "start", defaultValue = "0") Integer start, @RequestParam(value = "size", defaultValue = "5") Integer size) {
+        Page<Comment> page =  commentService.selectAllCommentByPage(start,size);
+        if (page.getRecords().size() == 0 || page.getRecords() == null) {
+            return new R(400, "未找到该景点的评论");
         } else {
-            return new R<>(204, "未找到该景点的评论");
+            return new R(page);
         }
     }
 
