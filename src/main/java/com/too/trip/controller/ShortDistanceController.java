@@ -1,57 +1,57 @@
 package com.too.trip.controller;
 
-import com.too.trip.utils.DistanceUtil;
-import lombok.Data;
 import com.too.trip.entity.Position;
+import com.too.trip.utils.DistanceUtil;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RestController
+@RequestMapping("/route")
 public class ShortDistanceController {
-    public static void main(String[] args) {
-        // 周边景点的列表
-        List<Position> points = new ArrayList<>();
-        //0为出发点  其余为周边景点
-        points.add(0, new Position("我的位置", 118.08055, 24.64267));
-        //获取列表循环添加   pointList为周边景点列表（数据库中获取）
-//        List<Position> pointList= new ArrayList();
+
+    @PostMapping("/calculate")
+    public List<String> calculateShortestPath(@RequestParam("x0") Double x0,
+                                              @RequestParam("y0") Double y0) {
+        {
+            List<Position> points = new ArrayList<>();
+            points.add(0, new Position("我的位置", x0, y0));
+            //获取列表循环添加   pointList为周边景点列表（数据库中获取）
+//            List<Position> pointList= new ArrayList();
 //        for (int i;pointList.size()>0;pointList.remove(0),i++){
 //            points.add(i=0,new Position(pointList.get(i).getName(),pointList.get(i).getX(),pointList.get(i).getY()));
 //        }
-        points.add(1, new Position("厦门理工", 118.07981, 24.63927));
-        points.add(2, new Position("三期宿舍", 118.09583, 24.63773));
-        points.add(3, new Position("上李水库", 118.09644, 24.48541));
-        points.add(4, new Position("环东浪漫线", 118.15034, 24.61799));
-        DistanceUtil distanceUtil = new DistanceUtil();
-
-        List<List<Position>> perms = permute(points.subList(1, points.size()));
-        double mindistance = 999999999;
-        List<String> nameList = new ArrayList<>();
-//        nameList.add(points.get(0).getName());
-        for (List<Position> perm : perms) {
-            double distance = 0;
-            List<String> tempList = new ArrayList<>();
-            tempList.add(points.get(0).getName());
-            List<Position> a = new ArrayList<>(perm);
-            a.add(0, points.get(0));
-
-            for (int i = 0; i < a.size() - 1; i++) {
-                distance += distanceUtil.getDistance(a.get(i).getX(), a.get(i).getY(), a.get(i + 1).getX(), a.get(i + 1).getY());
-                tempList.add(a.get(i + 1).getName());
+            points.add(1, new Position("厦门理工", 118.07981, 24.63927));
+            points.add(2, new Position("三期宿舍", 118.09583, 24.63773));
+            points.add(3, new Position("上李水库", 118.09644, 24.48541));
+            points.add(4, new Position("环东浪漫线", 118.15034, 24.61799));
+            DistanceUtil distanceUtil = new DistanceUtil();
+            List<List<Position>> perms = permute(points.subList(1, points.size()));
+            double mindistance = 999999999;
+            List<String> nameList = new ArrayList<>();
+            for (List<Position> perm : perms) {
+                double distance = 0;
+                List<String> tempList = new ArrayList<>();
+                tempList.add(points.get(0).getName());
+                List<Position> a = new ArrayList<>(perm);
+                a.add(0, points.get(0));
+                for (int i = 0; i < a.size() - 1; i++) {
+                    distance += distanceUtil.getDistance(a.get(i).getX(), a.get(i).getY(), a.get(i + 1).getX(), a.get(i + 1).getY());
+                    tempList.add(a.get(i + 1).getName());
+                }
+                if (distance < mindistance) {
+                    mindistance = distance;
+                    nameList = tempList;
+                }
             }
-
-            System.out.println(a);
-            if (distance < mindistance) {
-                mindistance = distance;
-                nameList = tempList;
-            }
-            System.out.println(distance);
+            //System.out.println("最短路线为" + String.join("->", nameList));
+            //System.out.println("最短距离" + mindistance);
+            return nameList;
         }
-        System.out.println(nameList);
-        System.out.println("最短路线为" + String.join("->", nameList));
-        System.out.println("最短距离" + mindistance);
-
-
     }
 
     public static List<List<Position>> permute(List<Position> nums) {

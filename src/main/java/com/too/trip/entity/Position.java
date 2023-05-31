@@ -4,8 +4,6 @@ import lombok.Data;
 
 @Data
 public class Position {
-    public Position() {
-    }
 
     //景点名
     String name;
