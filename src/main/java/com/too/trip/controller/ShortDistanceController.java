@@ -28,8 +28,13 @@ public class ShortDistanceController {
     public static void main(String[] args) {
         // 周边景点的列表
         List<Position> points = new ArrayList<>();
-        //0为出发点
+        //0为出发点  其余为周边景点
         points.add(0, new Position("火车站", 118.08055, 24.64267));
+        //获取列表循环添加   pointList为周边景点列表（数据库中获取）
+//        List<Position> pointList= new ArrayList();
+//        for (int i;pointList.size()>0;pointList.remove(0),i++){
+//            points.add(i=0,new Position(pointList.get(i).getName(),pointList.get(i).getX(),pointList.get(i).getY()));
+//        }
         points.add(1, new Position("厦门理工", 118.07981, 24.63927));
         points.add(2, new Position("三期宿舍", 118.09583, 24.63773));
         points.add(3, new Position("上李水库", 118.09644, 24.48541));
