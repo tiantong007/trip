@@ -24,7 +24,7 @@ import java.util.Map;
  * @since 2023-05-24
  */
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(value = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/hotel-orders")
 public class HotelOrdersController {
 

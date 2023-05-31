@@ -26,7 +26,7 @@ import java.util.UUID;
  * @author isixe
  * @since 2023-05-24
  */
-@CrossOrigin("*")
+@CrossOrigin(value = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
 @RequestMapping("/room")
 public class RoomController {

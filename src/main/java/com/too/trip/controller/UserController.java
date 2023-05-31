@@ -24,7 +24,7 @@ import java.lang.reflect.Field;
  */
 @RestController
 @Slf4j
-@CrossOrigin("*")
+@CrossOrigin(value = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping(value = "/user")
 public class UserController {
     @Autowired

@@ -34,6 +34,7 @@ import java.util.UUID;
  * @since 2023-05-24
  */
 @RestController
+@CrossOrigin(value = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/scenic")
 public class ScenicController {
 
