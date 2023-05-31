@@ -1,5 +1,6 @@
 package com.too.trip.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.too.trip.entity.Order;
 import com.too.trip.entity.ScenicOrders;
@@ -17,10 +18,7 @@ import java.util.List;
  * @createDate 2023-05-29 10:31:10
  */
 @Service
-public class ScenicOrdersServiceImpl extends ServiceImpl<ScenicOrdersMapper, ScenicOrders>
-
-
-        implements ScenicOrdersService {
+public class ScenicOrdersServiceImpl extends ServiceImpl<ScenicOrdersMapper, ScenicOrders> implements ScenicOrdersService {
     @Autowired
     private ScenicOrdersMapper scenicOrdersMapperl;
 
@@ -30,16 +28,19 @@ public class ScenicOrdersServiceImpl extends ServiceImpl<ScenicOrdersMapper, Sce
         return scenicOrders;
     }
 
-    @Override
-    public List<ScenicOrders> selectAllScenicOrderF() {
-        List<ScenicOrders> scenicOrders = scenicOrdersMapperl.selectAllF();
-        return scenicOrders;
-    }
+
 
     @Override
     public List<ScenicOrders> selectScenicOrderByUserId(Integer uid) {
         List<ScenicOrders> scenicOrders = scenicOrdersMapperl.selectByUserId(uid);
         return scenicOrders;
+    }
+
+    @Override
+    public Page<ScenicOrders> selectAllByPage(Integer pages, Integer pageSize, String filed, String keyword) {
+        Page<ScenicOrders> page = new Page<>(pages, pageSize);
+        scenicOrdersMapperl.selectAllByPage(page, filed, keyword);
+        return page;
     }
 
 

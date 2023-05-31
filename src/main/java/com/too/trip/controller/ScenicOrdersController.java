@@ -1,5 +1,6 @@
 package com.too.trip.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.too.trip.entity.Order;
 import com.too.trip.entity.R;
@@ -42,14 +43,16 @@ public class ScenicOrdersController {
     }
 
     //查询所有订单(前端)
-    @GetMapping("/selectAllF")
-    public R selectScenicOredrsAllF(HttpServletRequest request) {
-        List<ScenicOrders> scenicOrders = scenicOrdersService.selectAllScenicOrderF();
-        if (scenicOrders == null || scenicOrders.size() == 0) {
-            System.out.println(scenicOrders);
-            return new R<>(204, "没有查到数据");
+    @GetMapping("/page")
+    public R selectScenicOrdersAllF(@RequestParam(value = "start", defaultValue = "0") Integer pages,
+                                    @RequestParam(value = "size", defaultValue = "5") Integer pageSize,
+                                    @RequestParam(value = "field", required = false)String field,
+                                    @RequestParam(value = "keyword", required = false)String keyword) {
+        Page<ScenicOrders> page = scenicOrdersService.selectAllByPage(pages, pageSize, field, keyword);
+        if (page.getRecords() == null || page.getRecords().size() == 0) {
+            return new R<>(400, "查询失败");
         }
-        return new R<>(scenicOrders);
+        return new R<>(page);
     }
 
     //根据用户id查询订单
@@ -82,7 +85,7 @@ public class ScenicOrdersController {
         scenicOrders.setSoTime(time);
         //判断数量是否合理
         if (scenicOrders.getNumber()<=0){
-            return new R(200,"数量输入错误");
+            return new R(400,"数量输入错误");
         }
 
         //获取景点价格并给订单
@@ -94,7 +97,7 @@ public class ScenicOrdersController {
         scenicOrders.setPrice(price);
         boolean result = scenicOrdersService.determineUserAmount(scenicOrders);
         if (result){
-            return new R(200,"用户余额不足");
+            return new R(400,"用户余额不足");
         }
         result = scenicOrdersService.insertScenicOrder(scenicOrders);
         if (!result) {
@@ -137,7 +140,7 @@ public class ScenicOrdersController {
         }
         boolean result = scenicOrdersService.removeBatchByIds(soIds);
         if(!result){
-            return new R(200,"没有对应的数据可删除");
+            return new R(400,"没有对应的数据可删除");
         }
         return new R();
 
