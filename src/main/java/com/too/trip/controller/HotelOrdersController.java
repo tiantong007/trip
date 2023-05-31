@@ -1,5 +1,6 @@
 package com.too.trip.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.too.trip.entity.HotelOrders;
 import com.too.trip.entity.R;
@@ -31,27 +32,22 @@ public class HotelOrdersController {
     private HotelOrdersService hotelOrdersService;
 
     //查询所有酒店订单
-    @GetMapping("/selectAll")
-    public R selectHotelOredrsAll(HttpServletRequest request) {
-        List<HotelOrders> hotelOrders = hotelOrdersService.selectAllHotelOrder();
-        if (hotelOrders == null || hotelOrders.size() == 0) {
-            System.out.println(hotelOrders);
-            return new R<>(204, "没有查到数据");
+    @GetMapping("/page")
+    public R selectHotelOredrsAll(@RequestParam(value = "start", defaultValue = "0") Integer pages,
+                                  @RequestParam(value = "size", defaultValue = "5") Integer pageSize,
+                                  @RequestParam(value = "field", required = false)String field,
+                                  @RequestParam(value = "keyword", required = false)String keyword) {
+        Page<HotelOrders> page = hotelOrdersService.selectAllHotelOrder(pages, pageSize, field, keyword);
+        if (page.getRecords() == null){
+            return new R<>(400, "查询失败");
         }
-        return new R<>(hotelOrders);
+        return new R<>(page);
     }
 
     //查询所有酒店(前端用)
     @GetMapping("/selectAllF")
     public R selectHotelOredrsAllF(HttpServletRequest request) {
-        List<HotelOrders> hotelOrders = hotelOrdersService.selectAllHotelOrderF();
-        System.out.println("2222222222" + hotelOrders);
-
-        if (hotelOrders == null || hotelOrders.size() == 0) {
-            System.out.println(hotelOrders);
-            return new R<>(204, "没有查到数据");
-        }
-        return new R<>(hotelOrders);
+       return new R();
     }
 
     //添加酒店订单

@@ -21,7 +21,7 @@
         <include refid="Base_Column_List"/>
         from hotel_orders
     </select>
-    <select id="selectAllF" resultMap="BaseResultMap">
+    <select id="selectAllByPage" resultMap="BaseResultMap">
         SELECT hotel_orders.ho_id,
                username,
                hotel.hotel_name,
@@ -40,6 +40,9 @@
         WHERE hotel_orders.r_id = room_id
           and room.h_id = hotel.h_id
           AND user_id = u_id
+        <if test="field != null and field != ''">
+            and ${field} like "%"#{keyword}"%"
+        </if>
     </select>
     <update id="updateSelective">
         update hotel_orders

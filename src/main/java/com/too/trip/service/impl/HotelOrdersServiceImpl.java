@@ -1,5 +1,6 @@
 package com.too.trip.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.HotelOrders;
 import com.too.trip.mapper.HotelOrdersMapper;
 import com.too.trip.service.HotelOrdersService;
@@ -25,15 +26,10 @@ public class HotelOrdersServiceImpl extends ServiceImpl<HotelOrdersMapper, Hotel
 
 
     @Override
-    public List<HotelOrders> selectAllHotelOrder() {
-        List<HotelOrders> hotelOrders = hotelOrdersMapper.selectAll();
-        return hotelOrders;
-    }
-
-    @Override
-    public List<HotelOrders> selectAllHotelOrderF() {
-        List<HotelOrders> hotelOrders = hotelOrdersMapper.selectAllF();
-        return hotelOrders;
+    public Page<HotelOrders> selectAllHotelOrder(Integer pages, Integer pageSize, String filed, String keyword) {
+        Page<HotelOrders> page = new Page<>(pages, pageSize);
+        hotelOrdersMapper.selectAllByPage(page, filed, keyword);
+        return page;
     }
 
     @Override

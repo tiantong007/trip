@@ -1,4 +1,6 @@
 package com.too.trip.mapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.too.trip.entity.Hotel;
 import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
@@ -23,8 +25,9 @@ import java.util.List;
 public interface HotelOrdersMapper extends BaseMapper<HotelOrders> {
     List<HotelOrders> selectAll();
 
-    List<HotelOrders> selectAllF();
 
     int updateSelective(HotelOrders hotelOrders);
+
+    Page<HotelOrders> selectAllByPage(@Param("page") Page<HotelOrders> page, @Param("field") String filed, @Param("keyword") String keyword);
 
 }

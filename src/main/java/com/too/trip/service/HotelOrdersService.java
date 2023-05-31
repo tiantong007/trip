@@ -1,5 +1,6 @@
 package com.too.trip.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.too.trip.entity.HotelOrders;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,10 +16,8 @@ import java.util.List;
  */
 public interface HotelOrdersService extends IService<HotelOrders> {
         //查询所有酒店订单
-        List<HotelOrders> selectAllHotelOrder();
+        Page<HotelOrders>  selectAllHotelOrder(Integer pages, Integer pageSize,  String filed, String keyword);
 
-        //查询所有酒店订单(前端)
-        List<HotelOrders> selectAllHotelOrderF();
 
         //        //根据酒店名搜索
 //        List<HotelOrders> selectHotelOrderByH
