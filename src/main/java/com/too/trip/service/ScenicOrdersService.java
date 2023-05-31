@@ -6,6 +6,7 @@ import com.too.trip.entity.Order;
 import com.too.trip.entity.ScenicOrders;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,12 @@ public interface ScenicOrdersService extends IService<ScenicOrders> {
     //删除景点订单
     public boolean deleteScenicOrdersById(Integer so_id);
 
-        //景点订单状态更新
-        public boolean updateScenicOrder(ScenicOrders scenicOrders);
+    //景点订单状态更新
+    public boolean updateScenicOrder(ScenicOrders scenicOrders);
 
+    //判断用户账户是否合理
+    public boolean determineUserAmount(ScenicOrders scenicOrders);
+
+    //查询景点价格
+    BigDecimal selectScenicMoney(Integer scenicId);
 }

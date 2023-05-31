@@ -55,8 +55,11 @@ public class ScenicOrders implements Serializable {
     @TableField(exist = false)
     private String scienceImg;
 
-
+    //景点价格
+    @TableField(exist = false)
+    private BigDecimal sciencePrice;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
 }

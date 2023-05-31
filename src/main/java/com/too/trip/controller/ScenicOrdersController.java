@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -76,9 +77,26 @@ public class ScenicOrdersController {
     //添加景点订单
     @PostMapping()
     public R insertScenicOrder(HttpServletRequest request, @RequestBody ScenicOrders scenicOrders) {
+        //定义订单时间
         LocalDateTime time = LocalDateTime.now();
         scenicOrders.setSoTime(time);
-        boolean result = scenicOrdersService.insertScenicOrder(scenicOrders);
+        //判断数量是否合理
+        if (scenicOrders.getNumber()<=0){
+            return new R(200,"数量输入错误");
+        }
+
+        //获取景点价格并给订单
+        BigDecimal scenicMoney = scenicOrdersService.selectScenicMoney(scenicOrders.getScenicId());
+        scenicOrders.setSciencePrice(scenicMoney);
+
+        //判断用户余额是否合理
+        BigDecimal price = scenicOrders.getSciencePrice().multiply(BigDecimal.valueOf(scenicOrders.getNumber()));
+        scenicOrders.setPrice(price);
+        boolean result = scenicOrdersService.determineUserAmount(scenicOrders);
+        if (result){
+            return new R(200,"用户余额不足");
+        }
+        result = scenicOrdersService.insertScenicOrder(scenicOrders);
         if (!result) {
             System.out.println(scenicOrders);
             return new R<Scenic>(400, "请求参数错误");

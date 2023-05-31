@@ -1,7 +1,6 @@
 package com.too.trip.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.too.trip.entity.HotelOrders;
 import com.too.trip.entity.Order;
 import com.too.trip.entity.ScenicOrders;
 import com.too.trip.service.ScenicOrdersService;
@@ -9,8 +8,8 @@ import com.too.trip.mapper.ScenicOrdersMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 15110
@@ -53,8 +52,35 @@ public class ScenicOrdersServiceImpl extends ServiceImpl<ScenicOrdersMapper, Sce
 
     @Override
     public boolean insertScenicOrder(ScenicOrders scenicOrders) {
+
+        boolean result = scenicOrdersMapperl.updateUserMoney(scenicOrders.getUserId(), scenicOrders.getPrice());
         int row = scenicOrdersMapperl.insert(scenicOrders);
-        return row > 0;
+        return (row > 0)&&result;
+    }
+
+    /**
+     * 判断用户账户是否有钱购买门票
+     * @param scenicOrders
+     * @return
+     */
+    public boolean determineUserAmount(ScenicOrders scenicOrders){
+        BigDecimal usermoney = scenicOrdersMapperl.selectUsermoney(scenicOrders.getUserId());
+        if (usermoney.compareTo(BigDecimal.ZERO) >0 && usermoney.compareTo(scenicOrders.getPrice()) > 0){
+            return false;
+        }
+        else
+            return true;
+    }
+
+    /**
+     * 查询景点价格
+     * @param scenicId
+     * @return
+     */
+    @Override
+    public BigDecimal selectScenicMoney(Integer scenicId) {
+        BigDecimal scenicMoney = scenicOrdersMapperl.selectScenicMoney(scenicId);
+        return scenicMoney;
     }
 
     @Override
