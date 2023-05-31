@@ -31,7 +31,7 @@ import java.util.UUID;
  * @since 2023-05-24
  */
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(value = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/hotel")
 public class HotelController {
     @Autowired
