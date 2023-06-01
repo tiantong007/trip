@@ -70,8 +70,11 @@ public class HotelOrdersController {
         }
         //2.获取当前酒店房间的价格
         BigDecimal roomMoney = hotelOrdersService.selectRoomMoney(hotelOrders.getRId());
+        System.out.println(roomMoney);
         //计算当前订单总价格=房间价格*入住天数*预定房间数量
         BigDecimal sumPrice = roomMoney.multiply(BigDecimal.valueOf(number).multiply(BigDecimal.valueOf(day))) ;
+
+
         //将酒店价格set到对象中
         hotelOrders.setPrice(sumPrice);
         //获取用户金额
@@ -81,6 +84,7 @@ public class HotelOrdersController {
         if (userMoney.compareTo(BigDecimal.ZERO) <=0 || userMoney.compareTo(sumPrice) < 0){
             return new R<Scenic>(400, "用户余额不足");
         }
+        hotelOrders.setStatus("已支付");
         //4.添加数据到数据库
         boolean result = hotelOrdersService.insertHotelOrder(hotelOrders);
         if (!result) {
