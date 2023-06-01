@@ -49,17 +49,27 @@ public class ShortDistanceController {
                 tempList.add(points.get(0).getName());
                 List<Position> a = new ArrayList<>(perm);
                 a.add(0, points.get(0));
+                int dFlag = 0;
                 for (int i = 0; i < a.size() - 1; i++) {
                     distance += distanceUtil.getDistance(a.get(i).getX(), a.get(i).getY(), a.get(i + 1).getX(), a.get(i + 1).getY());
                     tempList.add(a.get(i + 1).getName());
+                    if (distance > mindistance) {
+                        dFlag = 1;
+                        break;
+                    }
+                    if (dFlag == 1) {
+                        dFlag = 0;
+                        continue;
+                    }
+//                    System.out.println(a);
                 }
                 if (distance < mindistance) {
                     mindistance = distance;
                     nameList = tempList;
                 }
             }
-            //System.out.println("最短路线为" + String.join("->", nameList));
-            //System.out.println("最短距离" + mindistance);
+            System.out.println("最短路线为" + String.join("->", nameList));
+            System.out.println("最短距离" + mindistance);
             System.out.println("aaaaaa" + nameList);
             return nameList;
         }
